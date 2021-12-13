@@ -497,6 +497,7 @@ class PreCold(models.Model):
         4. product category
         5. pre-cold id
         6. pallet id
+        7. exist status
 
     relation:
 
@@ -529,12 +530,16 @@ class PreCold(models.Model):
     # pallet id
     pallet_id = models.CharField(max_length=25, null=True)
 
+    # product in pre-cold status
+    product_pre_cold_status = models.BooleanField(default=True)
+
     # relation
     First_Weight_Lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
     PreCold_Manager = models.ForeignKey(PreColdManager, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.weight) + ' ' + str(self.entry_time)
+
 
 class Distributed(models.Model):
 
@@ -566,9 +571,6 @@ class Distributed(models.Model):
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     firstweightlifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
     salesmanager = models.ForeignKey(SalesManager, on_delete=models.CASCADE)
-    chicken = 1
-    turkey = 2
-    quail = 3
     type_of_gender = (('chicken', "C"),
                       ('turkey', "T"),
                       ('quail', "Q"))
@@ -587,7 +589,7 @@ class FreezingTunnel(models.Model):
 
     FreezingTunnel model's column:
 
-        1. Date of arrival
+        1. Entry Date
         2. Exit date
         3. Product Type
         4. pallet id
@@ -623,17 +625,19 @@ class FreezingTunnel(models.Model):
 class ColdHouse(models.Model):
 
     """
-     a cold place for keepingchicken
+     a cold place for keeping chicken
 
     ColdHouse model's column:
 
-        1. Date of arrival
+        1. Entry date
         2. Exit date
         3. Total pallet weight
         4. Pallet weight with product
         5. number of carton
         6. pallet id
         7. keeping id
+        8. status
+        9. id
 
     relation's:
 
@@ -642,13 +646,16 @@ class ColdHouse(models.Model):
     """
 
     dateofarrival = models.FloatField()
+    pallet_status = models.BooleanField(default=True)
     exitdate = models.FloatField()
     totalpalletweight = models.FloatField()
-    palletweightwhitproduct = models.FloatField()
+    palletweightwhitproduct = models.FloatField(null=True)
     numberofcarton = models.IntegerField()
     pallet_id = models.CharField(max_length=15)
     coldhouse_id = models.CharField(max_length=15)
     freezingtunnelmanager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
+    status = models.BooleanField(default=True)
+    cold_house_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     def __str__(self):
         return "dateofarrival:{}  exitdate:{}   pallet_id:{}".format(self.dateofarrival, self.exitdate, self.pallet_id)
