@@ -551,35 +551,46 @@ class Distributed(models.Model):
         1. Date
         2. weight
         3. sale price
-        4. Driver name
-        5. Driver license plate number
-        6. Name of the owner of the bar
-        7. type of gender
-        8. Bill of lading
-        9. number of box
+        4. product category
+        5. Bill of lading
+        6. number of box
 
     relation's:
 
-        1.FirstWeightLifting  ==> foreignkey
-        1.SalesManager  ==> foreignkey
+        1. FirstWeightLifting  ==> foreignkey
+        2. SalesManager  ==> foreignkey
+        3. driver  ==> foreignkey
 
     """
 
-    date = models.FloatField()
+    # date of weighting
+    date = models.FloatField(default= time.time())
+
+    # weight of product
     weight = models.FloatField()
-    saleprice = models.IntegerField()
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    firstweightlifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
-    salesmanager = models.ForeignKey(SalesManager, on_delete=models.CASCADE)
+
+    # product price
+    sale_price = models.IntegerField()
+
+    # product category
     type_of_gender = (('chicken', "C"),
                       ('turkey', "T"),
                       ('quail', "Q"))
-    type_of_gender = models.CharField(choices=type_of_gender, max_length=1)
-    billoflading = models.IntegerField()
-    numberofbox = models.IntegerField()
+    product_category = models.CharField(choices=type_of_gender, max_length=1)
+
+    # bill of lading
+    bill_of_lading = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
+    # number of box
+    number_of_box = models.IntegerField()
+
+    # relation
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
+    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.type_of_gender
+        return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)
 
 
 class FreezingTunnel(models.Model):
@@ -604,22 +615,30 @@ class FreezingTunnel(models.Model):
 
     """
 
-    dateofarrival = models.FloatField()
-    exitdate = models.FloatField()
-    chicken = 1
-    turkey = 2
-    quail = 3
+    # exit and entry date
+    entry_date = models.FloatField()
+    exit_date = models.FloatField()
+
+    # product category
     type_of_gender = (('chicken', "C"),
                       ('turkey', "T"),
                       ('quail', "Q"))
-    type_of_gender = models.CharField(choices=type_of_gender, max_length=1)
+    product_category = models.CharField(choices=type_of_gender, max_length=1)
+
+    # weight of product
     weight = models.FloatField()
+
+    # tunnel id that product freeze in it
     tunnel_id = models.IntegerField(max_length=15)
-    pallet_id = models.CharField(max_length=15)
+
+    # pallet id that include product
+    pallet_id = models.CharField(max_length=15, null=True)
+
+    # this param determine that product is in the tunnel or not
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
     def __str__(self):
-        return self.type_of_gender
+        return
 
 
 class ColdHouse(models.Model):
