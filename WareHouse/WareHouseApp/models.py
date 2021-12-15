@@ -638,7 +638,7 @@ class FreezingTunnel(models.Model):
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
     def __str__(self):
-        return
+        return str(self.weight) + ' ' + str(self.tunnel_id)
 
 
 class ColdHouse(models.Model):
@@ -664,72 +664,70 @@ class ColdHouse(models.Model):
 
     """
 
-    dateofarrival = models.FloatField()
+    # entry and exit time
+    entry_date = models.FloatField(default=time.time())
+    exit_date = models.FloatField(null=True)
+
+    # determine pallet is in coldHouse or not
     pallet_status = models.BooleanField(default=True)
-    exitdate = models.FloatField()
-    totalpalletweight = models.FloatField()
-    palletweightwhitproduct = models.FloatField(null=True)
-    numberofcarton = models.IntegerField()
+
+    # pallet weight
+    total_pallet_weight = models.FloatField()
+    pallet_weight_whitout_product = models.FloatField(null=True)
+
+    # number of paper box that exist in pallet
+    number_of_box = models.IntegerField()
+
+    # pallet id and coldHouse id
     pallet_id = models.CharField(max_length=15)
-    coldhouse_id = models.CharField(max_length=15)
-    freezingtunnelmanager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
-    status = models.BooleanField(default=True)
-    cold_house_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+    cold_house_id = models.CharField(max_length=15)
+
+    # relation
+    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "dateofarrival:{}  exitdate:{}   pallet_id:{}".format(self.dateofarrival, self.exitdate, self.pallet_id)
+        return str(self.pallet_id) + ' & ' + str(self.cold_house_id)
 
 
 class PaperBox(models.Model):
 
     """
-    this's a paper box for chicken
+    this is a paper box for chicken
 
     paperBox model's column:
 
-        1. Type of gender
-        2. carton Weight
-        3. number of gender
+        1. product category
+        2. paperBox Weight
+        3. number of product
         4. Packing time
-        5. carton id
+        5. box id
 
     relation's:
 
-        1.Cold_house  ==> foreignkey
+        1.ColdHouse  ==> foreignkey
 
     """
-    chicken = 1
-    turkey = 2
-    quail = 3
+
+    # product category
     type_of_gender = (('chicken', "C"),
                       ('turkey', "T"),
                       ('quail', "Q"))
-    type_of_gender = models.CharField(choices=type_of_gender, max_length=1)
-    carton_Weight = models.FloatField()
-    number_of_gender = models.IntegerField()
-    packing_time = models.FloatField()
+    product_category = models.CharField(choices=type_of_gender, max_length=1)
+
+    # paper box weight
+    paper_box_weight = models.FloatField()
+
+    # number of product in box
+    number_of_product = models.IntegerField()
+
+    # packing time
+    packing_time = models.FloatField(default=time.time())
+
+    # box id
     box_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
+    # relation
     cold_house = models.ForeignKey(ColdHouse, models.CASCADE)
 
-
     def __str__(self):
-        return self.type_of_gender
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return str(self.box_id)
