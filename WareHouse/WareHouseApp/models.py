@@ -97,7 +97,7 @@ class SalesManager(models.Model):
     phone_number = models.CharField(max_length=12)
 
     # Sales Manager uuid
-    ceo_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+    sales_manager_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
