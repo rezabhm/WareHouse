@@ -257,4 +257,3 @@ class PaperBoxAdmin(admin.ModelAdmin):
 
     list_filter = ["product_category", ]
 
-
