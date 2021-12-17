@@ -637,6 +637,10 @@ class FreezingTunnel(models.Model):
     # this param determine that product is in the tunnel or not
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
+    # relation
+    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
+    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
+
     def __str__(self):
         return str(self.weight) + ' ' + str(self.tunnel_id)
 
