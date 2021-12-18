@@ -28,7 +28,7 @@ class CEOAdmin(admin.ModelAdmin):
 
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.SalesManager)
@@ -42,7 +42,7 @@ class SalesManagerAdmin(admin.ModelAdmin):
 
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.WeightLiftingManager)
@@ -55,7 +55,7 @@ class WeightLiftingManagerAdmin(admin.ModelAdmin):
         ("relation information", {"fields": ("company", "user",)}),
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.FreezingTunnelManager)
@@ -70,7 +70,7 @@ class FreezingTunnelManagerAdmin(admin.ModelAdmin):
 
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.LiveWeighbridgeManager)
@@ -85,7 +85,7 @@ class LiveWeighbridgeManagerAdmin(admin.ModelAdmin):
 
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.PreColdManager)
