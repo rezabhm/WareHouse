@@ -99,7 +99,7 @@ class PreColdManagerAdmin(admin.ModelAdmin):
 
     )
 
-    list_filter = ["user name", ]
+    list_filter = ["username", ]
 
 
 @admin.register(models.ProductOwner)
@@ -146,7 +146,7 @@ class DriverAdmin(admin.ModelAdmin):
 @admin.register(models.LiveWeighbridge)
 class LiveWeighbridgeAdmin(admin.ModelAdmin):
     list_display = ["live_weighbridge_id", "final_weight", "car_weight", "car_empty", "weighting_date",
-                    "product_category", "slaughter_status ", "slaughter_start_date", "slaughter_finish_date",
+                    "product_category", "slaughter_start_date", "slaughter_finish_date",
                     "buy_price", ]
 
     fieldsets = (

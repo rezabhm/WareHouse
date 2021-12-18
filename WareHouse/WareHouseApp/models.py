@@ -403,13 +403,11 @@ class LiveWeighbridge(models.Model):
     weighting_date = models.FloatField(default=time.time())
 
     # product category
-    prod_category_list = (
-        ('chicken', "C"),
-        ('Turkey', "T"),
-        ('Quail', "Q"),
-    )
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
 
-    product_category = models.CharField(max_length=1, choices=prod_category_list)
+    product_category = models.CharField(max_length=1, choices=type_of_gender)
 
     # slaughter status that if equal True slaughting has start
     slaughter_status = models.BooleanField(default=False)
@@ -457,22 +455,20 @@ class FirstWeightLifting(models.Model):
     weight = models.FloatField()
 
     # product category
-    prod_category_list = (
-        ('chicken', "C"),
-        ('Turkey', "T"),
-        ('Quail', "Q"),
-    )
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
 
-    product_category = models.CharField(max_length=1, choices=prod_category_list)
+    product_category = models.CharField(max_length=1, choices=type_of_gender)
 
     # id
     weight_lifting_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # define sale category
     sale_cat = (
-        ('pre-cold', 'P'),
-        ('distribute', 'D'),
-        ('Freezing Tunnel', 'F'),
+        ('P', 'pre-cold'),
+        ('D', 'distribute'),
+        ('F', 'freezing tunnel'),
     )
     sales_category = models.CharField(max_length=1, choices=sale_cat)
 
@@ -516,13 +512,10 @@ class PreCold(models.Model):
     weight = models.FloatField()
 
     # product category
-    prod_category_list = (
-        ('chicken', "C"),
-        ('Turkey', "T"),
-        ('Quail', "Q"),
-    )
-
-    product_category = models.CharField(max_length=1, choices=prod_category_list)
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
+    product_category = models.CharField(max_length=1, choices=type_of_gender)
 
     # pre-cold id
     pre_cold_id = models.IntegerField()
@@ -573,9 +566,9 @@ class Distributed(models.Model):
     sale_price = models.IntegerField()
 
     # product category
-    type_of_gender = (('chicken', "C"),
-                      ('turkey', "T"),
-                      ('quail', "Q"))
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
     product_category = models.CharField(choices=type_of_gender, max_length=1)
 
     # bill of lading
@@ -620,16 +613,16 @@ class FreezingTunnel(models.Model):
     exit_date = models.FloatField()
 
     # product category
-    type_of_gender = (('chicken', "C"),
-                      ('turkey', "T"),
-                      ('quail', "Q"))
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
     product_category = models.CharField(choices=type_of_gender, max_length=1)
 
     # weight of product
     weight = models.FloatField()
 
     # tunnel id that product freeze in it
-    tunnel_id = models.IntegerField(max_length=15)
+    tunnel_id = models.IntegerField()
 
     # pallet id that include product
     pallet_id = models.CharField(max_length=15, null=True)
@@ -713,9 +706,9 @@ class PaperBox(models.Model):
     """
 
     # product category
-    type_of_gender = (('chicken', "C"),
-                      ('turkey', "T"),
-                      ('quail', "Q"))
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
     product_category = models.CharField(choices=type_of_gender, max_length=1)
 
     # paper box weight

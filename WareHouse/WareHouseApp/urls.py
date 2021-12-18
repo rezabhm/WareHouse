@@ -1,4 +1,5 @@
 from django.urls import re_path
+from . import views
 
 My_app = 'WareHouseApp'
 
@@ -86,7 +87,16 @@ visualize data:
     15. see freezing tunnel with entry time and above filter
     16. see freezing tunnel with exit time and above filter
     17. see cold-house with (status and product category and pallet id and coldHouse id) filter
-    18. see cold-house with entry time and above filter
+    18. see cold-house with entfrom django.shortcuts import render
+
+# Create your views here.
+ry time and above filterfrom django.shortcuts import render
+
+# Create your views here.
+from django.shortcuts import render
+
+# Create your views here.
+
     19. see cold-house with exit time d above filter
     20. see all of paperBox with (product_type and status and product_owner and )
     21. see all of paperBox with packing time
@@ -97,5 +107,10 @@ visualize data:
 """
 
 urlpatterns = [
+
+    re_path(r'^$', views.main, name='Main'),
+    re_path(r'^about_us/$', views.about, name='About'),
+    re_path(r'^contact_us/$', views.contact, name='Contact'),
+    re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
 
 ]
