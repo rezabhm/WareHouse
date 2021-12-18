@@ -117,7 +117,7 @@ class ProductOwnerAdmin(admin.ModelAdmin):
 
 @admin.register(models.Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ["car_number", "live_product", "car_id", "product_owner ", ]
+    list_display = ["car_number", "live_product", "car_id", ]
 
     fieldsets = (
 
@@ -131,7 +131,7 @@ class CarAdmin(admin.ModelAdmin):
 
 @admin.register(models.Driver)
 class DriverAdmin(admin.ModelAdmin):
-    list_display = ["name", "last_name", "phone_number", "driver_id", "car", ]
+    list_display = ["name", "last_name", "phone_number", "driver_id", ]
 
     fieldsets = (
 
@@ -147,7 +147,7 @@ class DriverAdmin(admin.ModelAdmin):
 class LiveWeighbridgeAdmin(admin.ModelAdmin):
     list_display = ["live_weighbridge_id", "final_weight", "car_weight", "car_empty", "weighting_date",
                     "product_category", "slaughter_status ", "slaughter_start_date", "slaughter_finish_date",
-                    "buy_price", "Live_Weighbridge_Manager", "driver", ]
+                    "buy_price", ]
 
     fieldsets = (
 
@@ -164,8 +164,7 @@ class LiveWeighbridgeAdmin(admin.ModelAdmin):
 
 @admin.register(models.FirstWeightLifting)
 class FirstWeightLiftingAdmin(admin.ModelAdmin):
-    list_display = ["weighting_time", "weight", "product_category", "weight_lifting_id", "sales_category",
-                    "Live_Weigh_Bridge", "Weight_Lifting_Manager", ]
+    list_display = ["weighting_time", "weight", "product_category", "weight_lifting_id", "sales_category", ]
 
     fieldsets = (
 
@@ -181,7 +180,7 @@ class FirstWeightLiftingAdmin(admin.ModelAdmin):
 @admin.register(models.PreCold)
 class PreColdAdmin(admin.ModelAdmin):
     list_display = ["entry_time", "exit_time", "weight", "product_category", "pre_cold_id",
-                    "pallet_id", "First_Weight_Lifting", "PreCold_Manager", ]
+                    "pallet_id", ]
 
     fieldsets = (
 
@@ -197,7 +196,7 @@ class PreColdAdmin(admin.ModelAdmin):
 @admin.register(models.Distributed)
 class DistributedAdmin(admin.ModelAdmin):
     list_display = ["weight", "date", "weight", "product_category", "sale_price",
-                    "bill_of_lading", "number_of_box", "First_Weight_Lifting", "sales_manager", "driver", ]
+                    "bill_of_lading", "number_of_box", ]
 
     fieldsets = (
 
@@ -212,8 +211,7 @@ class DistributedAdmin(admin.ModelAdmin):
 
 @admin.register(models.FreezingTunnel)
 class FreezingTunnelAdmin(admin.ModelAdmin):
-    list_display = ["entry_date", "exit_date", "product_category", "status", "first_weight_lifting",
-                    "freezing_tunnel_manager", ]
+    list_display = ["entry_date", "exit_date", "product_category", "status", ]
 
     fieldsets = (
 
@@ -228,7 +226,7 @@ class FreezingTunnelAdmin(admin.ModelAdmin):
 
 @admin.register(models.ColdHouse)
 class ColdHouseAdmin(admin.ModelAdmin):
-    list_display = ["entry_date", "exit_date", "pallet_status", "total_pallet_weight", "freezing_tunnel_manager", ]
+    list_display = ["entry_date", "exit_date", "pallet_status", "total_pallet_weight", ]
 
     fieldsets = (
 
@@ -244,8 +242,7 @@ class ColdHouseAdmin(admin.ModelAdmin):
 
 @admin.register(models.PaperBox)
 class PaperBoxAdmin(admin.ModelAdmin):
-    list_display = ["paper_box_weight", "number_of_product", "product_category", "box_id",
-                    "cold_house", ]
+    list_display = ["paper_box_weight", "number_of_product", "product_category", "box_id", ]
 
     fieldsets = (
 
