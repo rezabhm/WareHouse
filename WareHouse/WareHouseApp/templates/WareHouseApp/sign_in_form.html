@@ -2,6 +2,18 @@
 
 {% block content %}
 
-this is sign_in_form page
+<form action="{% url 'sign_in' %}" method="post">
+
+    {% csrf_token %}
+
+    <label for="username">username :</label>
+    <input type="text" id="username" name="username"><br>
+
+    <label for="password">password :</label>
+    <input type="password" id="password" name="password"><br>
+
+    <input type="submit">
+
+</form>
 
 {% endblock %}

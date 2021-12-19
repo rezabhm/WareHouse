@@ -27,7 +27,7 @@ def sign_in_form(request, error_text="لطفا ابتدا مشخصات خود ر
 
         return HttpResponse(sign_in_form_page.render(context))
 
-
+@csrf_exept
 def sign_in(request):
 
     """
@@ -90,10 +90,66 @@ def userprofile(request, ussername):
         return HttpResponseRedirect(reverse('sign_in'))
 
 
-def change_password_form(request):
+def change_password_form(request, error_text='fill blank'):
 
-    change_password_form_page = loader.get_template('WareHouseApp/change_password_form.html')
+    """
+    change password form
+    """
 
-    return HttpResponse(change_password_form_page.render())
+    if request.user.is_superuser:
 
+        # load change password template
+        change_password_form_page = loader.get_template('WareHouseApp/change_password_form.html')
+
+        context = {
+
+            'error_text': error_text
+        }
+
+        return HttpResponse(change_password_form_page.render(context))
+
+    else:
+        # redirect to error page
+        return HttpResponseRedirect(reverse('Error', args=['اجازه دسترسی ندارید']))
+
+
+@csrf_exempt
+def change_password(request):
+
+    """
+    get data from change_password_form and change user's password
+    """
+
+    if request.user.is_superuser:
+
+        # get form param (POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        verify_pass = request.POST['verify_pass']
+
+        if password != verify_pass:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Change_Password_From', args=['pass and verify is incorrect']))
+
+        # get user
+        user_obj = User.objects.get(username=username)
+
+        if user_obj:
+
+            # change pasword
+            user_obj.set_password(password)
+            user_obj.save()
+
+            return HttpResponseRedirect(reverse('Main'))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Change_Password_From', args=['username incorrect']))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
 
