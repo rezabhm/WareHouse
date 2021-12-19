@@ -22,10 +22,8 @@ User's url :
     4.  sign-in url
     5.  logout url 
     6.  user profile url
-    7.  edit form url
-    8.  edit url
-    9.  change password form
-    10. change password
+    7.  change password form
+    8.  change password
 
 live weighbridge :
     
@@ -51,7 +49,7 @@ first weighbridge :
     4.  pre-cold enter
     5.  pre-cold
     6.  pre-cold exit form
-    7. pre-cold exit
+    7.  pre-cold exit
     8.  distribute form
     9.  distribute 
     10. freezing tunnel form
@@ -87,16 +85,7 @@ visualize data:
     15. see freezing tunnel with entry time and above filter
     16. see freezing tunnel with exit time and above filter
     17. see cold-house with (status and product category and pallet id and coldHouse id) filter
-    18. see cold-house with entfrom django.shortcuts import render
-
-# Create your views here.
-ry time and above filterfrom django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
-
-# Create your views here.
-
+    18. see cold-house with entry from django.shortcuts import render
     19. see cold-house with exit time d above filter
     20. see all of paperBox with (product_type and status and product_owner and )
     21. see all of paperBox with packing time
@@ -108,9 +97,25 @@ from django.shortcuts import render
 
 urlpatterns = [
 
+    # static page url
+
     re_path(r'^$', views.main, name='Main'),
     re_path(r'^about_us/$', views.about, name='About'),
     re_path(r'^contact_us/$', views.contact, name='Contact'),
     re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
+
+    # user url
+    re_path(r'^sign_up/form/$', views.signup_form, name='SignUp_Form'),
+    re_path(r'^sign_up/$', views.signup, name='SignUp'),
+    re_path(r'^sign_in/form/$', views.signin_form, name='SignIn_Form'),
+    re_path(r'^sign_in/$', views.signin, name='SignIn'),
+    re_path(r'^change_password/form/$', views.change_password_form, name='Change_Password_Form'),
+    re_path(r'^change_password$', views.change_password, name='Change_Password'),
+    re_path(r'^logout/$', views.logout, name='LogOut'),
+    re_path(r'^user/(?P<username>[\w]+)/$', views.user_profile, name='User_Profile'),
+
+    # live WeighBridge
+    re_path(r'^live_WeighBridge/create/form/$', views.lwb_create_form, name='Live_WeighBridge_Create_Form'),
+    re_path(r'^live_WeighBridge/create/$', views.lwb_create, name='Live_WeighBridge_Create'),
 
 ]

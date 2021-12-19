@@ -1,0 +1,61 @@
+{% extends 'WareHouseApp/main.html %}
+
+{% block content %}
+
+<form action="{% url 'SignUp' %}" method="post">
+
+  {% csrf_token %}
+  {{ error_text }}<br>
+
+  <label for="username">username : </label>
+  <input id="username" name="username" type="text"><br>
+
+   <label for="name">name : </label>
+  <input id="name" name="name" type="text"><br>
+
+   <label for="lastname">lastname : </label>
+  <input id="lastname" name="lastname" type="text"><br>
+
+   <label for="lastname">email : </label>
+  <input id="lastname" name="lastname" type="text"><br>
+
+   <label for="phonenumber">phone number: </label>
+  <input id="phonenumber" name="phone_number" type="text"><br>
+
+   <label for="password">password : </label>
+  <input id="password" name="password" type="password"><br>
+
+  <label for="verify_pass">verify password: </label>
+  <input id="verify_pass" name="verify_pass" type="password"><br>
+
+
+    <label for="ceo">CEO</label>
+  <input type="radio" name="user_type" id="ceo" value="ceo">
+
+    <label for="sales_manager">sales manager</label>
+  <input type="radio" name="user_type" id="sales_manager" value="sales_manager">
+
+    <label for="weightlifting_manager">weightlifting manager</label>
+  <input type="radio" name="user_type" id="weightlifting_manager" value="weightlifting_manager">
+
+    <label for="freezing_tunnel_manager">freezing tunnel manager</label>
+  <input type="radio" name="user_type" id="freezing_tunnel_manager" value="freezing_tunnel_manager">
+
+    <label for="live_weigh_bridge_manager">live_weigh_bridge_manager</label>
+  <input type="radio" name="user_type" id="live_weigh_bridge_manager" value="live_weigh_bridge_manager">
+
+    <label for="precold_manager">pre cold manager</label>
+  <input type="radio" name="user_type" id="precold_manager" value="precold_manager">
+    <br>
+  {% for company in company_list %}
+
+        <label for="{{ comapny.company_id }}">{{ comapny.name }}</label>
+      <input type="radio" name="company" id="{{ comapny.company_id }}" value="{{ comapny.company_id }}">
+
+  {% endfor %}
+  <br>
+  <input type="submit">
+
+</form>
+
+{% endblock %}

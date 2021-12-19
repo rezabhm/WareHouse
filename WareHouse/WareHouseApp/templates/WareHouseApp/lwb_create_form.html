@@ -1,0 +1,55 @@
+{% extends 'WareHouseApp/main.html' %}
+
+
+{% bock content %}
+
+<form action="{% url 'Live_WeighBridge_Car' %}" method="post" >
+
+  {% csrf_token %}
+
+
+  create driver <br>
+
+  <label for="driver_name">driver name</label>
+  <input type="text" id="driver_name" name="driver_name"><br>
+
+    <label for="driver_last_name">driver last name</label>
+  <input type="text" id="driver_last_name" name="driver_last_name"><br>
+
+    <label for="driver_phone_number">driver phone_number</label>
+  <input type="text" id="driver_phone_number" name="driver_phone_number"><br>
+
+  create car <br>
+
+    <label for="car_number">car number</label>
+  <input type="text" id="car_number" name="car_number"><br>
+
+  create product_owner <br>
+
+    <label for="po_name">product owner name</label>
+  <input type="text" id="po_name" name="product_owner_name"><br>
+
+      <label for="po_lastname">product owner last name</label>
+  <input type="text" id="po_lastname" name="product_owner_lastname"><br>
+
+  create live weighbridge<br>
+      <label for="car_weight">weight of car with product</label>
+  <input type="text" id="car_weight" name="car_weight"><br>
+
+        <label for="buy_price">buying price</label>
+  <input type="number" id="buy_price" name="buy_price"><br>
+
+        <label for="chicken">chicken</label>
+  <input type="radio" id="chicken" name="product_category" value="C"><br>
+
+        <label for="turkey">turkey</label>
+  <input type="radio" id="turkey" name="product_category" value="T"><br>
+
+        <label for="quail">quail</label>
+  <input type="radio" id="quail" name="product_category" value="Q"><br>
+
+
+  <input type="submit" >
+
+</form>
+{% endblock %}

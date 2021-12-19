@@ -286,6 +286,9 @@ class ProductOwner(models.Model):
     # product owner name
     name = models.CharField(max_length=25)
 
+    # product owner last name
+    last_name = models.CharField(max_length=25)
+
     # id
     product_owner_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
@@ -320,7 +323,7 @@ class Car(models.Model):
     car_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
-    product_owner = models.ForeignKey(ProductOwner, models.PROTECT)
+    product_owner = models.OneToOneField(ProductOwner, models.PROTECT)
 
     def __str__(self):
         return self.car_number
@@ -356,7 +359,7 @@ class Driver(models.Model):
     driver_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    car = models.OneToOneField(Car, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.name) + ' ' + str(self.last_name)
@@ -391,7 +394,7 @@ class LiveWeighbridge(models.Model):
     live_weighbridge_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # final weight
-    final_weight = models.FloatField()
+    final_weight = models.FloatField(null=True)
 
     # car weight
     car_weight = models.FloatField(null=True)
@@ -422,7 +425,7 @@ class LiveWeighbridge(models.Model):
     buy_price = models.IntegerField()
 
     # relation
-    Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, models.PROTECT)
+    Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, on_delete= models.PROTECT, null=True)
     driver = models.OneToOneField(Driver, on_delete=models.PROTECT)
 
     def __str__(self):
