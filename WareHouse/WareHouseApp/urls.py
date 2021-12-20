@@ -38,9 +38,7 @@ live weighbridge :
     9.  finish slaughter
     10. change car capability to empty form
     11. change car capability to empty 
-    12. edit live weighbridge form
-    13. edit live weighbridge
-    
+
 first weighbridge :
     
     1.  first weight lifting form 
@@ -117,5 +115,11 @@ urlpatterns = [
     # live WeighBridge
     re_path(r'^live_WeighBridge/create/form/$', views.lwb_create_form, name='Live_WeighBridge_Create_Form'),
     re_path(r'^live_WeighBridge/create/$', views.lwb_create, name='Live_WeighBridge_Create'),
+    re_path(r'^slaughter/start/form/$', views.lwb_start_slaughter_form, name='Start_Slaughter_Form'),
+    re_path(r'^slaughter/start/$', views.lwb_start_slaughter, name='Start_Slaughter'),
+    re_path(r'^slaughter/finish/form/$', views.lwb_finish_slaughter_form, name='Finish_Slaughter_Form'),
+    re_path(r'^slaughter/finish/$', views.lwb_finish_slaughter, name='Finish_Slaughter'),
+    re_path(r'^slaughter/capability/form/$', views.lwb_capability_form, name='Capability_Form'),
+    re_path(r'^slaughter/capability/$', views.lwb_capability, name='Capability_Slaughter'),
 
 ]

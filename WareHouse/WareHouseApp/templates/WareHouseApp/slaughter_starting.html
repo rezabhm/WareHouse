@@ -1,0 +1,29 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+<form action="{% url 'Start_Slaughter' %}" method="post">
+
+    {% csrf_token %}
+
+    choose one of the blew object<br>
+    {% for slaughter in slaughter_list %}
+
+    <label for="{{ slaughter.live_weighbridge_id}}">
+
+        Driver: {{ slaughter.driver.name }} {{ slaughter.driver.last_name }}<br>
+        Car: {{ slaughter.driver.car.car_number }}<br>
+        Product Owner: {{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}<br>
+        Car Weight : {{ slaughter.final_weight }}<br>
+        Buy Price : {{ slaughter.buying_price }}<br>
+
+    </label>
+    <input type="radio" name="slaughter_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}">
+
+    {% endfor %}
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}
