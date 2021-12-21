@@ -1,0 +1,58 @@
+{% extends 'WareHouseApp/main.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'First_WeightLifting' %}" method="post">
+
+    {% csrf_token %}
+
+    choose one of the blew slaughter<br>
+
+    {% for lwb in lwb_list %}
+
+        <label for="{{ lwb.live_weighbridge_id }}">
+
+        Driver: {{ lwb.driver.name }} {{ lwb.driver.last_name }}<br>
+        Car: {{ lwb.driver.car.car_number }}<br>
+        Product Owner: {{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}<br>
+        Car Weight : {{ lwb.final_weight }}<br>
+        Buy Price : {{ lwb.buying_price }}<br>
+
+        </label>
+
+        <input type="radio" name="lwb_id" id="{{ lwb.live_weighbridge_id }}" value="{{ lwb.live_weighbridge_id }}">
+
+    {% endfor %}
+
+    <label for="weight" ></label>
+    <input type="text" id="weight" name="weight"><br>
+
+    choose one of product<br>
+
+    <label for="chicken">chicken</label>
+    <input type="radio" name="product_category" id="chicken" value="C"><br>
+
+    <label for="quail">quail</label>
+    <input type="radio" name="product_category" id="quail" value="Q"><br>
+
+    <label for="turkey">turkey</label>
+    <input type="radio" name="product_category" id="turkey" value="T"><br>
+
+
+    choose one of product<br>
+
+    <label for="precold">pre-cold</label>
+    <input type="radio" name="sales_category" id="precold" value="P"><br>
+
+    <label for="dist">distribute</label>
+    <input type="radio" name="sales_category" id="dist" value="D"><br>
+
+    <label for="ft">freezing tunnel</label>
+    <input type="radio" name="sales_category" id="ft" value="F"><br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

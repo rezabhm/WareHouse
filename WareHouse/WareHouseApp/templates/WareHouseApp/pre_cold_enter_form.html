@@ -1,0 +1,45 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+<form action="{% url 'Pre_Cold_Enter' %}" method="post">
+
+    {% csrf_token %}
+
+    choose first weight lifting<br>
+    {% for fwl in fwl_list %}
+
+        <label for="{{ fwl.weight_lifting_id }}">
+
+            {{ fwl.weight }}
+
+        </label>
+
+        <input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"><br>
+
+    {% endfor %}
+
+    <label for="weight">weight:</label>
+    <input type="text" name="weight" id="weight"><br>
+
+
+    <label for="pc_id">pre-cold id:</label>
+    <input type="number" name="pc_id" id="pc_id"><br>
+
+    <label for="pallet_id">pallet id:</label>
+    <input type="text" name="pallet_id" id="pallet_id" value="00000"><br>
+
+    choose one of product category<br>
+    <label for="chicken">chicken</label>
+    <input type="radio" name="product_category" id="chicken" value="C"><br>
+
+    <label for="quail">quail</label>
+    <input type="radio" name="product_category" id="quail" value="Q"><br>
+
+    <label for="turkey">turkey</label>
+    <input type="radio" name="product_category" id="turkey" value="T"><br>
+
+
+</form>
+
+{% endblock %}

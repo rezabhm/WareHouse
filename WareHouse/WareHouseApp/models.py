@@ -425,7 +425,7 @@ class LiveWeighbridge(models.Model):
     buy_price = models.IntegerField()
 
     # relation
-    Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, on_delete= models.PROTECT, null=True)
+    Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, on_delete=models.PROTECT, null=True)
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -496,7 +496,8 @@ class PreCold(models.Model):
         4. product category
         5. pre-cold id
         6. pallet id
-        7. exist status
+        7. exit status
+        8. id
 
     relation:
 
@@ -504,6 +505,9 @@ class PreCold(models.Model):
         2. PreColdManager     ==> Foreign Key
 
     """
+
+    # id
+    pc_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # entry time
     entry_time = models.FloatField(default=time.time())

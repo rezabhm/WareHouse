@@ -1,0 +1,28 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+
+<form action="{% url 'Pre_Cold_Exit' %}" method="post">
+
+    {% csrf_token %}
+
+    choose one of the blew :<br>
+    {% for pc in pc_list %}
+
+        <label for="{{ pc.pc_id }}">
+
+            weight : {{ pc.weight }}<br>
+            pallet id : {{ pc.pre_cold_id }}<br>
+            pre-cold id : {{ pc.pallet_id }}<br>
+
+        </label>
+
+        <input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"><br>
+
+    {% endfor %}
+
+    <input type="submit">
+
+</form>
+{% endblock %}

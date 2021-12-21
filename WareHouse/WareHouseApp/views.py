@@ -262,7 +262,7 @@ def log_out(request):
     return HttpResponseRedirect(reverse('Main'))
 
 
-def userprofile(request, ussername):
+def user_profile(request, ussername):
 
     user_profile_page = loader.get_template('WareHouseApp/user_profile.html')
 
@@ -463,6 +463,12 @@ def lwb_create(requests):
             if len(lwb_user_list) > 0:
                 lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
 
+            elif requests.user.is_superuser:
+                lwb_obj.Live_Weighbridge_Manager = 'Admin'
+
+            else:
+                lwb_obj.Live_Weighbridge_Manager = 'CEO'
+
             # save live weighbridge
             lwb_obj.save()
 
@@ -515,6 +521,7 @@ def lwb_start_slaughter_form(requests):
         return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
 
 
+@csrf_exempt
 def lwb_start_slaughter(requests):
 
     """
@@ -596,6 +603,7 @@ def lwb_finish_slaughter_form(requests):
         return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
 
 
+@csrf_exempt
 def lwb_finish_slaughter(requests):
     """
     get data from form data change status to True and save start time
@@ -673,6 +681,7 @@ def lwb_capability_form(requests):
         return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
 
 
+@csrf_exempt
 def lwb_capability(requests):
     """
     get data from form data change status to True and save start time
@@ -715,3 +724,282 @@ def lwb_capability(requests):
     else:
 
         return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+def first_weightlifting_form(requests):
+
+    """
+    render create first weighting form
+    this process is after the live_weighBridge
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_weightlifting_user_list = models.WeightLiftingManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
+
+            # user can access this page
+            # load template
+            first_weight_temp = loader.get_template('WareHouseApp/first_weightlifting_form.html')
+
+            context = {
+
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True)
+
+            }
+
+            return HttpResponse(first_weight_temp.render(context))
+
+        else:
+
+            # raised Error
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        # raised Error
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+@csrf_exempt
+def first_weightlifting(requests):
+
+    """
+    get data from first_weightlifting_form and create first_weightlifting object
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_weightlifting_user_list = models.WeightLiftingManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
+
+            # get data
+            lwb_id = requests.POST['lwb_id']
+            weight = requests.POST['weight']
+            product_category = requests.POST['product_category']
+            sales_category = requests.POST['sales_category']
+
+            # create first_weightlifting objects
+            fwl = models.FirstWeightLifting()
+            fwl.weight = weight
+            fwl.product_category = product_category
+            fwl.sales_category = sales_category
+
+            # get lwb list
+            lwb_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
+            fwl.Live_Weigh_Bridge = lwb_list[0]
+
+            if len(first_weightlifting_user_list) > 0:
+                fwl.Weight_Lifting_Manager = first_weightlifting_user_list[0]
+
+            elif requests.user.is_superuser:
+                fwl.Weight_Lifting_Manager = 'Admin'
+
+            else:
+                fwl.Weight_Lifting_Manager = 'CEO'
+
+            # save objects
+            fwl.save()
+
+            return HttpResponseRedirect(reverse('Main'))
+
+        else:
+
+            # raised Error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+    else:
+
+        # raised Error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def pre_cdld_enter_form(requests):
+
+    """
+    render pre_cold enter form to add new
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            # render form
+            pre_cold_temp = loader.get_template('WareHouseApp/pre_cold_enter_form.html')
+
+            context = {
+
+                "fwl_list": models.FirstWeightLifting.objects.all().filter(salse_category='P').filter(
+                    weighting_time__gte=time.time() - (60*60*5)
+                )
+
+            }
+
+            return HttpResponse(pre_cold_temp.render(context))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def pre_cold_enter(requests):
+
+    """
+    create pre cold object
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            # get data
+            weight = requests.POST['weight']
+            fwl_id = requests.POST['fwl_id']
+            pc_id = requests.POST['pc_id']
+            pallet_id = requests.POST['pallet_id']
+            product_category = requests.POST['product_category']
+
+            # create pre-cold object
+            pc = models.PreCold()
+
+            # set param
+            pc.weight = weight
+            pc.product_category = product_category
+            pc.pallet_id = pallet_id
+            pc.pre_cold_id = pc_id
+
+            # relation
+            fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
+            pc.First_Weight_Lifting = fwl_list[0]
+
+            if len(first_pre_cold_user_list) > 0:
+                pc.PreCold_Manager = first_pre_cold_user_list[0]
+
+            elif requests.user.is_superuser:
+                pc.PreCold_Manager = "Admin"
+
+            else:
+                pc.PreCold_Manager = 'CEO'
+
+            # save
+            pc.save()
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+
+def pre_cold_exit_form(requests):
+
+    """
+    render pre cold exit form
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            # load template
+            exit_temp = loader.get_template('WareHouseApp/pre_cold_exit_form.html')
+
+            context = {
+
+                'pc_list': models.PreCold.objcets.all().filter(product_pre_cold_status=True)
+
+            }
+
+            return HttpResponse(exit_temp.render(context))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+
+@csrf_exempt
+def pre_cold_exit(requests):
+
+    """
+    change pre cold object to exit status
+    """
+
+    if requests.user.is_authenticate:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            # get request data
+            pc_id = requests.POST['pc_id']
+
+            # get object list
+            pc_list = models.PreCold.objects.all().filter(pc_id=pc_id)
+
+            if len(pc_list) > 0:
+
+                # get object
+                pc_obj = pc_list[0]
+
+                # set param
+                pc_obj.product_pre_cold_status = False
+                pc_obj.exit_time = time.time()
+
+                # save param
+                pc_obj.save()
+
+            else:
+
+                # raised error
+                return HttpResponseRedirect(reverse('Error', args=['you entry pre-cold id is incorrect']))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))
+
+    else:
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))

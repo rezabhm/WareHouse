@@ -45,15 +45,14 @@ first weighbridge :
     2.  first weight lifting
     3.  pre-cold enter form
     4.  pre-cold enter
-    5.  pre-cold
-    6.  pre-cold exit form
-    7.  pre-cold exit
-    8.  distribute form
-    9.  distribute 
-    10. freezing tunnel form
-    11. freezing tunnel
-    12. freezing tunnel exit form
-    13. freezing tunnel exit
+    5.  pre-cold exit form
+    6.  pre-cold exit
+    7.  distribute form
+    8.  distribute 
+    9.  freezing tunnel enter form
+    10. freezing tunnel enter
+    11. freezing tunnel exit form
+    12. freezing tunnel exit
 
 coldHouse :
     
@@ -105,8 +104,8 @@ urlpatterns = [
     # user url
     re_path(r'^sign_up/form/$', views.signup_form, name='SignUp_Form'),
     re_path(r'^sign_up/$', views.signup, name='SignUp'),
-    re_path(r'^sign_in/form/$', views.signin_form, name='SignIn_Form'),
-    re_path(r'^sign_in/$', views.signin, name='SignIn'),
+    re_path(r'^sign_in/form/$', views.sign_in_form, name='SignIn_Form'),
+    re_path(r'^sign_in/$', views.sign_in, name='SignIn'),
     re_path(r'^change_password/form/$', views.change_password_form, name='Change_Password_Form'),
     re_path(r'^change_password$', views.change_password, name='Change_Password'),
     re_path(r'^logout/$', views.logout, name='LogOut'),
@@ -121,5 +120,13 @@ urlpatterns = [
     re_path(r'^slaughter/finish/$', views.lwb_finish_slaughter, name='Finish_Slaughter'),
     re_path(r'^slaughter/capability/form/$', views.lwb_capability_form, name='Capability_Form'),
     re_path(r'^slaughter/capability/$', views.lwb_capability, name='Capability_Slaughter'),
+
+    # first WeightLifting
+    re_path(r'^first/WeightLifting/form/$', views.first_weightlifting_form, name='First_WeightLifting_Form'),
+    re_path(r'^first/WeightLifting/$', views.first_weightlifting, name='First_WeightLifting'),
+    re_path(r'^pre/cold/enter/form/$', views.pre_cdld_enter_form, name='Pre_Cold_Enter_Form'),
+    re_path(r'^pre/cold/enter/$', views.pre_cdld_enter, name='Pre_Cold_Enter'),
+    re_path(r'^pre/cold/exit/form/$', views.pre_cdld_exit_form, name='Pre_Cold_Exit_Form'),
+    re_path(r'^pre/cold/exit/$', views.pre_cdld_exit, name='Pre_Cold_Exit'),
 
 ]
