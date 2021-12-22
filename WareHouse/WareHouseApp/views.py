@@ -1001,5 +1001,98 @@ def pre_cold_exit(requests):
             return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))
 
     else:
+
         # raised error
         return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))
+
+
+def distribute_form(requests):
+
+    """
+    render distribute form for create distribute object
+    """
+
+    # create object list
+    dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user can access to this page
+        # load template
+        dist_temp = loader.get_template('WareHouseApp/distribute_form.html')
+
+        context = {
+
+            "driver_list": models.Driver.objects.all(),
+            "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='D').filter(
+                weight_time__gte=time.time() - (60*60*5)
+            ),
+
+        }
+
+        return HttpResponse(dist_temp.render(context))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def distribute(requests):
+
+    """
+    create distribute object
+    """
+
+    # create object list
+    dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # get data
+        driver_id = requests.POST['driver_id']
+        fwl_id = requests.POST['fwl_id']
+        weight = requests.POST['weight']
+        sale_price = requests.POST['sale_price']
+        product_category = requests.POST['product_category']
+        number_of_box = requests.POST['number_of_box']
+
+        # create distribute object
+        dist_obj = models.Distributed()
+
+        # set param
+        dist_obj.weight = weight
+        dist_obj.sale_price = sale_price
+        dist_obj.product_category = product_category
+        dist_obj.number_of_box = number_of_box
+
+        # get driver list
+        driver_list = models.Driver.objects.all().filter(driver_id=driver_id)
+
+        dist_obj.driver = driver_list[0]
+
+        # get firstWeightLifting object list
+        fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
+
+        dist_obj.first_weight_lifting = fwl_list[0]
+
+        if len(dist_manager_list) > 0:
+            dist_obj.sales_manager = dist_manager_list[0]
+
+        elif requests.user.is_superuser:
+            dist_obj.sales_manager = "Admin"
+
+        else:
+            dist_obj.sales_manager = 'CEO'
+
+        # save model
+        dist_obj.save()
+
+    else:
+
+        # raised Error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+

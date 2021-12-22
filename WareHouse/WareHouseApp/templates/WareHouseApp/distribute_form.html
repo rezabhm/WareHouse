@@ -1,0 +1,60 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+<form action="{% url 'Distribute' %}" method="post">
+
+    {% csrf_token %}
+
+    choose from blew driver<br>
+    {% for driver in driver_list %}
+
+    <label for="{{ driver.driver_id }}">
+
+        name : {{ driver.name }}<br>
+        lastname : {{ driver.lastname }}<br>
+        phone number : {{ driver.phone_number }}
+
+    </label>
+    <input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}">
+
+    {% endfor %}
+
+    {% for fwl in fwl_list %}
+
+        <label for="{{ fwl.weight_lifting_id }}">
+
+            weight : {{ fwl.weight }}<br>
+            product category : {{ fwl.product_category }} <br>
+
+        </label>
+
+        <input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}">
+
+    {% endfor %}
+
+    <label for="weight">weight : </label>
+    <input type="text" name="weight" id="weight" >
+
+    <label for="sale_price">sale price : </label>
+    <input type="number" name="sale_price" id="sale_price" >
+
+    <label for="number_of_box">number of box : </label>
+    <input type="text" name="number_of_box" id="number_of_box" >
+
+    choose one of product<br>
+
+    <label for="chicken">chicken</label>
+    <input type="radio" name="product_category" id="chicken" value="C"><br>
+
+    <label for="quail">quail</label>
+    <input type="radio" name="product_category" id="quail" value="Q"><br>
+
+    <label for="turkey">turkey</label>
+    <input type="radio" name="product_category" id="turkey" value="T"><br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

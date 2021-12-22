@@ -26,7 +26,7 @@ User's url :
     8.  change password
 
 live weighbridge :
-    
+
     1.  create or select driver form
     2.  create or select car
     3.  create or select product owner
@@ -41,14 +41,14 @@ live weighbridge :
 
 first weighbridge :
     
-    1.  first weight lifting form 
+    1.  first weight lifting form
     2.  first weight lifting
     3.  pre-cold enter form
     4.  pre-cold enter
     5.  pre-cold exit form
     6.  pre-cold exit
     7.  distribute form
-    8.  distribute 
+    8.  distribute
     9.  freezing tunnel enter form
     10. freezing tunnel enter
     11. freezing tunnel exit form
@@ -64,7 +64,7 @@ coldHouse :
     6. coldHouse exit
 
 visualize data:
-    
+
     1.  see company list
     2.  see all of company user's
     3.  see all of company live weighbridge (it's filter)
@@ -95,7 +95,6 @@ visualize data:
 urlpatterns = [
 
     # static page url
-
     re_path(r'^$', views.main, name='Main'),
     re_path(r'^about_us/$', views.about, name='About'),
     re_path(r'^contact_us/$', views.contact, name='Contact'),
@@ -125,8 +124,10 @@ urlpatterns = [
     re_path(r'^first/WeightLifting/form/$', views.first_weightlifting_form, name='First_WeightLifting_Form'),
     re_path(r'^first/WeightLifting/$', views.first_weightlifting, name='First_WeightLifting'),
     re_path(r'^pre/cold/enter/form/$', views.pre_cdld_enter_form, name='Pre_Cold_Enter_Form'),
-    re_path(r'^pre/cold/enter/$', views.pre_cdld_enter, name='Pre_Cold_Enter'),
-    re_path(r'^pre/cold/exit/form/$', views.pre_cdld_exit_form, name='Pre_Cold_Exit_Form'),
-    re_path(r'^pre/cold/exit/$', views.pre_cdld_exit, name='Pre_Cold_Exit'),
+    re_path(r'^pre/cold/enter/$', views.pre_cold_enter, name='Pre_Cold_Enter'),
+    re_path(r'^pre/cold/exit/form/$', views.pre_cold_exit_form, name='Pre_Cold_Exit_Form'),
+    re_path(r'^pre/cold/exit/$', views.pre_cold_exit, name='Pre_Cold_Exit'),
+    re_path(r'^distribute/form/$', views.distribute_form, name='Distribute_Form'),
+    re_path(r'^distribute/$', views.distribute, name='Distribute'),
 
 ]

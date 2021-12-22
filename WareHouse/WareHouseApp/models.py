@@ -564,7 +564,7 @@ class Distributed(models.Model):
     """
 
     # date of weighting
-    date = models.FloatField(default= time.time())
+    date = models.FloatField(default=time.time())
 
     # weight of product
     weight = models.FloatField()
@@ -582,12 +582,12 @@ class Distributed(models.Model):
     bill_of_lading = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # number of box
-    number_of_box = models.IntegerField()
+    number_of_box = models.IntegerField(null=True)
 
     # relation
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
-    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE)
+    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)
