@@ -1090,9 +1090,375 @@ def distribute(requests):
         # save model
         dist_obj.save()
 
+        return HttpResponseRedirect(reverse('Main'))
+
     else:
 
         # raised Error
         return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
+def freeze_tunnel_enter_form(requests):
+
+    """
+    render create tunnel freeze object form
+    """
+
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+    freeze_tunnel_manager_list = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+
+    if len(ceo_list) > 0 or len(freeze_tunnel_manager_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # load template
+        freeze_tunnel_enter_temp = loader.get_template('WareHouseApp/freeze_tunnel_enter_form.html')
+
+        context = {
+
+            'fwl_list': models.FirstWeightLifting.objects.all().filter(sales_category='F').filter(
+                weighting_time= time.time() - (60 * 60 *5)
+            )
+
+        }
+
+        return HttpResponse(freeze_tunnel_enter_temp.render(context))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def freeze_tunnel_enter(requests):
+
+    """
+    get request's form param and create freeze_tunnel object
+    """
+
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+    freeze_tunnel_manager_list = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+
+    if len(ceo_list) > 0 or len(freeze_tunnel_manager_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # get param
+        weight = float(requests.POST['weight'])
+        tunnel_id = requests.POST['tunnel_id']
+        pallet_id = requests.POST['pallet_id']
+        prod_category = requests.POST['product_category']
+        fwl_id = requests.POST['fwl_id']
+
+        # create object
+        ft_obj = models.FreezingTunnel()
+
+        # set param
+        ft_obj.weight = weight
+        ft_obj.tunnel_id = tunnel_id
+        ft_obj.pallet_id = pallet_id
+        ft_obj.product_category = prod_category
+        ft_obj.first_weight_lifting = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
+
+        if len(freeze_tunnel_manager_list) > 0:
+
+            ft_obj.freezing_tunnel_manager = freeze_tunnel_manager_list[0]
+
+        elif len(ceo_list) > 0 :
+            ft_obj.freezing_tunnel_manager = 'CEO'
+
+        else:
+
+            ft_obj.freezing_tunnel_manager = "Admin"
+
+        # save object
+        ft_obj.save()
+
+        return HttpResponseRedirect(reverse('Main'))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def freeze_tunnel_exit_form(requests):
+
+    """
+    show list of freeze tunnel objects and select
+    """
+
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+    freeze_tunnel_manager_list = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+
+    if len(ceo_list) > 0 or len(freeze_tunnel_manager_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # load template
+        ft_temp = loader.get_template('WareHouseApp/freeze_tunnel_exit_form.html')
+
+        context = {
+
+            'ft_list': models.FreezingTunnel.objects.all().filter(status=True)
+
+        }
+
+        return HttpResponse(ft_temp.render(context))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+@csrf_exempt
+def freeze_tunnel_exit(requests):
+
+    """
+    select freeze_tunnel object to exit
+    """
+
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+    freeze_tunnel_manager_list = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+
+    if len(ceo_list) > 0 or len(freeze_tunnel_manager_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        ft_id = requests.POST['ft_id']
+
+        # get model
+        ft_obj = models.FreezingTunnel.objects.all().filter(freeze_tunnel_id=ft_id)[0]
+
+        # set param
+        ft_obj.exit_date = time.time()
+        ft_obj.status = False
+
+        # save
+        ft_obj.save()
+
+        return HttpResponseRedirect(reverse('Main'))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def paper_box_create_form(requests):
+
+    """
+    create paper box object form
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access
+        # render template
+        paper_box_temp = loader.get_template('WareHouseApp/paper_box_create_form.html')
+
+        return HttpResponse(paper_box_temp.render())
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def paper_box_create(requests):
+
+    """
+    create paper box object
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # get param
+        weight = float(requests.POST['weight'])
+        product_category = requests.POST['product_category']
+        product_number = requests.POST['product_number']
+
+        # create model
+        paper_box_obj = models.PaperBox()
+
+        # set param
+        paper_box_obj.paper_box_weight = weight
+        paper_box_obj.number_of_product = product_number
+        paper_box_obj.product_category = product_category
+
+        # save model
+        paper_box_obj.save()
+
+        # load template to show paper_box_id
+        paper_box_temp = loader.get_template('WareHouseApp/paper_box.html')
+
+        context = {
+
+            'id': paper_box_obj.box_id
+
+        }
+
+        return HttpResponse(paper_box_temp.render(context))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def cold_house_enter_form(requests):
+
+    """
+    cold house enter form
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # load template
+        cold_house_enter_temp = loader.get_template('WareHouseApp/cold_house_enter.html')
+
+        context = {
+
+            "paper_box_list": models.PaperBox.all().filter(box_status=False)
+
+        }
+
+        return HttpResponse(cold_house_enter_temp.render(context))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def cold_house_enter(requests):
+
+    """
+    create cold-house object
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # get param
+        pallet_weight = requests.POST['pallet_weight_with_product']
+        pallet_weight_empty = requests.POST['pallet_weight_with_product']
+        number_of_box = requests.POST['number_of_box']
+        cold_house_id = requests.POST['cold_house_id']
+        pallet_id = requests.POST['pallet_id']
+
+        # create cold_house obj
+        cold_house_obj = models.ColdHouse()
+
+        if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+            cold_house_obj.freezing_tunnel_manager = coldHouse_manager[0]
+
+        elif len(ceo_list) > 0:
+            cold_house_obj.freezing_tunnel_manager = 'CEO'
+
+        elif requests.user.is_superuser:
+            cold_house_obj.freezing_tunnel_manager = 'Admin'
+
+        # set param
+        cold_house_obj.number_of_box = number_of_box
+        cold_house_obj.total_pallet_weight = pallet_weight
+        cold_house_obj.pallet_weight_without_product = pallet_weight_empty
+        cold_house_obj.cold_house_id = cold_house_id
+        cold_house_obj.pallet_id = pallet_id
+
+        # save object
+        cold_house_obj.save()
+
+        for key, value in dict(requests.POST):
+
+            if key not in ['pallet_weight_with_product', 'pallet_weight_without_product', 'number_of_box'
+                           , 'cold_house_id', 'pallet_id']:
+
+                paper_box_obj = models.PaperBox.objects.all().filter(box_id=value)[0]
+
+                paper_box_obj.cold_house = cold_house_obj
+                paper_box_obj.box_status = True
+
+                paper_box_obj.save()
+
+        return HttpResponseRedirect(reverse("Main"))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def cold_house_exit_form(requests):
+
+    """
+    select cold house for exit
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        # load template
+        cold_house_exit_temp = loader.get_template('WareHouseApp/cold_house_exit_form.html')
+
+        context = {
+
+            'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True)
+
+        }
+
+        return HttpResponse(cold_house_exit_temp.render(context))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def cold_house_exit(requests):
+
+    """
+    exit from cold house
+    """
+
+    coldHouse_manager = models.FreezingTunnelManager.objects.all().filter(username=requests.user.username)
+    ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+    if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+        # user have access to this page
+        pallet_id = requests.POST['pallet_id']
+
+        # get object
+        cold_house_obj = models.ColdHouse.objects.all().filter(pallet_id=pallet_id)[0]
+
+        # change param
+        cold_house_obj.exit_time = time.time()
+        cold_house_obj.pallet_status = False
+
+        # save object
+        cold_house_obj.save()
+
+        return HttpResponseRedirect(reverse('Main'))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))

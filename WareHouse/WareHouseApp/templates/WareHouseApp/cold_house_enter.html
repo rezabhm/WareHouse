@@ -1,0 +1,39 @@
+{% extends 'WareHouseApp/main.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'ColdHouse_Enter' %}" method="post">
+
+    {% csrf_token %}
+
+    {% for paper_box in paper_box_list %}
+
+        <label for="{{ paper_box.box_id }}">{{ paper_box.box_id }}</label>
+        <input type="checkbox" value="{{ paper_box.box_id }}" name="{{ paper_box.box_id }}" id="{{ paper_box.box_id }}"><br>
+
+    {% endfor%}
+
+    <br>
+
+        <label for="pallet_weight_with_product">pallet weight with product :</label>
+    <input type="text" name="pallet_weight_with_product" id="pallet_weight_with_product">
+
+        <label for="pallet_weight_without_product">pallet weight without product :</label>
+    <input type="text" name="pallet_weight_without_product" id="pallet_weight_without_product">
+
+        <label for="number_of_box">number of box :</label>
+    <input type="number" name="number_of_box" id="number_of_box">
+
+        <label for="cold_house_id">cold-house id :</label>
+    <input type="number" name="cold_house_id" id="cold_house_id">
+
+        <label for="pallet_id">pallet id :</label>
+    <input type="text" name="pallet_id" id="pallet_id">
+
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

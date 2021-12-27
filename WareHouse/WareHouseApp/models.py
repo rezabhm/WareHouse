@@ -607,6 +607,7 @@ class FreezingTunnel(models.Model):
         5. tunnel id
         6. status
         7. weight
+        8. id
 
     relation's:
 
@@ -615,9 +616,12 @@ class FreezingTunnel(models.Model):
 
     """
 
+    # id
+    freeze_tunnel_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
     # exit and entry date
-    entry_date = models.FloatField()
-    exit_date = models.FloatField()
+    entry_date = models.FloatField(default=time.time())
+    exit_date = models.FloatField(null=True)
 
     # product category
     type_of_gender = (('C', "chicken"),
@@ -634,7 +638,7 @@ class FreezingTunnel(models.Model):
     # pallet id that include product
     pallet_id = models.CharField(max_length=15, null=True)
 
-    # this param determine that product is in the tunnel or not
+    # this param determine that product is in the tunnel or not if equal True it mean it still in the tunnel
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
     # relation
@@ -677,14 +681,14 @@ class ColdHouse(models.Model):
 
     # pallet weight
     total_pallet_weight = models.FloatField()
-    pallet_weight_whitout_product = models.FloatField(null=True)
+    pallet_weight_without_product = models.FloatField(null=True)
 
     # number of paper box that exist in pallet
     number_of_box = models.IntegerField()
 
     # pallet id and coldHouse id
     pallet_id = models.CharField(max_length=15)
-    cold_house_id = models.CharField(max_length=15)
+    cold_house_id = models.IntegerField(max_length=15)
 
     # relation
     freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
@@ -721,6 +725,10 @@ class PaperBox(models.Model):
     # paper box weight
     paper_box_weight = models.FloatField()
 
+    # if it equal True it means paper is in the cold House and or exit from it and if equal False it mean
+    # it didn't enter to coldHouse
+    box_status = models.BooleanField(default=False)
+
     # number of product in box
     number_of_product = models.IntegerField()
 
@@ -731,7 +739,7 @@ class PaperBox(models.Model):
     box_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
-    cold_house = models.ForeignKey(ColdHouse, models.CASCADE)
+    cold_house = models.ForeignKey(ColdHouse, models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.box_id)

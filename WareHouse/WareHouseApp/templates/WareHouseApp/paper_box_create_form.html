@@ -1,0 +1,31 @@
+{% extends 'WareHouseApp/main.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'PaperBox_Create' %}" method="post">
+
+  {% csrf_token %}
+
+    <label for="weight">weight:</label>
+  <input type="text" id="weight" name="weight" ><br>
+
+    <label for="product_number">number of product in box:</label>
+  <input type="number" id="product_number" name="product_number" ><br>
+
+    choose one of product<br>
+
+  <label for="chicken">chicken</label>
+  <input type="radio" name="product_category" id="chicken" value="C"><br>
+
+  <label for="quail">quail</label>
+  <input type="radio" name="product_category" id="quail" value="Q"><br>
+
+  <label for="turkey">turkey</label>
+  <input type="radio" name="product_category" id="turkey" value="T"><br>
+
+  <input type="submit">
+
+</form>
+
+{% endblock %}

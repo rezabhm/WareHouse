@@ -1,0 +1,25 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+<form action="{% url 'Freeze_Tunnel_Exit' %}" method="post">
+
+  {% csrf_token %}
+
+  {% for ft in ft_list %}
+
+    <label for="{{ ft.freeze_tunnel_id }}">
+
+      weight : {{ ft.weight }}<br>
+      pallet_id : {{ ft.pallet_id }}<br>
+      tunnel_id : {{ ft.tunnel_id }}<br>
+
+    </label>
+    <input type="radio" name="ft_id" value="{{ ft.freeze_tunnel_id }}" id="{{ ft.freeze_tunnel_id }}">
+
+  {% endfor %}
+
+  <input type="submit">
+
+</form>
+{% endblock %}

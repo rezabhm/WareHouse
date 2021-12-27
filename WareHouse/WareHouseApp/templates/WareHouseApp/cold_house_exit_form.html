@@ -1,0 +1,22 @@
+{% extends 'WareHouseApp/main.html' %}
+
+
+{% block content %}
+
+<form action="{% url 'ColdHouse_Exit' %}" method="post">
+
+    {% csrf_token %}
+
+    select from blew list : <br>
+    {% for cold_house in cold_house_list %}
+
+        <label for="{{ cold_house.pallet_id }}">{{ cold_house.pallet_id }}:</label>
+        <input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id">
+
+    {% endfor %}
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

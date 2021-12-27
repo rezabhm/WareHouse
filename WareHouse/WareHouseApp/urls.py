@@ -129,5 +129,15 @@ urlpatterns = [
     re_path(r'^pre/cold/exit/$', views.pre_cold_exit, name='Pre_Cold_Exit'),
     re_path(r'^distribute/form/$', views.distribute_form, name='Distribute_Form'),
     re_path(r'^distribute/$', views.distribute, name='Distribute'),
+    re_path(r'^freeze/tunnel/enter/form/$', views.freeze_tunnel_enter_form, name="Freeze_Tunnel_Enter_Form"),
+    re_path(r'^freeze/tunnel/enter/$', views.freeze_tunnel_enter, name="Freeze_Tunnel_Enter"),
+    re_path(r'^freeze/tunnel/exit/form/$', views.freeze_tunnel_exit_form, name="Freeze_Tunnel_Exit_Form"),
+    re_path(r'^freeze/tunnel/exit/$', views.freeze_tunnel_exit, name="Freeze_Tunnel_Exit"),
+    re_path(r'^paperBox/create/form/$', views.paper_box_create_form, name='PaperBox_Create_Form'),
+    re_path(r'^paperBox/create/form/$', views.paper_box_create_form, name='PaperBox_Create'),
+    re_path(r'^coldHouse/enter/form/$', views.cold_house_enter_form, name='ColdHouse_Enter_Form'),
+    re_path(r'^coldHouse/enter/$', views.cold_house_enter, name='ColdHouse_Enter'),
+    re_path(r'^coldHouse/exit/form/$', views.cold_house_exit_form, name='ColdHouse_Exit_Form'),
+    re_path(r'^coldHouse/exit/$', views.cold_house_exit, name='ColdHouse_Exit'),
 
 ]

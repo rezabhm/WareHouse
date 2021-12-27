@@ -1,0 +1,47 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+<form action="{% url 'Freeze_Tunnel_Enter_Form' %}" method="post">
+
+    {% csrf_token %}
+
+    {% for fwl in fwl_list %}
+
+    <label for="{{ fwl.weight_lifting_id }}">
+
+        weight : {{ fwl.weight }}<br>
+        sales category : {{ fwl.sales_category }}<br>
+        username : {{ fwl.Weight_Lifting_Manager.username }}<br>
+
+    </label>
+
+    <input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}">
+
+    {% endfor %}
+
+    choose one of product<br>
+
+    <label for="chicken">chicken</label>
+    <input type="radio" name="product_category" id="chicken" value="C"><br>
+
+    <label for="quail">quail</label>
+    <input type="radio" name="product_category" id="quail" value="Q"><br>
+
+    <label for="turkey">turkey</label>
+    <input type="radio" name="product_category" id="turkey" value="T"><br>
+
+        <labe for="weight">weight:</labe>
+    <input type="text" id="weight" name="weight"><br>
+
+        <labe for="tunnel_id">tunnel_id:</labe>
+    <input type="number" id="tunnel_id" name="tunnel_id"><br>
+
+        <labe for="pallet_id">pallet id:</labe>
+    <input type="text" id="pallet_id" name="pallet_id"><br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}
