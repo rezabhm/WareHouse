@@ -1,5 +1,6 @@
 from django.urls import re_path
 from . import views
+from django.contrib.auth.views import LogoutView
 
 My_app = 'WareHouseApp'
 
@@ -107,7 +108,7 @@ urlpatterns = [
     re_path(r'^sign_in/$', views.sign_in, name='SignIn'),
     re_path(r'^change_password/form/$', views.change_password_form, name='Change_Password_Form'),
     re_path(r'^change_password$', views.change_password, name='Change_Password'),
-    re_path(r'^logout/$', views.logout, name='LogOut'),
+    re_path(r'^logout/$', LogoutView.as_view(), {'next_page': 'Main'}, name='LogOut'),
     re_path(r'^user/(?P<username>[\w]+)/$', views.user_profile, name='User_Profile'),
 
     # live WeighBridge

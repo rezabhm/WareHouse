@@ -688,7 +688,7 @@ class ColdHouse(models.Model):
 
     # pallet id and coldHouse id
     pallet_id = models.CharField(max_length=15)
-    cold_house_id = models.IntegerField(max_length=15)
+    cold_house_id = models.IntegerField()
 
     # relation
     freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)

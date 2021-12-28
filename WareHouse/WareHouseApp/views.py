@@ -134,7 +134,7 @@ def signup(requests):
         # get company_list
         company_obj_list = models.Company.objects.all().filter(company_id=company_id)
 
-        if len(company_obj_list) > 0:
+        if len(company_obj_list) > 0 and password == verify_pass:
 
             # create user
             user_obj = User.objects.create_user(username, email_user, password)
@@ -159,7 +159,7 @@ def signup(requests):
 
             elif user_type == 'live_weigh_bridge_manager':
 
-                user_model = models.LiveWeighbridgeManager
+                user_model = models.LiveWeighbridgeManager()
 
             elif user_type == 'precold_manager':
 
@@ -201,7 +201,7 @@ def sign_in_form(request, error_text="لطفا ابتدا مشخصات خود ر
     login form
     """
 
-    if request.user.is_authenticate:
+    if request.user.is_authenticated:
 
         return HttpResponseRedirect(reverse('Main'))
 
@@ -223,7 +223,7 @@ def sign_in(request):
     this is entry page
     """
 
-    if not request.user.is_authenticate:
+    if not request.user.is_authenticated:
 
         # login to account
         user_name = request.POST["username"]
@@ -255,11 +255,7 @@ def log_out(request):
     exit
     """
 
-    if request.user.is_authenticate:
-
-        logout(request)
-
-    return HttpResponseRedirect(reverse('Main'))
+    logout(request)
 
 
 def user_profile(request, ussername):
