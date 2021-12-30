@@ -11,7 +11,7 @@
     {% for cold_house in cold_house_list %}
 
         <label for="{{ cold_house.pallet_id }}">{{ cold_house.pallet_id }}:</label>
-        <input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id">
+        <input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id" value="{{ cold_house.pallet_id }}">
 
     {% endfor %}
 

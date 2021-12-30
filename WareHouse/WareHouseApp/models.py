@@ -290,7 +290,7 @@ class ProductOwner(models.Model):
     last_name = models.CharField(max_length=25)
 
     # id
-    product_owner_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+    product_owner_id = models.CharField(default=str(uuid1().int), max_length=300, primary_key=True)
 
     def __str__(self):
         return str(self.name)
@@ -451,6 +451,8 @@ class FirstWeightLifting(models.Model):
         2. WeightLiftingManager ==> Foreign Key
     """
 
+    choise_status = models.BooleanField(default=False)
+
     # weighting time
     weighting_time = models.FloatField(default=time.time())
 
@@ -477,7 +479,7 @@ class FirstWeightLifting(models.Model):
 
     # relation
     Live_Weigh_Bridge = models.ForeignKey(LiveWeighbridge, on_delete=models.PROTECT)
-    Weight_Lifting_Manager = models.ForeignKey(WeightLiftingManager, on_delete=models.PROTECT)
+    Weight_Lifting_Manager = models.ForeignKey(WeightLiftingManager, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.Weight_Lifting_Manager.username + ' ' + self.sales_category + ' ' + str(self.weight)
@@ -535,7 +537,7 @@ class PreCold(models.Model):
 
     # relation
     First_Weight_Lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
-    PreCold_Manager = models.ForeignKey(PreColdManager, on_delete=models.PROTECT)
+    PreCold_Manager = models.ForeignKey(PreColdManager, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return str(self.weight) + ' ' + str(self.entry_time)
@@ -643,7 +645,7 @@ class FreezingTunnel(models.Model):
 
     # relation
     first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
-    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
+    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.weight) + ' ' + str(self.tunnel_id)
@@ -691,7 +693,7 @@ class ColdHouse(models.Model):
     cold_house_id = models.IntegerField()
 
     # relation
-    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE)
+    freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.pallet_id) + ' & ' + str(self.cold_house_id)

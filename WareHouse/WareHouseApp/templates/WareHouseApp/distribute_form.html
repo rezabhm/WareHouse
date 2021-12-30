@@ -16,10 +16,10 @@
         phone number : {{ driver.phone_number }}
 
     </label>
-    <input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}">
+    <input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"><br>
 
     {% endfor %}
-
+    <br><br><br>
     {% for fwl in fwl_list %}
 
         <label for="{{ fwl.weight_lifting_id }}">
@@ -29,18 +29,18 @@
 
         </label>
 
-        <input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}">
+        <input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}"><br>
 
     {% endfor %}
 
     <label for="weight">weight : </label>
-    <input type="text" name="weight" id="weight" >
+    <input type="text" name="weight" id="weight" ><br>
 
     <label for="sale_price">sale price : </label>
-    <input type="number" name="sale_price" id="sale_price" >
+    <input type="number" name="sale_price" id="sale_price" ><br>
 
     <label for="number_of_box">number of box : </label>
-    <input type="text" name="number_of_box" id="number_of_box" >
+    <input type="text" name="number_of_box" id="number_of_box" ><br>
 
     choose one of product<br>
 

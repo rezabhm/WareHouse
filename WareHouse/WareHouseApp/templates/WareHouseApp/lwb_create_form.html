@@ -1,9 +1,9 @@
 {% extends 'WareHouseApp/main.html' %}
 
 
-{% bock content %}
+{% block content %}
 
-<form action="{% url 'Live_WeighBridge_Car' %}" method="post" >
+<form action="{% url 'Live_WeighBridge_Create' %}" method="post" >
 
   {% csrf_token %}
 
