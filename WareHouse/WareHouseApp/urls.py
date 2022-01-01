@@ -69,10 +69,7 @@ visualize data:
     1.  see company list
     2.  see all of company user's
     3.  see all of company live weighbridge (it's filter)
-    4.  see all of live weighbridge that manager create with it's filter
-    5.  ceo edit live weighbridge form
-    6.  ceo edit live weighbridge
-    7.  see all of company weight lifting with 'tis type filter
+    7.  see all of company weight lifting with it's type filter
     8.  see all of driver weight lifting
     9.  see all of car weight lifting
     10. see all of product owner weight lifting
@@ -83,13 +80,13 @@ visualize data:
     15. see freezing tunnel with entry time and above filter
     16. see freezing tunnel with exit time and above filter
     17. see cold-house with (status and product category and pallet id and coldHouse id) filter
-    18. see cold-house with entry from django.shortcuts import render
-    19. see cold-house with exit time d above filter
+    18. see cold-house with entry
+    19. see cold-house with exit time and above filter
     20. see all of paperBox with (product_type and status and product_owner and )
     21. see all of paperBox with packing time
     22. delete live weighbridge and first_weight_lifting and pre-cold and freezing tunnel and coldHouse and distribute
-    23. delete drive and car and product_owner 
-    24. delete user 
+    23. delete driver and car and product_owner
+    24. delete user
 
 """
 
@@ -141,4 +138,21 @@ urlpatterns = [
     re_path(r'^coldHouse/exit/form/$', views.cold_house_exit_form, name='ColdHouse_Exit_Form'),
     re_path(r'^coldHouse/exit/$', views.cold_house_exit, name='ColdHouse_Exit'),
 
+    # monitor data
+    re_path(r'^company/list/$', views.company_list, name='Company_List'),
+    re_path(r'^company/user/list/$', views.company_user_list, name='Company_User_List'),
+    re_path(
+    r'^company/live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_empty>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
+        views.company_live_weighbridge_list,
+        name='Company_Live_WeighBridge_List'),
+
+    re_path(r'^company/weight/lifting/list/$', views.company_weight_lifting_list, name='Company_Weight_Lifting_List'),
+    re_path(r'^driver/weight/lifting/list/$', views.driver_weight_lifting_list, name='Driver_Weight_Lifting_List'),
+    re_path(r'^car/weight/lifting/list/$', views.car_weight_lifting_list, name='Car_Weight_Lifting_List'),
+    re_path(r'^product_owner/weight/lifting/list/$', views.product_owner_weight_lifting_list,
+            name='Product_Owner_Weight_Lifting_List'),
+
 ]
+
+
+

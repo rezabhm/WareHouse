@@ -1,0 +1,21 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+
+{% for company in company_list %}
+
+    company name : {{ company.name }}<br>
+    <form action="{% url 'Company_User_List' %}" method="post">
+
+        {% csrf_token %}
+        company id : {{ company.company_id }}
+        <input type="hidden" name="company_id" value="{{ company.company_id }}">
+        <input type="submit" value="{{ company.name }} user list">
+
+    </form>
+    <br><br>
+
+{% endfor %}
+
+{% endblock %}

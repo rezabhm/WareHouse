@@ -8,6 +8,7 @@ from django.urls import reverse
 from . import models
 import time
 from uuid import uuid1
+import datetime
 
 # Create your views here.
 
@@ -1546,3 +1547,143 @@ def cold_house_exit(requests):
 
         # raised error
         return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def company_list(requests):
+
+    """
+    user can see company list
+    """
+
+    # load template
+    company_list_temp = loader.get_template('WareHouseApp/company_list.html')
+
+    context = {
+
+        'company_list': models.Company.objects.all()
+
+    }
+
+    return HttpResponse(company_list_temp.render(context))
+
+
+@csrf_exempt
+def company_user_list(requests):
+
+    """
+    show all of company user list
+    """
+
+    # get request param
+    company_id = requests.POST['company_id']
+
+    # load template
+    user_list_temp = loader.get_template('WareHouseApp/company_user_list.html')
+
+    context = {
+
+        'ceo_list': models.CEO.objects.all().filter(company__company_id=company_id),
+        'ft_list': models.FreezingTunnelManager.objects.all().filter(company__company_id=company_id),
+        'lw_list': models.LiveWeighbridgeManager.objects.all().filter(company__company_id=company_id),
+        'pc_list': models.PreColdManager.objects.all().filter(company__company_id=company_id),
+        'sales_list': models.SalesManager.objects.all().filter(company__company_id=company_id),
+
+    }
+
+    return HttpResponse(user_list_temp.render(context))
+
+
+def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0, product_category=0, slaughter_status=0):
+
+    """
+    show company live WeighBridge data with it filter
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+        lwb_manager_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(lwb_manager_list) > 0 or requests.user.is_superuser:
+
+            # user have access to see data
+            if year == 0 and month == 0 and day == 0:
+
+                # get all of objects without time filter
+                lwb_list = models.LiveWeighbridge.objects.all()
+
+            else:
+
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string,"%d/%m/%Y").timetuple())
+                lwb_list = models.LiveWeighbridge.objects.all().filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
+
+            if car_empty == 1:
+
+                # add filter , if equal 1 it means return all of True car Empty
+                lwb_list = lwb_list.filter(car_empty=True)
+
+            elif car_empty == 2:
+
+                # add filter , if equal 2 it means return all of False car Empty
+                lwb_list = lwb_list.filter(car_empty=False)
+
+            if slaughter_status == 1:
+
+                # add filter , if equal 1 it means return all True slaughter_status
+                lwb_list = lwb_list.filter(slaughter_status=True)
+
+            elif slaughter_status == 2:
+
+                # add filter , if equal 2 it means return all False slaughter_status
+                lwb_list = lwb_list.filter(slaughter_status=False)
+
+            if product_category == 1:
+
+                # add filter , if equal 1 it means return all of Chicken
+                lwb_list = lwb_list.filter(product_category='C')
+
+            elif product_category == 2:
+
+                # add filter , if equal 2 it means return all of turkey
+                lwb_list = lwb_list.filter(product_category='T')
+
+            elif product_category == 3:
+
+                # add filter , if equal 3 it means return all of quail
+                lwb_list = lwb_list.filter(product_category='Q')
+
+            # load template
+            lwb_temp = loader.get_template('WareHouseApp/live_WeighBridge_list.html')
+
+            lwb_list_final = []
+            for lwb in lwb_list:
+
+                lwb_list_final.append([lwb.])
+
+            context = {
+
+                "lwb_list": lwb_list
+
+            }
+
+            return HttpResponse(lwb_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def company_weight_lifting_list(requests):
+    pass
+
+
+def driver_weight_lifting_list(requests):
+    pass
+
+
+def car_weight_lifting_list(requests):
+    pass
+
+
+def product_owner_weight_lifting_list(requests):
+    pass

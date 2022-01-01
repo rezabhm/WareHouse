@@ -1,0 +1,56 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+ceo manager:<br>
+{% for user in ceo_list %}
+
+    username : {{ user.username }}<br>
+    name : {{ user.name }}<br>
+    last name : {{ user.lastname }}<br>
+    <br>
+
+{% endfor %}
+
+freeze tunnel manager:<br>
+{% for user in ft_list %}
+
+    username : {{ user.username }}<br>
+    name : {{ user.name }}<br>
+    last name : {{ user.lastname }}<br>
+    <br>
+
+{% endfor %}
+
+live weighbridge manager:<br>
+{% for user in lw_list %}
+
+    username : {{ user.username }}<br>
+    name : {{ user.name }}<br>
+    last name : {{ user.lastname }}<br>
+    <br>
+
+{% endfor %}
+
+pre-cold manager:<br>
+{% for user in pc_list %}
+
+    username : {{ user.username }}<br>
+    name : {{ user.name }}<br>
+    last name : {{ user.lastname }}<br>
+    <br>
+
+{% endfor %}
+
+sales manager:<br>
+{% for user in sales_list %}
+
+    username : {{ user.username }}<br>
+    name : {{ user.name }}<br>
+    last name : {{ user.lastname }}<br>
+    <br>
+
+{% endfor %}
+
+
+{% endblock %}
