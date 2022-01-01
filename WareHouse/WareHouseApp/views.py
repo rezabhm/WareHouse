@@ -26,7 +26,7 @@ def main(request):
     """
 
     # load main.html for render
-    main_template = loader.get_template('WareHouseApp/main.html')
+    main_template = loader.get_template('WareHouseApp/home.html')
 
     return HttpResponse(main_template.render())
 
@@ -1660,9 +1660,18 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
             lwb_list_final = []
             for lwb in lwb_list:
 
+                if lwb.product_category == 'C':
+                    prod = 'chicken'
+
+                elif lwb.product_cateogry == 'T':
+                    prod = 'turkey'
+
+                elif lwb.product_cateogry == 'Q':
+                    prod = 'quail'
+
                 lwb_list_final.append([time.ctime(lwb.weighting_date), lwb.car_weight,
                         lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
-                        lwb.slaughtstart_data, lwb.slaughter_finish_date, lwb.product_category,
+                        lwb.slaughtstart_data, lwb.slaughter_finish_date, prod,
                         lwb.driver.name + ' '+ lwb.driver.lastname, lwb.driver.car.car_number,
                         lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.name ])
 
