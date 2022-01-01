@@ -1660,11 +1660,15 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
             lwb_list_final = []
             for lwb in lwb_list:
 
-                lwb_list_final.append([lwb.])
+                lwb_list_final.append([time.ctime(lwb.weighting_date), lwb.car_weight,
+                        lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
+                        lwb.slaughtstart_data, lwb.slaughter_finish_date, lwb.product_category,
+                        lwb.driver.name + ' '+ lwb.driver.lastname, lwb.driver.car.car_number,
+                        lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.name ])
 
             context = {
 
-                "lwb_list": lwb_list
+                "lwb_list": lwb_list_final
 
             }
 
