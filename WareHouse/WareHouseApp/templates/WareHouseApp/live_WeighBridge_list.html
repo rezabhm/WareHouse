@@ -2,11 +2,24 @@
 
 
 {% block content %}
-<table>
+
 {% for lwb in lwb_list %}
 
+    time : {{ lwb.0 }}<br>
+    car weight : {{ lwb.1 }}<br>
+    final weight : {{ lwb.2 }}<br>
+    car empty : {{ lwb.3 }}<br>
+    buy price : {{ lwb.4 }}<br>
+    slaughter status : {{ lwb.5 }}<br>
+    slaughter start date : {{ lwb.6 }}<br>
+    slaughter finish date : {{ lwb.7 }}<br>
+    product category : {{ lwb.8 }}<br>
+    driver name and last name : {{ lwb.9 }}<br>
+    car number: {{ lwb.10 }}<br>
+    product owner : {{ lwb.11 }}<br>
 
+    <br>
 
 {% endfor %}
-</table>
+
 {% endblock %}

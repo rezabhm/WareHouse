@@ -1607,7 +1607,7 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
         if len(ceo_list) > 0 or len(lwb_manager_list) > 0 or requests.user.is_superuser:
 
             # user have access to see data
-            if year == 0 and month == 0 and day == 0:
+            if year == '0' and month == '0' and day == '0':
 
                 # get all of objects without time filter
                 lwb_list = models.LiveWeighbridge.objects.all()
@@ -1619,37 +1619,37 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
                 time_filter = time.mktime(datetime.datetime.strptime(string,"%d/%m/%Y").timetuple())
                 lwb_list = models.LiveWeighbridge.objects.all().filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
 
-            if car_empty == 1:
+            if car_empty == '1':
 
                 # add filter , if equal 1 it means return all of True car Empty
                 lwb_list = lwb_list.filter(car_empty=True)
 
-            elif car_empty == 2:
+            elif car_empty == '2':
 
                 # add filter , if equal 2 it means return all of False car Empty
                 lwb_list = lwb_list.filter(car_empty=False)
 
-            if slaughter_status == 1:
+            if slaughter_status == '1':
 
                 # add filter , if equal 1 it means return all True slaughter_status
                 lwb_list = lwb_list.filter(slaughter_status=True)
 
-            elif slaughter_status == 2:
+            elif slaughter_status == '2':
 
                 # add filter , if equal 2 it means return all False slaughter_status
                 lwb_list = lwb_list.filter(slaughter_status=False)
 
-            if product_category == 1:
+            if product_category == '1':
 
                 # add filter , if equal 1 it means return all of Chicken
                 lwb_list = lwb_list.filter(product_category='C')
 
-            elif product_category == 2:
+            elif product_category == '2':
 
                 # add filter , if equal 2 it means return all of turkey
                 lwb_list = lwb_list.filter(product_category='T')
 
-            elif product_category == 3:
+            elif product_category == '3':
 
                 # add filter , if equal 3 it means return all of quail
                 lwb_list = lwb_list.filter(product_category='Q')
@@ -1663,17 +1663,20 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
                 if lwb.product_category == 'C':
                     prod = 'chicken'
 
-                elif lwb.product_cateogry == 'T':
+                elif lwb.product_category == 'T':
                     prod = 'turkey'
 
-                elif lwb.product_cateogry == 'Q':
+                elif lwb.product_category == 'Q':
                     prod = 'quail'
+
+                else:
+                    prod = 'Nothing'
 
                 lwb_list_final.append([time.ctime(lwb.weighting_date), lwb.car_weight,
                         lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
-                        lwb.slaughtstart_data, lwb.slaughter_finish_date, prod,
-                        lwb.driver.name + ' '+ lwb.driver.lastname, lwb.driver.car.car_number,
-                        lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.name ])
+                        lwb.slaughter_start_date, lwb.slaughter_finish_date, prod,
+                        lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
+                        lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name])
 
             context = {
 
