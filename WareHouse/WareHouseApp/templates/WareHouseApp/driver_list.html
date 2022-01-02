@@ -1,0 +1,50 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+distribute : <br>
+{% for dist in dist_list %}
+
+    driver name : {{ dist.0 }}<br>
+    driver last name : {{ dist.1 }}<br>
+    driver phone number : {{ dist.2 }}<br>
+    car number : {{ dist.3 }}<br>
+    product owner name : {{ dist.4 }}<br>
+    product owner last name : {{ dist.5 }}<br>
+    weight : {{ dist.6 }}<br>
+    time : {{ dist.7 }}<br>
+    sale price : {{ dist.8 }}<br>
+    product category : {{ dist.9 }}<br>
+    bill of lading: {{ dist.10 }}<br>
+    number of box : {{ dist.11 }}<br><br>
+
+{% endfor %}
+<br>
+<br>
+<br>
+<br>
+
+live WeighBridge : <br>
+{% for lwb in lwb_list %}
+
+
+    driver name : {{ lwb.0 }}<br>
+    driver last name : {{ lwb.1 }}<br>
+    driver phone number : {{ lwb.2 }}<br>
+    car number : {{ lwb.3 }}<br>
+    product owner name : {{ lwb.4 }}<br>
+    product owner last name : {{ lwb.5 }}<br>
+    car final weight : {{ lwb.6 }}<br>
+    car weight : {{ lwb.7 }}<br>
+    car empty status: {{ lwb.8 }}<br>
+    weighting time : {{ lwb.9 }}<br>
+    product category : {{ lwb.10 }}<br>
+    slaughter status : {{ lwb.11 }}<br>
+    slaughter start time : {{ lwb.12 }}<br>
+    slaughter finish time : {{ lwb.13 }}<br>
+    buy price : {{ lwb.14 }}<br><br>
+
+
+{% endfor %}
+
+{% endblock %}

@@ -1700,7 +1700,7 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def driver_weight_lifting_list(requests, phone_number=0, product_category=0, ):
+def driver_weight_lifting_list(requests, phone_number='0', product_category='0', model_type='0', year='0', month='0', day='0'):
 
     """
     show list of driver with filter
@@ -1714,18 +1714,117 @@ def driver_weight_lifting_list(requests, phone_number=0, product_category=0, ):
 
             """ user have access """
 
-            if phone_number == '0':
+            if model_type == '0':
 
-                driver_list = models.Driver.objects.all()
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all()
 
-            else:
+            elif model_type == '1':
 
-                driver_list = models.Driver.objects.all().filter(phone_number=phone_number)
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight= -5248.0)
 
-            if product_category:
-                pass
+            elif model_type == '2':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter()
+
+            # user have access to see data
+            if year != '0' and month != '0' and day != '0':
+
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
+                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60*60*24))
+
+            if phone_number != '0':
+
+                dist_list = dist_list.filter(driver__phone_number=phone_number)
+                lwb_list = lwb_list.filter(driver__phone_number=phone_number)
+
+            if product_category == '1':
+
+                dist_list = dist_list.filter(product_category='C')
+                lwb_list = lwb_list.filter(product_category='C')
+
+            elif product_category == '2':
+
+                dist_list = dist_list.filter(product_category='T')
+                lwb_list = lwb_list.filter(product_category='T')
+
+            elif product_category == '3':
+
+                dist_list = dist_list.filter(product_category='Q')
+                lwb_list = lwb_list.filter(product_category='Q')
+
+            # load temp
+            driver_temp = loader.get_template('WareHouseApp/driver_list.html')
+
+            # create list for store distribute data
+            dist_final_list = []
+            for dist in dist_list:
+
+                if dist.product_category == 'C':
+                    prod_category = 'chicken'
+
+                elif dist.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif dist.product_category == 'Q':
+                    prod_category = 'quail'
+
+
+                dist_final_list.append([
+
+                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
+                    dist.driver.car.car_number,
+                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
+                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.bill_of_lading, dist.number_of_box
+
+                ])
+
+            lwb_final_list = []
+
+            for lwb in lwb_list:
+
+                if lwb.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif lwb.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif lwb.product_category == 'Q':
+                    prod_category = 'Quail'
+
+
+                lwb_final_list.append([
+
+                    lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
+                    lwb.driver.car.car_number,
+                    lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    lwb.buy_price
+
+                ])
+
+            context = {
+
+                'dist_list': dist_final_list,
+                'lwb_list': lwb_final_list
+
+            }
+
+            return HttpResponse(driver_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
 
 def car_weight_lifting_list(requests):
+
     pass
 
 

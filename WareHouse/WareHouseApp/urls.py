@@ -147,7 +147,7 @@ urlpatterns = [
         views.company_live_weighbridge_list,
         name='Company_Live_WeighBridge_List'),
 
-    re_path(r'^driver/weight/lifting/list/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/$',
+    re_path(r'^driver/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
             views.driver_weight_lifting_list, name='Driver_Weight_Lifting_List'),
 
     re_path(r'^car/weight/lifting/list/$', views.car_weight_lifting_list, name='Car_Weight_Lifting_List'),
