@@ -94,6 +94,7 @@ urlpatterns = [
 
     # static page url
     re_path(r'^$', views.main, name='Main'),
+    re_path(r'^main/$', views.main_url, name='Main_URL'),
     re_path(r'^about_us/$', views.about, name='About'),
     re_path(r'^contact_us/$', views.contact, name='Contact'),
     re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
@@ -146,13 +147,15 @@ urlpatterns = [
         views.company_live_weighbridge_list,
         name='Company_Live_WeighBridge_List'),
 
-    re_path(r'^company/weight/lifting/list/$', views.company_weight_lifting_list, name='Company_Weight_Lifting_List'),
-    re_path(r'^driver/weight/lifting/list/$', views.driver_weight_lifting_list, name='Driver_Weight_Lifting_List'),
+    re_path(r'^driver/weight/lifting/list/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/$',
+            views.driver_weight_lifting_list, name='Driver_Weight_Lifting_List'),
+
     re_path(r'^car/weight/lifting/list/$', views.car_weight_lifting_list, name='Car_Weight_Lifting_List'),
     re_path(r'^product_owner/weight/lifting/list/$', views.product_owner_weight_lifting_list,
             name='Product_Owner_Weight_Lifting_List'),
 
+    re_path(r'^company/weight/lifting/list/$', views.company_weight_lifting_list, name='Company_Weight_Lifting_List'),
+    re_path(r'^company/cold/house/list/$', views.company_cold_house_list, name='Company_Cold_House_List'),
+    re_path(r'^company/paper/box/list/$', views.company_paper_box_list, name='Company_Paper_Box_List'),
+
 ]
-
-
-

@@ -30,6 +30,17 @@ def main(request):
 
     return HttpResponse(main_template.render())
 
+def main_url(request):
+
+    """
+    this is main & primary page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/main.html')
+
+    return HttpResponse(main_template.render())
+
 
 def contact(request):
 
@@ -1616,7 +1627,7 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
 
                 # add time filter
                 string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
-                time_filter = time.mktime(datetime.datetime.strptime(string,"%d/%m/%Y").timetuple())
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
                 lwb_list = models.LiveWeighbridge.objects.all().filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
 
             if car_empty == '1':
@@ -1689,17 +1700,46 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def company_weight_lifting_list(requests):
-    pass
+def driver_weight_lifting_list(requests, phone_number=0, product_category=0, ):
 
+    """
+    show list of driver with filter
+    """
 
-def driver_weight_lifting_list(requests):
-    pass
+    if requests.user.is_authenticated:
 
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            """ user have access """
+
+            if phone_number == '0':
+
+                driver_list = models.Driver.objects.all()
+
+            else:
+
+                driver_list = models.Driver.objects.all().filter(phone_number=phone_number)
+
+            if product_category:
+                pass
 
 def car_weight_lifting_list(requests):
     pass
 
 
 def product_owner_weight_lifting_list(requests):
+    pass
+
+
+def company_weight_lifting_list(requests):
+    pass
+
+
+def company_cold_house_list(requests):
+    pass
+
+
+def company_paper_box_list(requests):
     pass
