@@ -1,7 +1,55 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title %}
+Contact
+{% endblock %}
+
 {% block content %}
 
-this is contact page
+ <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+          <p>
+Let us know if you have any questions or messages.</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+          <div class="col-lg-12 d-flex align-items-stretch">
+            <div class="info">
+              <div class="address">
+                <i class="bi bi-geo-alt"></i>
+                <h4>Location:</h4>
+                <p>Zanjan, Khorramshahr Street, Moallem Crossroads, Khorram Building, Second Floor, Unit 4</p>
+              </div>
+
+              <div class="email">
+                <i class="bi bi-envelope"></i>
+                <h4>Email:</h4>
+                <p>info@tiyurzanjan.ir</p>
+              </div>
+
+              <div class="phone">
+                <i class="bi bi-phone"></i>
+                <h4>Call:</h4>
+                <p>+(24) 33321955  |   +098 24 33321955</p>
+              </div>
+              <div class="image">
+                 <img src="{% static 'WareHouseApp/img/us.jpeg' %}" class="rounded mx-auto d-block" alt="hi">
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
 
 {% endblock %}
