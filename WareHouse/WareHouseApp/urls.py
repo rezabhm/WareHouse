@@ -142,20 +142,22 @@ urlpatterns = [
     # monitor data
     re_path(r'^company/list/$', views.company_list, name='Company_List'),
     re_path(r'^company/user/list/$', views.company_user_list, name='Company_User_List'),
-    re_path(
-    r'^company/live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_empty>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
-        views.company_live_weighbridge_list,
-        name='Company_Live_WeighBridge_List'),
+    re_path(r'^live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_empty>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
+            views.company_live_weighbridge_list, name='Company_Live_WeighBridge_List'),
 
     re_path(r'^driver/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
-            views.driver_weight_lifting_list, name='Driver_Weight_Lifting_List'),
+            views.driver_list, name='Driver_List'),
 
-    re_path(r'^car/weight/lifting/list/$', views.car_weight_lifting_list, name='Car_Weight_Lifting_List'),
-    re_path(r'^product_owner/weight/lifting/list/$', views.product_owner_weight_lifting_list,
-            name='Product_Owner_Weight_Lifting_List'),
+    re_path(r'^car/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
+            views.car_list, name='Car_List'),
 
-    re_path(r'^company/weight/lifting/list/$', views.company_weight_lifting_list, name='Company_Weight_Lifting_List'),
-    re_path(r'^company/cold/house/list/$', views.company_cold_house_list, name='Company_Cold_House_List'),
-    re_path(r'^company/paper/box/list/$', views.company_paper_box_list, name='Company_Paper_Box_List'),
+    re_path(r'^product_owner/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<po_name>[\w]+)/(?P<po_lastname>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$', views.product_owner_list,
+            name='Product_Owner_List'),
+
+    re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exits>[\d]{1,2})/$',
+            views.weight_lifting_list, name='Weight_Lifting_List'),
+
+    re_path(r'^cold/house/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exits>[\d]{1,2})/$',
+            views.cold_house_list, name='Cold_House_List'),
 
 ]

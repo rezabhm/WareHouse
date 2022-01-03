@@ -1,0 +1,69 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+distribute : <br>
+{% for dist in dist_list %}
+
+    car number : {{ dist.3 }}<br>
+    driver name : {{ dist.0 }}<br>
+    driver last name : {{ dist.1 }}<br>
+    driver phone number : {{ dist.2 }}<br>
+    product owner name : {{ dist.4 }}<br>
+    product owner last name : {{ dist.5 }}<br>
+    weight : {{ dist.6 }}<br>
+    time : {{ dist.7 }}<br>
+    sale price : {{ dist.8 }}<br>
+    product category : {{ dist.9 }}<br>
+    bill of lading: {{ dist.10 }}<br>
+    number of box : {{ dist.11 }}<br><br>
+
+{% endfor %}
+
+<br>
+<br>
+<br>
+<br>
+
+pre-cold :<br>
+{% for pd in pd_list %}
+
+  product owner name : {{ pd.0 }}<br>
+  product owner last name : {{ pd.1 }}<br>
+  driver name : {{ pd.2 }}<br>
+  driver last name : {{ pd.3 }}<br>
+  car number : {{ pd.4 }}<br>
+  weighting time : {{ pd.5 }}<br>
+  first weighting weight : {{ pd.6 }}<br>
+  first weighting type : {{ pd.7 }}<br>
+  pre-cold id : {{ pd.8 }}<br>
+  pallet id : {{ pd.9 }}<br>
+  is product in pre-cold ? {{ pd.10 }}<br>
+  product category: {{ pd.11 }}<br>
+  product weight in pre-cold : {{ pd.12 }}<br>
+  entry time to pre-cold : {{ pd.13 }}<br>
+  exit time : {{ pd.14 }}<br><br>
+
+{% endfor %}
+
+<br><br><br>
+freeze tunnel : <br>
+{% for ft in ft_list %}
+
+  product owner name : {{ ft.0 }}<br>
+  product owner last name : {{ ft.1 }}<br>
+  driver name : {{ ft.2 }}<br>
+  driver last name : {{ ft.3 }}<br>
+  car number : {{ ft.4 }}<br>
+  weighting time : {{ ft.5 }}<br>
+  first weighting weight : {{ ft.6 }}<br>
+  first weighting type : {{ ft.7 }}<br>
+  entry time : {{ ft.8 }}<br>
+  exit time : {{ ft.9 }}<br>
+  weight: {{ ft.10 }}<br>
+  freeze tunnel id : {{ ft.11 }}<br>
+  product category : {{ ft.12 }}<br><br>
+
+{% endfor %}
+
+{% endblock %}
