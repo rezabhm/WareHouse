@@ -1,0 +1,37 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block content %}
+
+cold house : <br>
+{% for ch in ch_list %}
+
+    entry time : {{ ch.0 }}<br>
+    exit time : {{ ch.1 }}<br>
+    pallet status : {{ ch.2 }}<br>
+    total pallet weight : {{ ch.3 }}<br>
+    pallet weight without product : {{ ch.4 }}<br>
+    number of box : {{ ch.5 }}<br>
+    pallet id : {{ ch.6 }}<br>
+    cold house id : {{ ch.7 }}<br><br>
+
+{% endfor %}
+
+<br>
+<br>
+<br>
+
+paper box :<br>
+{% for pb in pb_list %}
+
+    product category : {{ pb.0 }}<br>
+    paper box weight: {{ pb.1 }}<br>
+    box status : {{ pb.2 }}<br>
+    number of product : {{ pb.3 }}<br>
+    packing time : {{ pb.4 }}<br>
+    box id: {{ pb.5 }}<br>
+    cold house id : {{ pb.6 }}<br>
+    pallet id that carry paper box : {{ pb.7 }}<br><br>
+
+{% endfor %}
+
+{% endblock %}

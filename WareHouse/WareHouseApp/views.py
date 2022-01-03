@@ -1700,7 +1700,7 @@ def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0,
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def driver_weight_lifting_list(requests, phone_number='0', product_category='0', model_type='0', year='0', month='0', day='0'):
+def driver_list(requests, phone_number='0', product_category='0', model_type='0', year='0', month='0', day='0'):
 
     """
     show list of driver with filter
@@ -1714,6 +1714,11 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
             """ user have access """
 
+            # check model type filter
+            # if equal 0 we must return distribute and live weighbridge objects
+            # if equal 1 we must return only live weighbridge objects
+            # if equal 2 we must return only distribute objects
+            # else we must return nothing
             if model_type == '0':
 
                 dist_list = models.Distributed.objects.all()
@@ -1729,7 +1734,14 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
                 dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
                 lwb_list = models.LiveWeighbridge.objects.all().filter()
 
-            # user have access to see data
+            else:
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
+
+            # we must add time filter . this filter help to see special time's objects
+            # if all of them equal 0 we didn't add time filter
+            # else we must add month and day and year filter
             if year != '0' and month != '0' and day != '0':
 
                 # add time filter
@@ -1739,11 +1751,19 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
                 lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
                 dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60*60*24))
 
+            # we must add driver phone number filter to return special driver objects
+            # if equal 0 we didn't add filter
+            # else we must add phone number filter
             if phone_number != '0':
 
                 dist_list = dist_list.filter(driver__phone_number=phone_number)
                 lwb_list = lwb_list.filter(driver__phone_number=phone_number)
 
+            # we must add product category filter to return special product
+            # if equal 1 we return only chicken objects
+            # if equal 2 we return only turkey objects
+            # if equal 3 we return only quail objects
+            # else we didn't add filter
             if product_category == '1':
 
                 dist_list = dist_list.filter(product_category='C')
@@ -1759,13 +1779,14 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
                 dist_list = dist_list.filter(product_category='Q')
                 lwb_list = lwb_list.filter(product_category='Q')
 
-            # load temp
+            # load driver_list template
             driver_temp = loader.get_template('WareHouseApp/driver_list.html')
 
             # create list for store distribute data
             dist_final_list = []
             for dist in dist_list:
 
+                # change database product_category attribute from abbreviation to complete word
                 if dist.product_category == 'C':
                     prod_category = 'chicken'
 
@@ -1774,7 +1795,6 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
                 elif dist.product_category == 'Q':
                     prod_category = 'quail'
-
 
                 dist_final_list.append([
 
@@ -1786,10 +1806,11 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
                 ])
 
+            # create live weighbridge final list for change and store data
             lwb_final_list = []
-
             for lwb in lwb_list:
 
+                # change database product_category attribute from abbreviation to complete word
                 if lwb.product_category == 'C':
                     prod_category = 'Chicken'
 
@@ -1798,7 +1819,6 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
                 elif lwb.product_category == 'Q':
                     prod_category = 'Quail'
-
 
                 lwb_final_list.append([
 
@@ -1811,6 +1831,7 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
                 ])
 
+            # return data
             context = {
 
                 'dist_list': dist_final_list,
@@ -1820,25 +1841,781 @@ def driver_weight_lifting_list(requests, phone_number='0', product_category='0',
 
             return HttpResponse(driver_temp.render(context))
 
+    # user can't access to this page
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def car_weight_lifting_list(requests):
+def car_list(requests, car_number='0', product_category='0', model_type='0', year='0', month='0', day='0'):
 
-    pass
+    """
+    show list of car with filter
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            """ user have access """
+
+            # check model type filter
+            # if equal 0 we must return distribute and live weighbridge objects
+            # if equal 1 we must return only live weighbridge objects
+            # if equal 2 we must return only distribute objects
+            # else we must return nothing
+            if model_type == '0':
+
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all()
+
+            elif model_type == '1':
+
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
+
+            elif model_type == '2':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter()
+
+            else:
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
+
+            # we must add time filter . this filter help to see special time's objects
+            # if all of them equal 0 we didn't add time filter
+            # else we must add month and day and year filter
+            if year != '0' and month != '0' and day != '0':
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(
+                    weighting_date__lte=time_filter + (60 * 60 * 24))
+                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60 * 60 * 24))
+
+            # we must add car car_number filter to return special car objects
+            # if equal 0 we didn't add filter
+            # else we must add car number filter
+            if car_number != '0':
+
+                dist_list = dist_list.filter(driver__car__car_number=car_number)
+                lwb_list = lwb_list.filter(driver__car__car_number=car_number)
+
+            # we must add product category filter to return special product
+            # if equal 1 we return only chicken objects
+            # if equal 2 we return only turkey objects
+            # if equal 3 we return only quail objects
+            # else we didn't add filter
+            if product_category == '1':
+
+                dist_list = dist_list.filter(product_category='C')
+                lwb_list = lwb_list.filter(product_category='C')
+
+            elif product_category == '2':
+
+                dist_list = dist_list.filter(product_category='T')
+                lwb_list = lwb_list.filter(product_category='T')
+
+            elif product_category == '3':
+
+                dist_list = dist_list.filter(product_category='Q')
+                lwb_list = lwb_list.filter(product_category='Q')
+
+            # load car_list template
+            car_temp = loader.get_template('WareHouseApp/car_list.html')
+
+            # create list for store distribute data
+            dist_final_list = []
+            for dist in dist_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if dist.product_category == 'C':
+                    prod_category = 'chicken'
+
+                elif dist.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif dist.product_category == 'Q':
+                    prod_category = 'quail'
+
+                dist_final_list.append([
+
+                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
+                    dist.driver.car.car_number,
+                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
+                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.bill_of_lading, dist.number_of_box
+
+                ])
+
+            # create live weighbridge final list for change and store data
+            lwb_final_list = []
+            for lwb in lwb_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if lwb.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif lwb.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif lwb.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                lwb_final_list.append([
+
+                    lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
+                    lwb.driver.car.car_number,
+                    lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    lwb.buy_price
+
+                ])
+
+            # return data
+            context = {
+
+                'dist_list': dist_final_list,
+                'lwb_list': lwb_final_list
+
+            }
+
+            return HttpResponse(car_temp.render(context))
+
+    # user can't access to this page
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def product_owner_weight_lifting_list(requests):
-    pass
+def product_owner_list(requests, po_name='0', po_lastname='0', product_category='0', model_type='0', year='0', month='0', day='0'):
+
+    """
+    show list of product owner with filter
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            """ user have access """
+
+            # check model type filter
+            # if equal 0 we must return distribute and live weighbridge and pre-cold and freeze tunnel objects
+            # if equal 1 we must return only live weighbridge objects
+            # if equal 2 we must return only distribute objects
+            # if equal 3 we must return only pre-cold objects
+            # if equal 4 we must return only freeze tunnel objects
+            # else we must return nothing
+            if model_type == '0':
+
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all()
+                pd_list = models.PreCold.objects.all()
+                ft_list = models.FreezingTunnel.objects.all()
+
+            elif model_type == '1':
+
+                dist_list = models.Distributed.objects.all()
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '2':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter()
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '3':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5)
+                pd_list = models.PreCold.objects.all()
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '4':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all()
+
+            else:
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            # we must add time filter . this filter help to see special time's objects
+            # if all of them equal 0 we didn't add time filter
+            # else we must add month and day and year filter
+            if year != '0' and month != '0' and day != '0':
+
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(
+                    weighting_date__lte=time_filter + (60 * 60 * 24))
+
+                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60 * 60 * 24))
+
+                pd_list = pd_list.filter(entry_time__gte=time_filter).filter(
+                    entry_time__lte=time_filter + (60 * 60 * 24))
+
+                ft_list = ft_list.filter(entry_date__gte=time_filter).filter(entry_date__lte=time_filter + (60 * 60 * 24))
+
+            # we must add car car_number filter to return special car objects
+            # if equal 0 we didn't add filter
+            # else we must add car number filter
+            if po_name != '0' and po_lastname != '0':
+
+                dist_list = dist_list.filter(driver__car__product_owner__name=po_name).filter(
+                    driver__car__product_owner__last_name=po_lastname)
+
+                lwb_list = lwb_list.filter(driver__car__product_owner__name=po_name).filter(
+                    driver__car__product_owner__last_name=po_lastname)
+
+                pd_list = pd_list.filter(
+                    First_Weight_Lifting__Live_Weigh_Bridge__driver__car__product_owner__name=po_name).filter(
+                    First_Weight_Lifting__Live_Weigh_Bridge__driver__car__product_owner__last_name=po_lastname
+                )
+
+                ft_list = ft_list.filter(
+                    first_weight_lifting__Live_Weigh_Bridge__driver__car__product_owner__name=po_name).filter(
+                    first_weight_lifting__Live_Weigh_Bridge__driver__car__product_owner__last_name=po_lastname
+                )
+
+            # we must add product category filter to return special product
+            # if equal 1 we return only chicken objects
+            # if equal 2 we return only turkey objects
+            # if equal 3 we return only quail objects
+            # else we didn't add filter
+            if product_category == '1':
+
+                dist_list = dist_list.filter(product_category='C')
+                lwb_list = lwb_list.filter(product_category='C')
+                pd_list = pd_list.filter(product_category='C')
+                ft_list = ft_list.filter(product_category='C')
+
+            elif product_category == '2':
+
+                dist_list = dist_list.filter(product_category='T')
+                lwb_list = lwb_list.filter(product_category='T')
+                pd_list = pd_list.filter(product_category='T')
+                ft_list = ft_list.filter(product_category='T')
+
+            elif product_category == '3':
+
+                dist_list = dist_list.filter(product_category='Q')
+                lwb_list = lwb_list.filter(product_category='Q')
+                pd_list = pd_list.filter(product_category='Q')
+                ft_list = ft_list.filter(product_category='Q')
+
+            # load product_owner template
+            po_temp = loader.get_template('WareHouseApp/product_owner_list.html')
+
+            # create list for store distribute data
+            dist_final_list = []
+            for dist in dist_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if dist.product_category == 'C':
+                    prod_category = 'chicken'
+
+                elif dist.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif dist.product_category == 'Q':
+                    prod_category = 'quail'
+
+                dist_final_list.append([
+
+                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
+                    dist.driver.car.car_number,
+                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
+                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.bill_of_lading, dist.number_of_box
+
+                ])
+
+            # create live weighbridge final list for change and store data
+            lwb_final_list = []
+            for lwb in lwb_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if lwb.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif lwb.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif lwb.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                lwb_final_list.append([
+
+                    lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
+                    lwb.driver.car.car_number,
+                    lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    lwb.buy_price
+
+                ])
+
+            # create pre-cold final list for change and store pre-cold model's data
+            pd_final_list = []
+            for pd in pd_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if pd.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif pd.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif pd.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                pd_final_list.append([
+
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.last_name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.phone_number,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.car_number,
+                    time.ctime(pd.First_Weight_Lifting.weighting_time),
+                    pd.First_Weight_Lifting.weight,
+                    'pre-cold',
+                    pd.pre_cold_id,
+                    pd.pallet_id,
+                    pd.product_pre_cold_status,
+                    prod_category,
+                    pd.weight,
+                    time.ctime(pd.entry_time),
+                    '-' if pd.product_pre_cold_status else time.ctime(pd.exit_time),
+
+                ])
+
+            # create pre-cold final list for change and store pre-cold model's data
+            ft_final_list = []
+            for ft in ft_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if ft.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif ft.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif ft.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                ft_final_list.append([
+
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.last_name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.phone_number,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.car_number,
+                    time.ctime(ft.first_weight_lifting.weighting_time),
+                    ft.first_weight_lifting.weight,
+                    'freeze tunnel',
+                    time.ctime(ft.entry_date),
+                    '-' if ft.status else time.ctime(ft.exit_date),
+                    ft.weight,
+                    ft.tunnel_id,
+                    ft.pallet_id,
+                    prod_category,
+
+                ])
+
+            # return data
+            context = {
+
+                'dist_list': dist_final_list,
+                'lwb_list': lwb_final_list,
+                'ft_list': ft_final_list,
+                'pd_list': pd_final_list
+
+            }
+
+            return HttpResponse(po_temp.render(context))
+
+    # user can't access to this page
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def company_weight_lifting_list(requests):
-    pass
+def weight_lifting_list(requests, product_category='0', model_type='0', year='0', month='0', day='0', exist='0'):
+
+    """
+    show list of first weightlifting with filter
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            """ user have access """
+
+            # check model type filter
+            # if equal 0 we must return distribute and live weighbridge and pre-cold and freeze tunnel objects
+            # if equal 1 we must return only live weighbridge objects
+            # if equal 2 we must return only distribute objects
+            # if equal 3 we must return only pre-cold objects
+            # if equal 4 we must return only freeze tunnel objects
+            # else we must return nothing
+            if model_type == '0':
+
+                dist_list = models.Distributed.objects.all()
+                pd_list = models.PreCold.objects.all()
+                ft_list = models.FreezingTunnel.objects.all()
+
+            elif model_type == '1':
+
+                dist_list = models.Distributed.objects.all()
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '2':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '3':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                pd_list = models.PreCold.objects.all()
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            elif model_type == '4':
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all()
+
+            else:
+
+                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                pd_list = models.PreCold.objects.all().filter(weight=-5)
+                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+
+            # we must add time filter . this filter help to see special time's objects
+            # if all of them equal 0 we didn't add time filter
+            # else we must add month and day and year filter
+            if year != '0' and month != '0' and day != '0':
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
 
-def company_cold_house_list(requests):
-    pass
+                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60 * 60 * 24))
+
+                pd_list = pd_list.filter(entry_time__gte=time_filter).filter(
+                    entry_time__lte=time_filter + (60 * 60 * 24))
+
+                ft_list = ft_list.filter(entry_date__gte=time_filter).filter(
+                    entry_date__lte=time_filter + (60 * 60 * 24))
+
+            # check product exist in freeze tunnel and pre-cold or not
+            # if equal 1 it will check all of exist
+            # if equal 2 it will check didn't exist
+            # else didn't apply filter
+            if exist == '1':
+
+                pd_list = pd_list.filter(product_pre_cold_status=True)
+                ft_list = ft_list.filter(status=True)
+
+            elif exist == '2':
+
+                pd_list = pd_list.filter(product_pre_cold_status=False)
+                ft_list = ft_list.filter(status=False)
+
+            # we must add product category filter to return special product
+            # if equal 1 we return only chicken objects
+            # if equal 2 we return only turkey objects
+            # if equal 3 we return only quail objects
+            # else we didn't add filter
+            if product_category == '1':
+
+                dist_list = dist_list.filter(product_category='C')
+                pd_list = pd_list.filter(product_category='C')
+                ft_list = ft_list.filter(product_category='C')
+
+            elif product_category == '2':
+
+                dist_list = dist_list.filter(product_category='T')
+                pd_list = pd_list.filter(product_category='T')
+                ft_list = ft_list.filter(product_category='T')
+
+            elif product_category == '3':
+
+                dist_list = dist_list.filter(product_category='Q')
+                pd_list = pd_list.filter(product_category='Q')
+                ft_list = ft_list.filter(product_category='Q')
+
+            # load product_owner template
+            po_temp = loader.get_template('WareHouseApp/weight_lifting_list.html')
+
+            # create list for store distribute data
+            dist_final_list = []
+            for dist in dist_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if dist.product_category == 'C':
+                    prod_category = 'chicken'
+
+                elif dist.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif dist.product_category == 'Q':
+                    prod_category = 'quail'
+
+                dist_final_list.append([
+
+                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
+                    dist.driver.car.car_number,
+                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
+                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.bill_of_lading, dist.number_of_box
+
+                ])
+
+            # create pre-cold final list for change and store pre-cold model's data
+            pd_final_list = []
+            for pd in pd_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if pd.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif pd.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif pd.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                pd_final_list.append([
+
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.last_name,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.phone_number,
+                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.car_number,
+                    time.ctime(pd.First_Weight_Lifting.weighting_time),
+                    pd.First_Weight_Lifting.weight,
+                    'pre-cold',
+                    pd.pre_cold_id,
+                    pd.pallet_id,
+                    pd.product_pre_cold_status,
+                    prod_category,
+                    pd.weight,
+                    time.ctime(pd.entry_time),
+                    '-' if pd.product_pre_cold_status else time.ctime(pd.exit_time),
+
+                ])
+
+            # create pre-cold final list for change and store pre-cold model's data
+            ft_final_list = []
+            for ft in ft_list:
+
+                # change database product_category attribute from abbreviation to complete word
+                if ft.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif ft.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif ft.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                ft_final_list.append([
+
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.last_name,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.phone_number,
+                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.car_number,
+                    time.ctime(ft.first_weight_lifting.weighting_time),
+                    ft.first_weight_lifting.weight,
+                    'freeze tunnel',
+                    time.ctime(ft.entry_date),
+                    '-' if ft.status else time.ctime(ft.exit_date),
+                    ft.weight,
+                    ft.tunnel_id,
+                    ft.pallet_id,
+                    prod_category,
+
+                ])
+
+            # return data
+            context = {
+
+                'dist_list': dist_final_list,
+                'ft_list': ft_final_list,
+                'pd_list': pd_final_list
+
+            }
+
+            return HttpResponse(po_temp.render(context))
+
+    # user can't access to this page
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def company_paper_box_list(requests):
-    pass
+def cold_house_list(requests, product_category='0', model_type='0', year='0', month='0', day='0', exist='0'):
+
+    """
+    show list of cold house and paper box objects with filter
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            """ user have access """
+
+            # check model type filter
+            # if equal 0 we must return cold house and paper box objects
+            # if equal 1 we must return only cold house objects
+            # if equal 2 we must return only paper box objects
+            # else we must return nothing
+            if model_type == '0':
+
+                ch_list = models.ColdHouse.objects.all()
+                pb_list = models.PaperBox.objects.all()
+
+            elif model_type == '1':
+
+                ch_list = models.ColdHouse.objects.all()
+                pb_list = models.PaperBox.objects.all().filter(number_of_product=-5)
+
+            elif model_type == '2':
+
+                ch_list = models.ColdHouse.objects.all().filter(number_of_box=-5)
+                pb_list = models.PaperBox.objects.all()
+
+            else:
+
+                ch_list = models.ColdHouse.objects.all().filter(number_of_box=-5)
+                pb_list = models.PaperBox.objects.all().filter(number_of_product=-5)
+
+            # we must add time filter . this filter help to see special time's objects
+            # if all of them equal 0 we didn't add time filter
+            # else we must add month and day and year filter
+            if year != '0' and month != '0' and day != '0':
+                # add time filter
+                string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
+                time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                pb_list = pb_list.filter(packing_time__gte=time_filter).filter(packing_time__lte=time_filter + (60 * 60 * 24))
+
+                ch_list = ch_list.filter(entry_date__gte=time_filter).filter(
+                    entry_date__lte=time_filter + (60 * 60 * 24))
+
+            # check product exist in freeze tunnel and pre-cold or not
+            # if equal 1 it will check all of exist
+            # if equal 2 it will check didn't exist
+            # else didn't apply filter
+            if exist == '1':
+
+                ch_list = ch_list.filter(pallet_status=True)
+                pb_list = pb_list.filter(box_status=True)
+
+            elif exist == '2':
+
+                ch_list = ch_list.filter(pallet_status=False)
+                pb_list = pb_list.filter(box_status=False)
+
+            # we must add product category filter to return special product
+            # if equal 1 we return only chicken objects
+            # if equal 2 we return only turkey objects
+            # if equal 3 we return only quail objects
+            # else we didn't add filter
+            if product_category == '1':
+
+                pb_list = pb_list.filter(product_category='C')
+
+            elif product_category == '2':
+
+                pb_list = pb_list.filter(product_category='T')
+
+            elif product_category == '3':
+
+                pb_list = pb_list.filter(product_category='Q')
+
+            # load coldHouse template
+            ch_temp = loader.get_template('WareHouseApp/cold_house_list.html')
+
+            # create coldHouse list
+            ch_final_list = []
+            for ch in ch_list:
+
+                ch_final_list.append([
+
+                    time.ctime(ch.entry_date),
+                    '-' if ch.pallet_status else time.ctime(ch.exit_date),
+                    ch.pallet_status,
+                    ch.total_pallet_weight,
+                    ch.pallet_weight_without_product,
+                    ch.number_of_box,
+                    ch.pallet_id,
+                    ch.cold_house_id
+
+                ])
+
+            # create paper box objects
+            pb_final_list = []
+            for pb in pb_list:
+
+                if pb.product_category == 'C':
+                    prod_category = 'Chicken'
+
+                elif pb.product_category == 'T':
+                    prod_category = 'turkey'
+
+                elif pb.product_category == 'Q':
+                    prod_category = 'Quail'
+
+                pb_final_list.append([
+
+                    prod_category,
+                    pb.paper_box_weight,
+                    pb.box_status,
+                    pb.number_of_product,
+                    time.ctime(pb.packing_time),
+                    pb.box_id,
+                    pb.cold_house.pallet_id,
+                    pb.cold_house.cold_house_id
+
+                ])
+
+            # return data
+            context = {
+
+                'pb_list': pb_final_list,
+                'ch_list':ch_final_list
+
+            }
+
+            return HttpResponse(ch_temp.render(context))
+
+    # user can't access to this page
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))

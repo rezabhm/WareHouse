@@ -640,7 +640,7 @@ class FreezingTunnel(models.Model):
     # pallet id that include product
     pallet_id = models.CharField(max_length=15, null=True)
 
-    # this param determine that product is in the tunnel or not if equal True it mean it still in the tunnel
+    # this param determine that product is in the tunnel or not if equal True it means still in the tunnel
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
     # relation
@@ -727,7 +727,7 @@ class PaperBox(models.Model):
     # paper box weight
     paper_box_weight = models.FloatField()
 
-    # if it equal True it means paper is in the cold House and or exit from it and if equal False it mean
+    # if it equals True it means paper is in the cold House and or exit from it and if equal False it mean
     # it didn't enter to coldHouse
     box_status = models.BooleanField(default=False)
 
