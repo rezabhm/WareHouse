@@ -1,0 +1,54 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% load static %}
+
+{% block title %}
+<h3> user </h3>
+{% endblock %}
+
+{% block content %}
+
+ <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up">
+            <div class="icon"><i class="bi bi-briefcase"></i></div>
+            <h4 class="title"><a href="{% url 'SignUp_Form' %}">SignUp Form</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="icon"><i class="bi bi-card-checklist"></i></div>
+            <h4 class="title"><a href="{% url 'SignUp' %}">SignUp</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon"><i class="bi bi-bar-chart"></i></div>
+            <h4 class="title"><a href="{% url 'SignIn_Form' %}">SignIn Form</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="icon"><i class="bi bi-binoculars"></i></div>
+            <h4 class="title"><a href="{% url 'SignIn' %}">*SignIn</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon"><i class="bi bi-brightness-high"></i></div>
+            <h4 class="title"><a href="{% url 'Change_Password_Form' %}">Change Password Form</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="500">
+            <div class="icon"><i class="bi bi-calendar4-week"></i></div>
+            <h4 class="title"><a href="{% url 'Change_Password' %}">Change Password </a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="400">
+            <div class="icon"><i class="bi bi-brightness-high"></i></div>
+            <h4 class="title"><a href="{% url 'LogOut' %}">LogOut</a></h4>
+          </div>
+          <div class="col-lg-4 col-md-6 icon-box p-5" data-aos="fade-up" data-aos-delay="500">
+            <div class="icon"><i class="bi bi-calendar4-week"></i></div>
+            <h4 class="title"><a href="{% url 'User_Profile' username=user %}">*User_Profile </a></h4>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+
+{% endblock %}
