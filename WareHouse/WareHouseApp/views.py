@@ -30,6 +30,7 @@ def main(request):
 
     return HttpResponse(main_template.render())
 
+
 def main_url(request):
 
     """
@@ -40,6 +41,26 @@ def main_url(request):
     main_template = loader.get_template('WareHouseApp/main.html')
 
     return HttpResponse(main_template.render())
+
+
+def user_url(request):
+
+    """
+    this is user page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/user.html')
+
+
+    context = {
+
+        'user': request.user.username if request.user.is_authenticated else 'anonymouse'
+
+    }
+
+
+    return HttpResponse(main_template.render(context))
 
 
 def contact(request):
@@ -271,7 +292,7 @@ def log_out(request):
     logout(request)
 
 
-def user_profile(request, ussername):
+def user_profile(request, username='admin'):
 
     user_profile_page = loader.get_template('WareHouseApp/user_profile.html')
 
@@ -279,13 +300,13 @@ def user_profile(request, ussername):
         "user": request.user
     }
 
-    if request.user.is_authenticate:
+    if request.user.is_authenticated:
 
         return HttpResponse(user_profile_page.render(context))
 
     else:
 
-        return HttpResponseRedirect(reverse('sign_in'))
+        return HttpResponseRedirect(reverse('SignIn_Form'))
 
 
 def change_password_form(request, error_text='fill blank'):

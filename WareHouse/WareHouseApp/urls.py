@@ -97,6 +97,7 @@ urlpatterns = [
     re_path(r'^main/$', views.main_url, name='Main_URL'),
     re_path(r'^about_us/$', views.about, name='About'),
     re_path(r'^contact_us/$', views.contact, name='Contact'),
+    re_path(r'^User_url/$', views.user_url, name='User_url'),
     re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
 
     # user url
