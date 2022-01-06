@@ -10,7 +10,7 @@
 --------------------------------------------------------------*/
 body {
   font-family: "Open Sans", sans-serif;
-  color: #272829;
+  color: #173b6c;
 }
 
 a {
@@ -474,7 +474,7 @@ section {
   font-weight: 600;
   line-height: 1;
   text-transform: uppercase;
-  color: #272829;
+  color: ##eff0f1;
   margin-bottom: 5px;
   transition: all 0.3s ease-in-out;
 }
@@ -899,7 +899,7 @@ section {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 15px;
+  font-size: 30px;
 }
 .breadcrumbs ol li + li {
   padding-left: 10px;

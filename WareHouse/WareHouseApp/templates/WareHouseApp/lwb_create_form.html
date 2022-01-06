@@ -1,5 +1,10 @@
-{% extends 'WareHouseApp/main.html' %}
+ {% extends 'WareHouseApp/main.html' %}
 
+ {% load static %}
+
+ {% block title%}
+ <h2>Live WeighBridge Create</h2>
+ {% endblock %}
 
 {% block content %}
 
@@ -7,49 +12,120 @@
 
   {% csrf_token %}
 
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Driver</p>
+      </div>
+      <div class="col-6">
+         <label for="driver_name">
+        <span >driver name</span>
+        <input type="text" id="driver_name" name="driver_name" />
+      </label>
+      </div>
+        <div class="col-6">
+         <label for="driver_last_name">
+            <span >driver last name</span>
+            <input type="text" id="driver_last_name" name="driver_last_name"/>
+         </label>
+      </div>
+         <div class="col-6">
+         <label for="driver_phone_number">
+            <span >driver phone number</span>
+            <input  type="text" id="driver_phone_number" name="driver_phone_number"/>
+         </label>
+      </div>
+        <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Car</p>
+      </div>
+        <div class="col-6">
+         <label for="car_number">
+            <span >car number</span>
+            <input  type="text" id="car_number" name="car_number"/>
+         </label>
+      </div>
+         <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Product Owner</p>
+      </div>
+        <div class="col-6">
+         <label for="po_name">
+            <span >product owner name</span>
+            <input  type="text" id="po_name" name="product_owner_name"/>
+         </label>
+      </div>
+      <div class="col-6">
+         <label for="po_lastname">
+            <span >product owner last name</span>
+            <input type="text" id="po_lastname" name="product_owner_lastname"/>
+         </label>
+      </div>
 
-  create driver <br>
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Live Weighbridge</p>
+       </div>
+       <div class="col-6">
+         <label for="car_weight">
+            <span >weight of car with product</span>
+            <input type="text" id="car_weight" name="car_weight"/>
+         </label>
+       </div>
+       <div class="col-6">
+         <label for="buy_price">
+            <span >buying price</span>
+            <input  type="number" id="buy_price" name="buy_price"/>
+         </label>
+       </div>
+       <div class="col-4 mt-3">
+         <label for="chicken">
+            <span >chicken</span>
+            <input  type="radio" id="chicken" name="product_category" value="C"/>
+         </label>
+       </div>
+        <div class="col-4 mt-3">
+         <label for="turkey">
+            <span >turkey</span>
+            <input type="radio" id="turkey" name="product_category" value="T"/>
+         </label>
+       </div>
+       <div class="col-4 mt-3">
+         <label for="quail">
+            <span >quail</span>
+            <input  type="radio" id="quail" name="product_category" value="Q"/>
+         </label>
+       </div>
 
-  <label for="driver_name">driver name</label>
-  <input type="text" id="driver_name" name="driver_name"><br>
+    </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
 
-    <label for="driver_last_name">driver last name</label>
-  <input type="text" id="driver_last_name" name="driver_last_name"><br>
-
-    <label for="driver_phone_number">driver phone_number</label>
-  <input type="text" id="driver_phone_number" name="driver_phone_number"><br>
-
-  create car <br>
-
-    <label for="car_number">car number</label>
-  <input type="text" id="car_number" name="car_number"><br>
-
-  create product_owner <br>
-
-    <label for="po_name">product owner name</label>
-  <input type="text" id="po_name" name="product_owner_name"><br>
-
-      <label for="po_lastname">product owner last name</label>
-  <input type="text" id="po_lastname" name="product_owner_lastname"><br>
-
-  create live weighbridge<br>
-      <label for="car_weight">weight of car with product</label>
-  <input type="text" id="car_weight" name="car_weight"><br>
-
-        <label for="buy_price">buying price</label>
-  <input type="number" id="buy_price" name="buy_price"><br>
-
-        <label for="chicken">chicken</label>
-  <input type="radio" id="chicken" name="product_category" value="C"><br>
-
-        <label for="turkey">turkey</label>
-  <input type="radio" id="turkey" name="product_category" value="T"><br>
-
-        <label for="quail">quail</label>
-  <input type="radio" id="quail" name="product_category" value="Q"><br>
-
-
-  <input type="submit" >
+    </div>
 
 </form>
 {% endblock %}

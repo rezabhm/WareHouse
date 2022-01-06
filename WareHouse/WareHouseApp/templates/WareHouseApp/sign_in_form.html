@@ -2,17 +2,44 @@
 
 {% block content %}
 
-<form action="{% url 'SignIn' %}" method="post">
+<form action="{% url 'SignIn' %}" method="post" style="color:#eff0f1">
+
+
 
     {% csrf_token %}
+    <body class="main-bg">
+        <div class="login-container text-c animated flipInX">
+                <div>
+                    <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
+                </div >
+                <div class="p-10">
+                    <h3 class="text-whitesmoke " style="margin-bottom: 2rem">Sign In</h3>
+                </div>
+                <div class="container-content" >
+                    <form class="margin-t" >
+                        <div class="form-group" style="margin-bottom: 1rem;margin-top: 2rem ">
+                            <input type="text" class="form-control" placeholder="Username" required="">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem">
+                            <input type="password" class="form-control" placeholder="*****" required="">
+                        </div>
+                        <button type="submit" class="form-button button-l margin-b">Sign In</button>
 
-    <label for="username">username :</label>
+                        <!--<p class="text-whitesmoke text-center"><small>Do not have an account?</small></p>
+                        <a class="text-darkyellow" href="#"><small>Sign Up</small></a>-->
+                    </form>
+                    <p class="margin-t text-whitesmoke"><small> Ario Zharf &copy; 2018</small> </p>
+                </div>
+            </div>
+    </body>
+
+    <!--<label for="username">username :</label>
     <input type="text" id="username" name="username"><br>
 
     <label for="password">password :</label>
     <input type="password" id="password" name="password"><br>
 
-    <input type="submit">
+    <input type="submit">-->
 
 </form>
 

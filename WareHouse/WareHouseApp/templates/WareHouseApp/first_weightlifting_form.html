@@ -1,5 +1,10 @@
 {% extends 'WareHouseApp/main.html' %}
 
+ {% load static %}
+
+ {% block title%}
+ <h2>First Weightlifting</h2>
+ {% endblock %}
 
 {% block content %}
 
@@ -7,53 +12,152 @@
 
     {% csrf_token %}
 
-    choose one of the blew slaughter<br>
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-    {% for lwb in lwb_list %}
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of the blew slaughter</p>
+             </div>
 
-        <label for="{{ lwb.live_weighbridge_id }}">
+                {% for lwb in lwb_list %}
 
-        Driver: {{ lwb.driver.name }} {{ lwb.driver.last_name }}<br>
-        Car: {{ lwb.driver.car.car_number }}<br>
-        Product Owner: {{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}<br>
-        Car Weight : {{ lwb.final_weight }}<br>
-        Buy Price : {{ lwb.buying_price }}<br>
+           <label for="{{ lwb.live_weighbridge_id}}">
 
-        </label>
+             <div class="col-8" data-aos="fade-in">
+                  <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                    <div class="info col-12 p-5">
+                       <div class="col-12">
+                         <label for="{{ lwb.driver.name }} {{ lwb.driver.last_name }}">
+                            <span >Driver</span>
+                            <input type="text" value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ lwb.driver.car.car_number }}">
+                            <span >Car</span>
+                            <input type="text" value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}">
+                            <span >Product Owner</span>
+                            <input type="text"  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ lwb.final_weight }}">
+                            <span >Car Weight</span>
+                            <input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ lwb.buying_price }}">
+                            <span >Buy Price</span>
+                            <input type="text"  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                        <label for="{{ lwb.live_weighbridge_id}}">
+                        <input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"/>
+                        </label>
+                       </div>
 
-        <input type="radio" name="lwb_id" id="{{ lwb.live_weighbridge_id }}" value="{{ lwb.live_weighbridge_id }}">
 
-    {% endfor %}
+                    </div>
+                  </div>
 
-    <br>
-    <label for="weight" >weight:</label>
-    <input type="text" id="weight" name="weight"><br>
+             </div>
+            </label>
+            {% endfor %}
 
-    choose one of product<br>
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">weight</p>
+             </div>
 
-    <label for="chicken">chicken</label>
-    <input type="radio" name="product_category" id="chicken" value="C"><br>
+           <div class="col-6">
+             <label for="weight">
+                <span >weight</span>
+                <input type="text" id="weight" name="weight"/>
+             </label>
+           </div>
 
-    <label for="quail">quail</label>
-    <input type="radio" name="product_category" id="quail" value="Q"><br>
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of product</p>
+             </div>
+                 <div class="col-4 mt-3">
+             <label for="chicken">
+                    <span >chicken</span>
+                    <input  type="radio" id="chicken" name="product_category" value="C"/>
+                 </label>
+             </div>
+             <div class="col-4 mt-3">
+             <label for="turkey">
+                    <span >turkey</span>
+                    <input type="radio" id="turkey" name="product_category" value="T"/>
+                 </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="quail">
+                <span >quail</span>
+                <input  type="radio" id="quail" name="product_category" value="Q"/>
+             </label>
+            </div>
 
-    <label for="turkey">turkey</label>
-    <input type="radio" name="product_category" id="turkey" value="T"><br>
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of product</p>
+             </div>
 
-
-    choose one of product<br>
-
-    <label for="precold">pre-cold</label>
-    <input type="radio" name="sales_category" id="precold" value="P"><br>
-
-    <label for="dist">distribute</label>
-    <input type="radio" name="sales_category" id="dist" value="D"><br>
-
-    <label for="ft">freezing tunnel</label>
-    <input type="radio" name="sales_category" id="ft" value="F"><br>
-
-    <input type="submit">
-
+             <div class="col-4 mt-3">
+             <label for="precold">
+                <span >pre-cold</span>
+                <input type="radio" name="sales_category" id="precold" value="P"/>
+             </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="dist">
+                <span >distribute</span>
+                <input type="radio" name="sales_category" id="dist" value="D"/>
+             </label>
+            </div>
+             <div class="col-4 mt-3">
+             <label for="ft">
+                <span >freezing tunnel</span>
+                <input type="radio" name="sales_category" id="ft" value="F"/>
+             </label>
+            </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

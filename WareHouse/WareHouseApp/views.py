@@ -43,6 +43,42 @@ def main_url(request):
     return HttpResponse(main_template.render())
 
 
+def live_WeighBridge(request):
+
+    """
+    this is main & primary page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/live_WeighBridge.html')
+
+    return HttpResponse(main_template.render())
+
+
+def monitor_data(request):
+
+    """
+    this is main & primary page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/monitor_data.html')
+
+    return HttpResponse(main_template.render())
+
+
+def first_WeightLifting(request):
+
+    """
+    this is main & primary page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/first_WeightLifting.html')
+
+    return HttpResponse(main_template.render())
+
+
 def user_url(request):
 
     """

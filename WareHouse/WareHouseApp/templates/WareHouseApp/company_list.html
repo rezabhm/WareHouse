@@ -1,20 +1,59 @@
 {% extends 'WareHouseApp/main.html' %}
 
+ {% load static %}
+
+ {% block title%}
+ <h2>Company List</h2>
+ {% endblock %}
+
 {% block content %}
 
-
-{% for company in company_list %}
-
-    company name : {{ company.name }}<br>
     <form action="{% url 'Company_User_List' %}" method="post">
 
         {% csrf_token %}
-        company id : {{ company.company_id }}
+        <div class=" cont">
+           <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+               <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Company</p>
+             </div>
+              {% for company in company_list %}
+                <div class="col-10" data-aos="fade-in">
+                      <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                          <div class="col-6">
+                             <label for="{{ company.name }}">
+                                <span >name</span>
+                                <input type="text" value="{{ company.name }}" id="{{ company.name }}" name="{{ company.name }}" />
+                            </label>
+                          </div>
+                           <div class="col-6">
+                             <label for="{{ company.company_id }}">
+                                <span >id</span>
+                                <input type="text" value="{{ company.company_id }}" id="{{ company.company_id }}" name="{{ company.company_id }}" />
+                            </label>
+                           </div>
+                          <div class="col-5 mr-25">
+                           <button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5 mr-25">{{ company.name }} user list</button>
+                          </div>
+                      </div>
+                </div>
+
+           </div>
+        </div>
+
+
         <input type="hidden" name="company_id" value="{{ company.company_id }}">
-        <input type="submit" value="{{ company.name }} user list">
+
 
     </form>
-    <br><br>
+
 
 {% endfor %}
 

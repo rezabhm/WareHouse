@@ -1,12 +1,31 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+ {% block title%}
+ <h2>slaughter starting</h2>
+ {% endblock %}
+
 {% block content %}
 
 <form action="{% url 'Start_Slaughter' %}" method="post">
 
     {% csrf_token %}
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-    choose one of the blew object<br>
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Choose One Of The Blew Object</p>
+      </div>
+
     {% for slaughter in slaughter_list %}
 
     <label for="{{ slaughter.live_weighbridge_id}}">
@@ -22,7 +41,9 @@
 
     {% endfor %}
 
-    <input type="submit">
+    </div>
+        <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+    </div>
 
 </form>
 

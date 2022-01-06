@@ -1,0 +1,90 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% load static %}
+
+{% block title %}
+<h2 xmlns="http://www.w3.org/1999/html"> First WeightLifting </h2>
+{% endblock %}
+
+{% block content %}
+<section id="services" class="services">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch " >
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'First_WeightLifting_Form' %}">First WeightLifting</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'Pre_Cold_Enter_Form' %}">Pre Cold Enter</a></h4>
+                </div>
+              </div>
+          </div>
+            <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'Pre_Cold_Exit_Form' %}">Pre Cold Exit</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'Distribute_Form' %}">Distribute</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'Freeze_Tunnel_Enter_Form' %}">Freeze Tunnel Enter</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'Freeze_Tunnel_Exit_Form' %}">Freeze Tunnel Exit</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'PaperBox_Create_Form' %}">PaperBox Create</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'ColdHouse_Enter_Form' %}">ColdHouse Enter</a></h4>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-6 col-md-6 icon-box p-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
+                <div class="info">
+                  <div class="icon"><i class="bi bi-journals"></i></div>
+                  <h4 class="title"><a href="{% url 'ColdHouse_Exit_Form' %}">ColdHouse Exit</a></h4>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Services Section -->
+
+{% endblock %}

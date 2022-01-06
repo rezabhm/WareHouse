@@ -1,46 +1,111 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+ {% block title%}
+ <h2>Pre Cold Enter</h2>
+ {% endblock %}
+
 {% block content %}
 
 <form action="{% url 'Pre_Cold_Enter' %}" method="post">
 
     {% csrf_token %}
 
-    choose first weight lifting<br>
-    {% for fwl in fwl_list %}
+     <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-        <label for="{{ fwl.weight_lifting_id }}">
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose first weight lifting</p>
+             </div>
 
-            {{ fwl.weight }}
+          {% for fwl in fwl_list %}
 
-        </label>
+              <label for="{{ fwl.weight_lifting_id }}">
 
-        <input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"><br>
+                <div class="col-8" data-aos="fade-in">
+                      <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                        <div class="info col-12 p-5">
+                           <div class="col-12">
+                             <label for="{{ fwl.weight }}">
+                                <!--<span >weight</span>-->
+                                <input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" />
+                            </label>
+                           </div>
+                            <div class="col-12">
+                            <label for="{{ fwl.weight_lifting_id }}">
+                            <input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"/>
+                            </label>
+                           </div>
+                        </div>
+                      </div>
+                </div>
 
-    {% endfor %}
+              </label>
 
-    <label for="weight">weight:</label>
-    <input type="text" name="weight" id="weight"><br>
+           {% endfor %}
 
+             <div class="col-6 mt-3">
+                 <label for="weight">
+                    <span >weight</span>
+                    <input type="text" name="weight" id="weight"/>
+                 </label>
+             </div>
+             <div class="col-6 mt-3">
+                 <label for="pc_id">
+                    <span >pre-cold id</span>
+                    <input type="number" name="pc_id" id="pc_id"/>
+                 </label>
+             </div>
+             <div class="col-6 mt-3">
+                 <label for="pallet_id">
+                    <span >pallet id</span>
+                    <input type=type="text" name="pallet_id" id="pallet_id" value="00000"/>
+                 </label>
+             </div>
+              <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of product category</p>
+             </div>
 
-    <label for="pc_id">pre-cold id:</label>
-    <input type="number" name="pc_id" id="pc_id"><br>
+              <div class="col-4 mt-3">
+             <label for="chicken">
+                    <span >chicken</span>
+                    <input  type="radio" id="chicken" name="product_category" value="C"/>
+                 </label>
+             </div>
+             <div class="col-4 mt-3">
+             <label for="turkey">
+                    <span >turkey</span>
+                    <input type="radio" id="turkey" name="product_category" value="T"/>
+                 </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="quail">
+                <span >quail</span>
+                <input  type="radio" id="quail" name="product_category" value="Q"/>
+             </label>
+            </div>
 
-    <label for="pallet_id">pallet id:</label>
-    <input type="text" name="pallet_id" id="pallet_id" value="00000"><br>
+             <div>
+                 <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+             </div>
 
-    choose one of product category<br>
-    <label for="chicken">chicken</label>
-    <input type="radio" name="product_category" id="chicken" value="C"><br>
-
-    <label for="quail">quail</label>
-    <input type="radio" name="product_category" id="quail" value="Q"><br>
-
-    <label for="turkey">turkey</label>
-    <input type="radio" name="product_category" id="turkey" value="T"><br>
-
-    <input type="submit">
-
+         </div>
+     </div>
 </form>
 
 {% endblock %}

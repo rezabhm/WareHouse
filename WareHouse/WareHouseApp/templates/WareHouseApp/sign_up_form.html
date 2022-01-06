@@ -3,73 +3,143 @@
 {% load static %}
 
 {% block title %}
-<h3> SignUp Form </h3>
+<h2> sign up </h2>
 {% endblock %}
-
 
 {% block content %}
 
 <form action="{% url 'SignUp' %}" method="post">
 
   {% csrf_token %}
-  {{ error_text }}<br>
+  <!--{{ error_text }}<br>-->
 
-  <label for="username">username : </label>
-  <input id="username" name="username" type="text"><br>
+  <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Information</p>
+      </div>
+      <div class="col-6">
+         <label for="username">
+        <span >username</span>
+        <input  id="username" name="username" type="text" />
+      </label>
+      </div>
+      <div class="col-6">
+        <label for="email">
+        <span>email</span>
+        <input id="email" name="email" type="email"/>
+      </label>
+      </div>
+      <div class="col-6">
+        <label for="name">
+        <span >name</span>
+        <input  id="name" name="name" type="text" />
+      </label>
+      </div>
+      <div class="col-6">
+        <label for="lastname">
+        <span>lastname</span>
+        <input id="lastname" name="lastname" type="text"/>
+      </label>
+      </div>
+      <div class="col-6">
+        <label for="password">
+        <span>password</span>
+        <input  id="password" name="password" type="password"/>
+      </label>
+      </div>
+      <div class="col-6 mb-5">
+        <label for="verify_pass">
+        <span>verify password</span>
+        <input id="verify_pass" name="verify_pass" type="password"/>
+      </label>
+      </div>
+      <div class="col-12">
+        <label for="phonenumber">
+        <span>phone number</span>
+        <input id="phonenumber" name="phone_number" type="text"/>
+      </label>
+      </div>
+      <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">user</p>
+      </div>
+      <div class="col-2">
+        <label for="ceo">
+        <span>CEO</span>
+        <input type="radio" name="user_type" id="ceo" value="ceo"/>
+      </label>
+      </div>
+      <div class="col-2">
+        <label for="sales_manager">
+        <span>Sales Manager</span>
+        <input type="radio" name="user_type" id="sales_manager" value="sales_manager"/>
+      </label>
+      </div>
+      <div class="col-2">
+        <label for="weightlifting_manager">
+        <span>Weightlifting Manager</span>
+        <input type="radio" name="user_type" id="weightlifting_manager" value="weightlifting_manager"/>
+      </label>
+      </div>
+      <div class="col-2">
+        <label for="freezing_tunnel_manager">
+        <span>Freezing Tunnel Manager</span>
+        <input type="radio" name="user_type" id="freezing_tunnel_manager" value="freezing_tunnel_manager"/>
+      </label>
+      </div>
+      <div class="col-2">
+        <label for="live_weigh_bridge_manager">
+        <span>live Weigh Bridge Manager</span>
+        <input type="radio" name="user_type" id="live_weigh_bridge_manager" value="live_weigh_bridge_manager"/>
+        </label>
+      </div>
+      <div class="col-2">
+        <label for="precold_manager">
+        <span>Precold Manager</span>
+        <input type="radio" name="user_type" id="precold_manager" value="precold_manager"/>
+        </label>
+      </div>
 
-   <label for="name">name : </label>
-  <input id="name" name="name" type="text"><br>
+        <br>
+          <div class="col-12 mt-5">
+             <p class="partition" style="background-color: lavender;
+        border-radius: 2px;
+        border-left-style: solid;
+        border-left-color: #17a2b8;
+        border-left-width: 5px;
+        padding-left: 10px;
+        padding: 5px;
+        color: black;">Choose Company</p>
+          </div>
+      {% for company in company_list %}
 
-   <label for="lastname">lastname : </label>
-  <input id="lastname" name="lastname" type="text"><br>
+        <div class="col-2">
+          <label for="{{ company.company_id }}">
+            <span>{{ company.name }}</span>
+            <input type="radio" name="company" id="{{ company.company_id }}" value="{{ company.company_id }}"/>
+          </label>
+        </div>
+        {% endfor %}
+        <br>
 
-   <label for="email">email : </label>
-  <input id="email" name="email" type="text"><br>
+    </div>
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">Sign up</button>
+  </div>
 
-   <label for="phonenumber">phone number: </label>
-  <input id="phonenumber" name="phone_number" type="text"><br>
-
-   <label for="password">password : </label>
-  <input id="password" name="password" type="password"><br>
-
-  <label for="verify_pass">verify password: </label>
-  <input id="verify_pass" name="verify_pass" type="password"><br>
-
-    <br>
-    <br>
-    <br>
-
-    <label for="ceo">CEO</label>
-  <input type="radio" name="user_type" id="ceo" value="ceo"><br>
-
-    <label for="sales_manager">sales manager</label>
-  <input type="radio" name="user_type" id="sales_manager" value="sales_manager"><br>
-
-    <label for="weightlifting_manager">weightlifting manager</label>
-  <input type="radio" name="user_type" id="weightlifting_manager" value="weightlifting_manager"><br>
-
-    <label for="freezing_tunnel_manager">freezing tunnel manager</label>
-  <input type="radio" name="user_type" id="freezing_tunnel_manager" value="freezing_tunnel_manager"><br>
-
-    <label for="live_weigh_bridge_manager">live_weigh_bridge_manager</label>
-  <input type="radio" name="user_type" id="live_weigh_bridge_manager" value="live_weigh_bridge_manager"><br>
-
-    <label for="precold_manager">pre cold manager</label>
-  <input type="radio" name="user_type" id="precold_manager" value="precold_manager">
-    <br>
-    <br>
-    <br>
-
-    choose company
-    <br>
-  {% for company in company_list %}
-
-        <label for="{{ company.company_id }}">{{ company.name }}</label>
-      <input type="radio" name="company" id="{{ company.company_id }}" value="{{ company.company_id }}">
-
-  {% endfor %}
-  <br>
-  <input type="submit">
 
 </form>
 
