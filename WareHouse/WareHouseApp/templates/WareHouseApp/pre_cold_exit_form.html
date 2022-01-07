@@ -1,28 +1,72 @@
 {% extends 'WareHouseApp/main.html' %}
 
-{% block content %}
+ {% load static %}
 
+ {% block title%}
+ <h2>Pre Cold Exit</h2>
+ {% endblock %}
+
+{% block content %}
 
 <form action="{% url 'Pre_Cold_Exit' %}" method="post">
 
     {% csrf_token %}
 
-    choose one of the blew :<br>
-    {% for pc in pc_list %}
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-        <label for="{{ pc.pc_id }}">
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Choose one of the blew</p>
+             </div>
 
-            weight : {{ pc.weight }}<br>
-            pallet id : {{ pc.pre_cold_id }}<br>
-            pre-cold id : {{ pc.pallet_id }}<br>
+                {% for pc in pc_list %}
 
-        </label>
+           <label for="{{ pc.pc_id }}">
 
-        <input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"><br>
+             <div class="col-8" data-aos="fade-in">
+                  <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                    <div class="info col-12 p-5">
+                       <div class="col-12">
+                         <label for="{{ pc.weight }}">
+                            <span >Weight</span>
+                            <input type="text" value="{{ pc.weight }}" id="{{ pc.weight }}" name="{{ pc.weight }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ pc.pre_cold_id }}">
+                            <span >Pallet id</span>
+                            <input type="text" value="{{ pc.pre_cold_id }}" id="{{ pc.pre_cold_id }}" name="{{ pc.pre_cold_id }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ pc.pallet_id }}">
+                            <span >Pre cold id</span>
+                            <input type="text"  value="{{ pc.pallet_id }}" id="{{ pc.pallet_id }}" name="{{ pc.pallet_id }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                        <label for="{{ pc.pc_id }}">
+                        <input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"/>
+                        </label>
+                       </div>
 
-    {% endfor %}
 
-    <input type="submit">
+                    </div>
+                  </div>
 
+             </div>
+            </label>
+            {% endfor %}
+             <div><button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button></div>
+         </div>
+    </div>
 </form>
+
 {% endblock %}

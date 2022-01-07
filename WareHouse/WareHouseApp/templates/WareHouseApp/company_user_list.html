@@ -1,56 +1,282 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title %}
+<h2>Company User List</h2>
+{% endblock %}
+
 {% block content %}
 
-ceo manager:<br>
-{% for user in ceo_list %}
 
-    username : {{ user.username }}<br>
-    name : {{ user.name }}<br>
-    last name : {{ user.lastname }}<br>
-    <br>
+<form action="{% url 'Company_User_List' %}" method="post">
 
-{% endfor %}
+    {% csrf_token %}
 
-freeze tunnel manager:<br>
-{% for user in ft_list %}
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Ceo Manager</p>
+          </div>
 
-    username : {{ user.username }}<br>
-    name : {{ user.name }}<br>
-    last name : {{ user.lastname }}<br>
-    <br>
+       {% for user in ceo_list %}
 
-{% endfor %}
+       <label >
 
-live weighbridge manager:<br>
-{% for user in lw_list %}
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ user.username }}">
+                        <span >user name</span>
+                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ user.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ user.lastname }}">
+                        <span >last name</span>
+                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
+                    </label>
+                   </div>
+                </div>
+              </div>
+         </div>
+        </label>
+        {% endfor %}
 
-    username : {{ user.username }}<br>
-    name : {{ user.name }}<br>
-    last name : {{ user.lastname }}<br>
-    <br>
+      </div>
+    </div>
+</form>
 
-{% endfor %}
+<form action="{% url 'Company_User_List' %}" method="post">
 
-pre-cold manager:<br>
-{% for user in pc_list %}
+    {% csrf_token %}
 
-    username : {{ user.username }}<br>
-    name : {{ user.name }}<br>
-    last name : {{ user.lastname }}<br>
-    <br>
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Freeze Tunnel Manager</p>
+          </div>
 
-{% endfor %}
+       {% for user in ft_list %}
 
-sales manager:<br>
-{% for user in sales_list %}
+       <label >
 
-    username : {{ user.username }}<br>
-    name : {{ user.name }}<br>
-    last name : {{ user.lastname }}<br>
-    <br>
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ user.username }}">
+                        <span >user name</span>
+                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ user.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ user.lastname }}">
+                        <span >last name</span>
+                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
+                    </label>
+                   </div>
+                </div>
+              </div>
+         </div>
+        </label>
+        {% endfor %}
 
-{% endfor %}
+      </div>
+    </div>
+</form>
 
+<form action="{% url 'Company_User_List' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Live Weighbridge Manager</p>
+          </div>
+
+       {% for user in lw_list %}
+
+       <label >
+
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ user.username }}">
+                        <span >user name</span>
+                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ user.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ user.lastname }}">
+                        <span >last name</span>
+                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
+                    </label>
+                   </div>
+                </div>
+              </div>
+         </div>
+        </label>
+        {% endfor %}
+
+      </div>
+    </div>
+</form>
+
+<form action="{% url 'Company_User_List' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Pre Cold Manager</p>
+          </div>
+
+       {% for user in pc_list %}
+
+       <label >
+
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ user.username }}">
+                        <span >user name</span>
+                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ user.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ user.lastname }}">
+                        <span >last name</span>
+                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
+                    </label>
+                   </div>
+                </div>
+              </div>
+         </div>
+        </label>
+        {% endfor %}
+
+      </div>
+    </div>
+</form>
+
+
+
+<form action="{% url 'Company_User_List' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Sales Manager</p>
+          </div>
+
+       {% for user in sales_list %}
+
+       <label >
+
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ user.username }}">
+                        <span >user name</span>
+                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ user.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ user.lastname }}">
+                        <span >last name</span>
+                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
+                    </label>
+                   </div>
+                </div>
+              </div>
+         </div>
+        </label>
+        {% endfor %}
+
+      </div>
+    </div>
+</form>
 
 {% endblock %}
+
+
+
+
+
+------------------------------------------------------------------------------
+
+

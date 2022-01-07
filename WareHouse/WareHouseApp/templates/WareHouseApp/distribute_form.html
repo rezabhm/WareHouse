@@ -1,7 +1,176 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Distributed</h2>
+{% endblock %}
+
 {% block content %}
 
+
+<form action="{% url 'Distribute' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Choose from blew driver</p>
+             </div>
+
+                {% for driver in driver_list %}
+
+           <label for="{{ driver.driver_id }}">
+
+             <div class="col-8" data-aos="fade-in">
+                  <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                    <div class="info col-12 p-5">
+                       <div class="col-12">
+                         <label for="{{ driver.name }}">
+                            <span >Name</span>
+                            <input type="text" value="{{ driver.name }}" id="{{ driver.name }}" name="{{ driver.name }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ driver.lastname }}">
+                            <span >Last name</span>
+                            <input type="text" value="{{ driver.lastname }}" id="{{ driver.lastname }}" name="{{ driver.lastname }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ driver.phone_number }}">
+                            <span >Phone number</span>
+                            <input type="text" value="{{ driver.phone_number }}" id="{{ driver.phone_number }}" name="{{ driver.phone_number }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                        <label for="{{ driver.driver_id }}">
+                        <input  type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"/>
+                        </label>
+                       </div>
+
+
+                    </div>
+                  </div>
+
+             </div>
+            </label>
+            {% endfor %}
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Inter information</p>
+             </div>
+
+             {% for fwl in fwl_list %}
+
+           <label for="{{ fwl.weight_lifting_id }}">
+
+             <div class="col-8" data-aos="fade-in">
+                  <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                    <div class="info col-12 p-5">
+                       <div class="col-12">
+                         <label for="{{ fwl.weight }}">
+                            <span >Weight</span>
+                            <input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ fwl.product_category }}">
+                            <span >Product category</span>
+                            <input type="text" value="{{ fwl.product_category }}" id="{{ fwl.product_category }}" name="{{ fwl.product_category }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                        <label for="{{ fwl.weight_lifting_id }}">
+                        <input  type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}"/>
+                        </label>
+                       </div>
+                    </div>
+                  </div>
+             </div>
+            </label>
+            {% endfor %}
+
+           <div class="col-6">
+             <label for="weight">
+                <span >weight</span>
+                <input type="text" id="weight" name="weight"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="sale_price">
+                <span >Sale price</span>
+                <input type="text" id="sale_price" name="sale_price"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="number_of_box">
+                <span >Number of box</span>
+                <input type="text" id="number_of_box" name="number_of_box"/>
+             </label>
+           </div>
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of product</p>
+             </div>
+                 <div class="col-4 mt-3">
+             <label for="chicken">
+                    <span >chicken</span>
+                    <input  type="radio" id="chicken" name="product_category" value="C"/>
+                 </label>
+             </div>
+             <div class="col-4 mt-3">
+             <label for="turkey">
+                    <span >turkey</span>
+                    <input type="radio" id="turkey" name="product_category" value="T"/>
+                 </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="quail">
+                <span >quail</span>
+                <input  type="radio" id="quail" name="product_category" value="Q"/>
+             </label>
+            </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+<!--
 <form action="{% url 'Distribute' %}" method="post">
 
     {% csrf_token %}
@@ -55,6 +224,6 @@
 
     <input type="submit">
 
-</form>
+</form>-->
 
 {% endblock %}

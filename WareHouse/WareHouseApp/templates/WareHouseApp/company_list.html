@@ -8,53 +8,53 @@
 
 {% block content %}
 
-    <form action="{% url 'Company_User_List' %}" method="post">
+<form action="{% url 'Company_User_List' %}" method="post">
 
-        {% csrf_token %}
-        <div class=" cont">
-           <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+    {% csrf_token %}
 
-               <div class="col-12 mt-5 mb-5">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
-                  padding: 5px;
-                  color: black;">Company</p>
-             </div>
-              {% for company in company_list %}
-                <div class="col-10" data-aos="fade-in">
-                      <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                          <div class="col-6">
-                             <label for="{{ company.name }}">
-                                <span >name</span>
-                                <input type="text" value="{{ company.name }}" id="{{ company.name }}" name="{{ company.name }}" />
-                            </label>
-                          </div>
-                           <div class="col-6">
-                             <label for="{{ company.company_id }}">
-                                <span >id</span>
-                                <input type="text" value="{{ company.company_id }}" id="{{ company.company_id }}" name="{{ company.company_id }}" />
-                            </label>
-                           </div>
-                          <div class="col-5 mr-25">
-                           <button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5 mr-25">{{ company.name }} user list</button>
-                          </div>
-                      </div>
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+           <div class="col-12 mt-5 mb-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">Company</p>
+          </div>
+
+       {% for company in company_list %}
+
+       <label >
+
+         <div class="col-8" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-5">
+                   <div class="col-12">
+                     <label for="{{ company.name }}">
+                        <span >name</span>
+                        <input type="text" value="{{ company.name }}" id="{{ company.name }}" name="{{ company.name }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ company.company_id }}">
+                        <span >Id</span>
+                        <input type="text" value="{{ company.company_id }}" id="{{ company.company_id }}" name="{{ company.company_id }}" />
+                    </label>
+                   </div>
+                    <div class="col-12"><button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5" style="padding: .8rem!important;width: 40%;">{{ company.name }} user list</button></div>
                 </div>
+              </div>
+              <input type="hidden" name="company_id" value="{{ company.company_id }}">
 
-           </div>
-        </div>
+         </div>
+        </label>
+        {% endfor %}
 
-
-        <input type="hidden" name="company_id" value="{{ company.company_id }}">
-
-
-    </form>
-
-
-{% endfor %}
+      </div>
+    </div>
+</form>
 
 {% endblock %}
