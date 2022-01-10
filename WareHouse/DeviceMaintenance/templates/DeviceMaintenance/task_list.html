@@ -1,0 +1,29 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+task list
+{% endblock %}
+
+{% block content %}
+
+{% for dt in data_list %}
+
+    task title : {{ dt.0.title }}<br>
+    task description : {{ dt.0.description }}<br>
+    task cycle time : {{ dt.0.cycle_time }}<br><br><br>
+
+    {% for sub_structure in dt.1 %}
+
+        sub structure title :{{ sub_structure.title }}<br>
+        sub structure description :{{ sub_structure.description }}<br>
+
+    {% endfor %}
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+{% endfor %}
+
+{% endblock %}

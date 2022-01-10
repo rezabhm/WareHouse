@@ -1,0 +1,26 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+create task structure
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Task_Structure_Create' %}" method="post">
+
+    {% csrf_token %}
+
+        <label for="title">title:</label>
+    <input type="text" name="title" id="title"><br>
+
+        <label for="description">description:</label>
+    <input type="text" name="description" id="description"><br>
+
+        <label for="cycle_time">cycle time:</label>
+    <input type="text" name="cycle_time" id="cycle_time"><br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock%}

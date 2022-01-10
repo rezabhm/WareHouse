@@ -1,0 +1,35 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+create sub-task structure
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Sub_Structure_Create' %}" method="post">
+
+    {% csrf_token %}
+
+    {% for ts in task_structure_list %}
+
+        <label for="{{ ts.task_structure_id }}">
+
+            title: {{ ts.title }}<br>
+            description : {{ ts.description }}<br>
+
+        </label>
+        <input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}">
+
+    {% endfor %}
+
+        <label for="title">title:</label>
+    <input type="text" name="title" id="title"><br>
+
+        <label for="description">description:</label>
+    <input type="text" name="description" id="description"><br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock%}

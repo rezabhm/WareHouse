@@ -71,7 +71,7 @@ class SubTaskStructure(models.Model):
     sub_task_structure_id = models.CharField(default=str(uuid1().int), max_length=250)
 
     # relation to TaskStructure models
-    task_structure = models.ForeignKey(TaskStructure, on_delete=models.CASCADE)
+    task_structure = models.ForeignKey(TaskStructure, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title
