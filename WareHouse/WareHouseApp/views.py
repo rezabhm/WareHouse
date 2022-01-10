@@ -392,7 +392,7 @@ def change_password(request):
 
         if user_obj:
 
-            # change pasword
+            # change password
             user_obj.set_password(password)
             user_obj.save()
 
