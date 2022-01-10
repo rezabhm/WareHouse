@@ -12,10 +12,9 @@
 
     {% csrf_token %}
     <div class=" cont">
-    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-       <div class="col-12 mt-5">
+       <div class="col-12 ">
          <p class="partition" style="background-color: lavender;
           border-radius: 2px;
           border-left-style: solid;
@@ -30,14 +29,63 @@
 
     <label for="{{ slaughter.live_weighbridge_id}}">
 
+        <div class="mt-5 col-6" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-1">
+                   <div class="col-12">
+                     <label for="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}">
+                        <span >Driver</span>
+                        <input type="text" value="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" id="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" name="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ slaughter.driver.car.car_number }}">
+                        <span >Car</span>
+                        <input type="text" value="{{ slaughter.driver.car.car_number }}" id="{{ slaughter.driver.car.car_number }}" name="{{ slaughter.driver.car.car_number }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}">
+                        <span >Product Owner</span>
+                        <input type="text"  value="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" id="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" name="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ slaughter.final_weight }}">
+                        <span >Car Weight</span>
+                        <input type="text" value="{{ slaughter.final_weight }}" id="{{ slaughter.final_weight }}" name="{{ slaughter.final_weight }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ slaughter.buying_price }}">
+                        <span >Buy Price</span>
+                        <input type="text"  value="{{ slaughter.buying_price }}" id="{{ slaughter.buying_price }}" name="{{ slaughter.buying_price }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                    <label for="{{ slaughter.live_weighbridge_id}}">
+                    <input type="radio" name="slaughter_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/>
+                    </label>
+                   </div>
+
+
+                </div>
+              </div>
+
+         </div>
+<!--
+
         Driver: {{ slaughter.driver.name }} {{ slaughter.driver.last_name }}<br>
         Car: {{ slaughter.driver.car.car_number }}<br>
         Product Owner: {{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}<br>
         Car Weight : {{ slaughter.final_weight }}<br>
         Buy Price : {{ slaughter.buying_price }}<br>
+-->
 
     </label>
+<!--
     <input type="radio" name="slaughter_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}">
+-->
 
     {% endfor %}
 

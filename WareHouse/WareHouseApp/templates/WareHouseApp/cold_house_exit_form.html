@@ -1,7 +1,65 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Cold house exit</h2>
+{% endblock %}
+
 
 {% block content %}
+
+
+<form action="{% url 'ColdHouse_Exit' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Choose from blew list</p>
+             </div>
+
+             <div class="fresh-table full-color-orange">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>id</th>
+                          <th style=" text-align: center;">selection</th>
+                        </thead>
+
+                         {% for cold_house in cold_house_list %}
+                        <label for="{{ cold_house.pallet_id }}">
+                            <tbody>
+                              <tr>
+                                <td>{{ cold_house.pallet_id }}</td>
+                                <td>
+                                    <div class="checkbox mr-10">
+                                         <label><input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id" value="{{ cold_house.pallet_id }}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!--
 
 <form action="{% url 'ColdHouse_Exit' %}" method="post">
 
@@ -18,5 +76,6 @@
     <input type="submit">
 
 </form>
+-->
 
 {% endblock %}

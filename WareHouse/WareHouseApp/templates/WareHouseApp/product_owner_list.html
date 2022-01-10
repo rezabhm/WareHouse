@@ -1,93 +1,237 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Product owner list</h2>
+{% endblock %}
+
 {% block content %}
 
-distribute : <br>
-{% for dist in dist_list %}
 
-    car number : {{ dist.3 }}<br>
-    driver name : {{ dist.0 }}<br>
-    driver last name : {{ dist.1 }}<br>
-    driver phone number : {{ dist.2 }}<br>
-    product owner name : {{ dist.4 }}<br>
-    product owner last name : {{ dist.5 }}<br>
-    weight : {{ dist.6 }}<br>
-    time : {{ dist.7 }}<br>
-    sale price : {{ dist.8 }}<br>
-    product category : {{ dist.9 }}<br>
-    bill of lading: {{ dist.10 }}<br>
-    number of box : {{ dist.11 }}<br><br>
+<div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-{% endfor %}
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Distribute</p>
+             </div>
+             <div class="fresh-table full-color-orange"  style="overflow-x: scroll;">
 
-<br>
-<br>
-<br>
-<br>
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver name</th>
+                          <th>Diver last name</th>
+                          <th>Driver phone number</th>
+                          <th>car number</th>
+                          <th>Product owner name</th>
+                          <th>Product owner last name</th>
+                          <th>Weight</th>
+                          <th>Time</th>
+                          <th>Sale price</th>
+                          <th>Product category</th>
+                          <th>Bill of lading</th>
+                          <th>Number of box</th>
+                        </thead>
 
-live WeighBridge : <br>
-{% for lwb in lwb_list %}
+                        {% for dist in dist_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ dist.0 }}</td>
+                                <td>{{ dist.1 }}</td>
+                                <td>{{ dist.2 }}</td>
+                                <td>{{ dist.3 }}</td>
+                                <td>{{ dist.4 }}</td>
+                                <td>{{ dist.5 }}</td>
+                                <td>{{ dist.6 }}</td>
+                                <td>{{ dist.7 }}</td>
+                                <td>{{ dist.8 }}</td>
+                                <td>{{ dist.9 }}</td>
+                                <td>{{ dist.10 }}</td>
+                                <td>{{ dist.11 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
-    car number : {{ lwb.3 }}<br>
-    driver name : {{ lwb.0 }}<br>
-    driver last name : {{ lwb.1 }}<br>
-    driver phone number : {{ lwb.2 }}<br>
-    product owner name : {{ lwb.4 }}<br>
-    product owner last name : {{ lwb.5 }}<br>
-    car final weight : {{ lwb.6 }}<br>
-    car weight : {{ lwb.7 }}<br>
-    car empty status: {{ lwb.8 }}<br>
-    weighting time : {{ lwb.9 }}<br>
-    product category : {{ lwb.10 }}<br>
-    slaughter status : {{ lwb.11 }}<br>
-    slaughter start time : {{ lwb.12 }}<br>
-    slaughter finish time : {{ lwb.13 }}<br>
-    buy price : {{ lwb.14 }}<br><br>
+              <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Live WeighBridge </p>
+             </div>
+             <div class="fresh-table full-color-orange" style="overflow-x: scroll;" >
 
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver name</th>
+                          <th>Diver last name</th>
+                          <th>Driver phone number</th>
+                          <th>Car number</th>
+                          <th>Product owner name</th>
+                          <th>Product owner last name</th>
+                          <th>Car final weight</th>
+                          <th>Car weight</th>
+                          <th>Car empty status</th>
+                          <th>weighting time</th>
+                          <th>product category</th>
+                          <th>slaughter status </th>
+                          <th>slaughter start time </th>
+                          <th>slaughter finish time </th>
+                          <th>buy price</th>
+                        </thead>
 
-{% endfor %}
+                        {% for lwb in lwb_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ lwb.0 }}</td>
+                                <td>{{ lwb.1 }}</td>
+                                <td>{{ lwb.2 }}</td>
+                                <td>{{ lwb.3 }}</td>
+                                <td>{{ lwb.4 }}</td>
+                                <td>{{ lwb.5 }}</td>
+                                <td>{{ lwb.6 }}</td>
+                                <td>{{ lwb.7 }}</td>
+                                <td>{{ lwb.8 }}</td>
+                                <td>{{ lwb.9 }}</td>
+                                <td>{{ lwb.10 }}</td>
+                                <td>{{ lwb.11 }}</td>
+                                <td>{{ lwb.12 }}</td>
+                                <td>{{ lwb.13 }}</td>
+                                <td>{{ lwb.14 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
-<br><br><br>
+               <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Pre cold</p>
+             </div>
+             <div class="fresh-table full-color-orange" style="overflow-x: scroll;" >
 
-pre-cold :<br>
-{% for pd in pd_list %}
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Product owner name</th>
+                          <th>Product owner last name </th>
+                          <th>Driver name</th>
+                          <th>driver last name</th>
+                          <th>car number</th>
+                          <th>weighting time</th>
+                          <th>first weighting weight </th>
+                          <th>first weighting type</th>
+                          <th>pre-cold id</th>
+                          <th>pallet id</th>
+                          <th>is product in pre-cold ?</th>
+                          <th>product category</th>
+                          <th>product weight in pre-cold </th>
+                          <th>entry time to pre-cold </th>
+                          <th>exit time</th>
+                        </thead>
 
-  product owner name : {{ pd.0 }}<br>
-  product owner last name : {{ pd.1 }}<br>
-  driver name : {{ pd.2 }}<br>
-  driver last name : {{ pd.3 }}<br>
-  car number : {{ pd.4 }}<br>
-  weighting time : {{ pd.5 }}<br>
-  first weighting weight : {{ pd.6 }}<br>
-  first weighting type : {{ pd.7 }}<br>
-  pre-cold id : {{ pd.8 }}<br>
-  pallet id : {{ pd.9 }}<br>
-  is product in pre-cold ? {{ pd.10 }}<br>
-  product category: {{ pd.11 }}<br>
-  product weight in pre-cold : {{ pd.12 }}<br>
-  entry time to pre-cold : {{ pd.13 }}<br>
-  exit time : {{ pd.14 }}<br><br>
+                        {% for pd in pd_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ pd.0 }}</td>
+                                <td>{{ pd.1 }}</td>
+                                <td>{{ pd.2 }}</td>
+                                <td>{{ pd.3 }}</td>
+                                <td>{{ pd.4 }}</td>
+                                <td>{{ pd.5 }}</td>
+                                <td>{{ pd.6 }}</td>
+                                <td>{{ pd.7 }}</td>
+                                <td>{{ pd.8 }}</td>
+                                <td>{{ pd.9 }}</td>
+                                <td>{{ pd.10 }}</td>
+                                <td>{{ pd.11 }}</td>
+                                <td>{{ pd.12 }}</td>
+                                <td>{{ pd.13 }}</td>
+                                <td>{{ pd.14 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
-{% endfor %}
+              <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Freez tunnel </p>
+             </div>
+             <div class="fresh-table full-color-orange" style="overflow-x: scroll;" >
 
-<br><br><br>
-freeze tunnel : <br>
-{% for ft in ft_list %}
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Product owner name</th>
+                          <th>Product owner last name </th>
+                          <th>Driver name</th>
+                          <th>driver last name</th>
+                          <th>car number</th>
+                          <th>weighting time</th>
+                          <th>first weighting weight </th>
+                          <th>first weighting type</th>
+                          <th>entry time</th>
+                          <th>exit time</th>
+                          <th>weight</th>
+                          <th>freeze tunnel id</th>
+                          <th>product category  </th>
+                          <th>entry time to pre-cold </th>
+                          <th>exit time</th>
+                        </thead>
 
-  product owner name : {{ ft.0 }}<br>
-  product owner last name : {{ ft.1 }}<br>
-  driver name : {{ ft.2 }}<br>
-  driver last name : {{ ft.3 }}<br>
-  car number : {{ ft.4 }}<br>
-  weighting time : {{ ft.5 }}<br>
-  first weighting weight : {{ ft.6 }}<br>
-  first weighting type : {{ ft.7 }}<br>
-  entry time : {{ ft.8 }}<br>
-  exit time : {{ ft.9 }}<br>
-  weight: {{ ft.10 }}<br>
-  freeze tunnel id : {{ ft.11 }}<br>
-  product category : {{ ft.12 }}<br><br>
-
-{% endfor %}
+                        {% for ft in ft_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ pd.0 }}</td>
+                                <td>{{ pd.1 }}</td>
+                                <td>{{ pd.2 }}</td>
+                                <td>{{ pd.3 }}</td>
+                                <td>{{ pd.4 }}</td>
+                                <td>{{ pd.5 }}</td>
+                                <td>{{ pd.6 }}</td>
+                                <td>{{ pd.7 }}</td>
+                                <td>{{ pd.8 }}</td>
+                                <td>{{ pd.9 }}</td>
+                                <td>{{ pd.10 }}</td>
+                                <td>{{ pd.11 }}</td>
+                                <td>{{ pd.12 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+         </div>
+    </div>
 
 {% endblock %}

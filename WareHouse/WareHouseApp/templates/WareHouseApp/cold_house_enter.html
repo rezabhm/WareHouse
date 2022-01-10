@@ -1,8 +1,97 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Cold house enter</h2>
+{% endblock %}
+
 
 {% block content %}
 
+
+<form action="{% url 'ColdHouse_Enter' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Choose from blew object</p>
+             </div>
+
+             <div class="fresh-table full-color-orange">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for paper_box in paper_box_list %}
+                        <label for="{{ paper_box.box_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="checkbox">
+                                         <label><input type="checkbox" value="{{ paper_box.box_id }}" name="{{ paper_box.box_id }}" id="{{ paper_box.box_id }}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+           <div class="col-6">
+             <label for="pallet_weight_with_product">
+                <span >pallet weight with product</span>
+                <input type="text" id="pallet_weight_with_product" name="pallet_weight_with_product"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="pallet_weight_without_product">
+                <span >pallet weight without product </span>
+                <input type="text" id="pallet_weight_without_product" name="pallet_weight_without_product"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="number_of_box">
+                <span >Cold house id</span>
+                <input type="text" id="number_of_box" name="number_of_box"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="cold_house_id">
+                <span >Number of box</span>
+                <input type="text" id="cold_house_id" name="cold_house_id"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="pallet_id">
+                <span >Pallet id</span>
+                <input type="text" id="pallet_id" name="pallet_id"/>
+             </label>
+           </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+<!--
 <form action="{% url 'ColdHouse_Enter' %}" method="post">
 
     {% csrf_token %}
@@ -34,6 +123,6 @@
 
     <input type="submit">
 
-</form>
+</form>-->
 
 {% endblock %}

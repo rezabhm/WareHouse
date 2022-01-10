@@ -543,12 +543,6 @@ def lwb_create(requests):
             if len(lwb_user_list) > 0:
                 lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
 
-            elif requests.user.is_superuser:
-                lwb_obj.Live_Weighbridge_Manager = 'Admin'
-
-            else:
-                lwb_obj.Live_Weighbridge_Manager = 'CEO'
-
             # save live weighbridge
             lwb_obj.save()
 

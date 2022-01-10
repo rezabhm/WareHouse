@@ -15,7 +15,7 @@
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+           <div class="col-12 mt-5 ">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -26,36 +26,35 @@
               color: black;">Ceo Manager</p>
           </div>
 
-       {% for user in ceo_list %}
+           <div class="fresh-table full-color-orange">
 
-       <label >
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>User name</th>
+                          <th>Name</th>
+                          <th>Last name</th>
 
-         <div class="col-8" data-aos="fade-in">
-              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
-                   <div class="col-12">
-                     <label for="{{ user.username }}">
-                        <span >user name</span>
-                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
-                    </label>
-                   </div>
-                    <div class="col-12">
-                     <label for="{{ user.name }}">
-                        <span >name</span>
-                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
-                    </label>
-                   </div>
-                   <div class="col-12">
-                     <label for="{{ user.lastname }}">
-                        <span >last name</span>
-                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
-                    </label>
-                   </div>
-                </div>
-              </div>
-         </div>
-        </label>
-        {% endfor %}
+                        </thead>
+
+                        {% for user in ceo_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" >
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
       </div>
     </div>
@@ -67,7 +66,7 @@
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+           <div class="col-12 ">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -78,36 +77,35 @@
               color: black;">Freeze Tunnel Manager</p>
           </div>
 
-       {% for user in ft_list %}
+          <div class="fresh-table full-color-orange">
 
-       <label >
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>User name</th>
+                          <th>Name</th>
+                          <th>Last name</th>
 
-         <div class="col-8" data-aos="fade-in">
-              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
-                   <div class="col-12">
-                     <label for="{{ user.username }}">
-                        <span >user name</span>
-                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
-                    </label>
-                   </div>
-                    <div class="col-12">
-                     <label for="{{ user.name }}">
-                        <span >name</span>
-                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
-                    </label>
-                   </div>
-                   <div class="col-12">
-                     <label for="{{ user.lastname }}">
-                        <span >last name</span>
-                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
-                    </label>
-                   </div>
-                </div>
-              </div>
-         </div>
-        </label>
-        {% endfor %}
+                        </thead>
+
+                        {% for user in ft_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" >
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
       </div>
     </div>
@@ -119,7 +117,7 @@
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+           <div class="col-12">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -130,36 +128,35 @@
               color: black;">Live Weighbridge Manager</p>
           </div>
 
-       {% for user in lw_list %}
+          <div class="fresh-table full-color-orange">
 
-       <label >
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>User name</th>
+                          <th>Name</th>
+                          <th>Last name</th>
 
-         <div class="col-8" data-aos="fade-in">
-              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
-                   <div class="col-12">
-                     <label for="{{ user.username }}">
-                        <span >user name</span>
-                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
-                    </label>
-                   </div>
-                    <div class="col-12">
-                     <label for="{{ user.name }}">
-                        <span >name</span>
-                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
-                    </label>
-                   </div>
-                   <div class="col-12">
-                     <label for="{{ user.lastname }}">
-                        <span >last name</span>
-                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
-                    </label>
-                   </div>
-                </div>
-              </div>
-         </div>
-        </label>
-        {% endfor %}
+                        </thead>
+
+                        {% for user in lw_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" >
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
       </div>
     </div>
@@ -171,7 +168,7 @@
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+           <div class="col-12">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -182,36 +179,35 @@
               color: black;">Pre Cold Manager</p>
           </div>
 
-       {% for user in pc_list %}
+           <div class="fresh-table full-color-orange">
 
-       <label >
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>User name</th>
+                          <th>Name</th>
+                          <th>Last name</th>
 
-         <div class="col-8" data-aos="fade-in">
-              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
-                   <div class="col-12">
-                     <label for="{{ user.username }}">
-                        <span >user name</span>
-                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
-                    </label>
-                   </div>
-                    <div class="col-12">
-                     <label for="{{ user.name }}">
-                        <span >name</span>
-                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
-                    </label>
-                   </div>
-                   <div class="col-12">
-                     <label for="{{ user.lastname }}">
-                        <span >last name</span>
-                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
-                    </label>
-                   </div>
-                </div>
-              </div>
-         </div>
-        </label>
-        {% endfor %}
+                        </thead>
+
+                        {% for user in pc_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" >
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
       </div>
     </div>
@@ -225,7 +221,7 @@
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+           <div class="col-12 ">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -236,37 +232,35 @@
               color: black;">Sales Manager</p>
           </div>
 
-       {% for user in sales_list %}
+           <div class="fresh-table full-color-orange">
 
-       <label >
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>User name</th>
+                          <th>Name</th>
+                          <th>Last name</th>
 
-         <div class="col-8" data-aos="fade-in">
-              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
-                   <div class="col-12">
-                     <label for="{{ user.username }}">
-                        <span >user name</span>
-                        <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}" />
-                    </label>
-                   </div>
-                    <div class="col-12">
-                     <label for="{{ user.name }}">
-                        <span >name</span>
-                        <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" />
-                    </label>
-                   </div>
-                   <div class="col-12">
-                     <label for="{{ user.lastname }}">
-                        <span >last name</span>
-                        <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}" />
-                    </label>
-                   </div>
-                </div>
-              </div>
-         </div>
-        </label>
-        {% endfor %}
+                        </thead>
 
+                        {% for user in sales_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input type="text" value="{{ user.username }}" id="{{ user.username }}" name="{{ user.username }}">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.name }}" id="{{ user.name }}" name="{{ user.name }}" >
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ user.lastname }}" id="{{ user.lastname }}" name="{{ user.lastname }}">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
       </div>
     </div>
 </form>
@@ -277,6 +271,5 @@
 
 
 
-------------------------------------------------------------------------------
 
 

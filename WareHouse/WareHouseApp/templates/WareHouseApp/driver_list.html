@@ -1,30 +1,132 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Driver List</h2>
+{% endblock %}
+
 {% block content %}
 
-distribute : <br>
-{% for dist in dist_list %}
+<div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-    driver name : {{ dist.0 }}<br>
-    driver last name : {{ dist.1 }}<br>
-    driver phone number : {{ dist.2 }}<br>
-    car number : {{ dist.3 }}<br>
-    product owner name : {{ dist.4 }}<br>
-    product owner last name : {{ dist.5 }}<br>
-    weight : {{ dist.6 }}<br>
-    time : {{ dist.7 }}<br>
-    sale price : {{ dist.8 }}<br>
-    product category : {{ dist.9 }}<br>
-    bill of lading: {{ dist.10 }}<br>
-    number of box : {{ dist.11 }}<br><br>
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Distribute</p>
+             </div>
+             <div class="fresh-table full-color-orange"  style="overflow-x: scroll;">
 
-{% endfor %}
-<br>
-<br>
-<br>
-<br>
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver name</th>
+                          <th>Diver last name</th>
+                          <th>Driver phone number</th>
+                          <th>Car number</th>
+                          <th>Product owner name</th>
+                          <th>Product owner last name</th>
+                          <th>Weight</th>
+                          <th>Time</th>
+                          <th>Sale price</th>
+                          <th>Product category</th>
+                          <th>Bill of lading</th>
+                          <th>Number of box</th>
+                        </thead>
 
-live WeighBridge : <br>
+                        {% for dist in dist_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ dist.0 }}</td>
+                                <td>{{ dist.1 }}</td>
+                                <td>{{ dist.2 }}</td>
+                                <td>{{ dist.3 }}</td>
+                                <td>{{ dist.4 }}</td>
+                                <td>{{ dist.5 }}</td>
+                                <td>{{ dist.6 }}</td>
+                                <td>{{ dist.7 }}</td>
+                                <td>{{ dist.8 }}</td>
+                                <td>{{ dist.9 }}</td>
+                                <td>{{ dist.10 }}</td>
+                                <td>{{ dist.11 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+              <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Live WeighBridge </p>
+             </div>
+             <div class="fresh-table full-color-orange"  style="overflow-x: scroll;">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver name</th>
+                          <th>Diver last name</th>
+                          <th>Driver phone number</th>
+                          <th>Car number</th>
+                          <th>Product owner name</th>
+                          <th>Product owner last name</th>
+                          <th>Car final weight</th>
+                          <th>Car weight</th>
+                          <th>Car empty status</th>
+                          <th>weighting time</th>
+                          <th>product category</th>
+                          <th>slaughter status </th>
+                          <th>slaughter start time </th>
+                          <th>slaughter finish time </th>
+                          <th>buy price</th>
+                        </thead>
+
+                        {% for lwb in lwb_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ lwb.0 }}</td>
+                                <td>{{ lwb.1 }}</td>
+                                <td>{{ lwb.2 }}</td>
+                                <td>{{ lwb.3 }}</td>
+                                <td>{{ lwb.4 }}</td>
+                                <td>{{ lwb.5 }}</td>
+                                <td>{{ lwb.6 }}</td>
+                                <td>{{ lwb.7 }}</td>
+                                <td>{{ lwb.8 }}</td>
+                                <td>{{ lwb.9 }}</td>
+                                <td>{{ lwb.10 }}</td>
+                                <td>{{ lwb.11 }}</td>
+                                <td>{{ lwb.12 }}</td>
+                                <td>{{ lwb.13 }}</td>
+                                <td>{{ lwb.14 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+         </div>
+    </div>
+
+
+
+
+
+-----------------------
+<!--live WeighBridge : <br>
 {% for lwb in lwb_list %}
 
 
@@ -45,6 +147,6 @@ live WeighBridge : <br>
     buy price : {{ lwb.14 }}<br><br>
 
 
-{% endfor %}
+{% endfor %}-->
 
 {% endblock %}

@@ -1,7 +1,70 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Freeze tunnel exit</h2>
+{% endblock %}
+
 {% block content %}
 
+
+<form action="{% url 'Freeze_Tunnel_Exit' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Choose from blew object</p>
+             </div>
+
+             <div class="fresh-table full-color-orange">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th data-field="name" data-sortable="true">Weight</th>
+                          <th data-field="salary" data-sortable="true">Pallet id</th>
+                          <th data-field="country" data-sortable="true">Tunnel id</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for ft in ft_list %}
+                        <label for="{{ ft.freeze_tunnel_id }}">
+                            <tbody>
+                              <tr>
+                                <td>{{ ft.weight }}</td>
+                                <td>{{ ft.pallet_id }}</td>
+                                <td>{{ ft.tunnel_id }}</td>
+                                <td>
+                                    <div class="radio">
+                                         <label><input type="radio" name="ft_id" value="{{ ft.freeze_tunnel_id }}" id="{{ ft.freeze_tunnel_id }}" ></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+
+
+<!--
 <form action="{% url 'Freeze_Tunnel_Exit' %}" method="post">
 
   {% csrf_token %}
@@ -21,5 +84,5 @@
 
   <input type="submit">
 
-</form>
+</form>-->
 {% endblock %}

@@ -15,7 +15,7 @@
     <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-             <div class="col-12 mt-5 mb-5">
+             <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
                   border-left-style: solid;
@@ -26,7 +26,40 @@
                   color: black;">choose one of the blew slaughter</p>
              </div>
 
-                {% for lwb in lwb_list %}
+              <div class="fresh-table full-color-orange">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver</th>
+                          <th>Car</th>
+                          <th>Product owner</th>
+                          <th>CAr weight</th>
+                          <th>Buy Price</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for lwb in lwb_list %}
+                        <label for="{{ lwb.live_weighbridge_id}}">
+                            <tbody>
+                              <tr>
+                                <td>{{ lwb.driver.name }} {{ lwb.driver.last_name }}</td>
+                                <td>{{ lwb.driver.car.car_number }}</td>
+                                <td>{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}</td>
+                                <td>{{ lwb.final_weight }}</td>
+                                <td>{{ lwb.buying_price }}</td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label><input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+               <!-- {% for lwb in lwb_list %}
 
            <label for="{{ lwb.live_weighbridge_id}}">
 
@@ -75,7 +108,7 @@
 
              </div>
             </label>
-            {% endfor %}
+            {% endfor %}-->
 
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
