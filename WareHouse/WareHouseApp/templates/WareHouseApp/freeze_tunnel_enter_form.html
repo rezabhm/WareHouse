@@ -28,7 +28,7 @@
                   color: black;">Choose from blew object</p>
              </div>
 
-             <div class="fresh-table full-color-orange">
+             <div class="fresh-table full-color-blue badge filter badge-blue">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -42,9 +42,9 @@
                         <label for="{{ fwl.weight_lifting_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ fwl.weight }}</td>
-                                <td>{{ fwl.sales_category }}</td>
-                                <td>{{ fwl.Weight_Lifting_Manager.username }}</td>
+                                <td><input  value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ fwl.sales_category }}" id="{{ fwl.sales_category }}" name="{{ fwl.sales_category }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ fwl.Weight_Lifting_Manager.username }}" id="{{ fwl.Weight_Lifting_Manager.username }}" name="{{ fwl.Weight_Lifting_Manager.username }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}" ></label>

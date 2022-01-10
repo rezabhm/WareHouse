@@ -27,7 +27,7 @@
                   color: black;">Choose from blew driver</p>
              </div>
 
-             <div class="fresh-table full-color-orange">
+             <div class="fresh-table full-color-blue badge filter badge-blue">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -41,9 +41,9 @@
                         <label for="{{ driver.driver_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ driver.name }}</td>
-                                <td>{{ driver.last_name }}</td>
-                                <td>{{ driver.phone_number }}</td>
+                                <td><input  value="{{ driver.name }}" id="{{ driver.name }}" name="{{ driver.name }}"  style="border-bottom:0px;"/></td>
+                                <td><input type="text" value="{{ driver.last_name }}" id="{{ driver.last_name }}" name="{{ driver.last_name }}" style="border-bottom:0px;" ></td>
+                                <td><input type="text" value="{{ driver.phone_number }}" id="{{ driver.phone_number }}" name="{{ driver.phone_number }}" style="border-bottom:0px;" /></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"></label>
@@ -107,7 +107,7 @@
                   color: black;">information</p>
              </div>
 
-              <div class="fresh-table full-color-orange">
+              <div class="fresh-table full-color-blue badge filter badge-blue">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -120,11 +120,11 @@
                         <label for="{{ fwl.weight_lifting_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ fwl.weight }}</td>
-                                <td>{{ fwl.product_category }}</td>
+                                <td><input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" /></td>
+                                <td><input type="text" value="{{ fwl.product_category }}" id="{{ fwl.product_category }}" name="{{ fwl.product_category }}" style="border-bottom:0px;" /></td>
                                 <td>
                                     <div class="radio">
-                                         <label><input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}"></label>
+                                         <label><input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}" style="border-bottom:0px;"></label>
                                     </div>
                                 </td>
                               </tr>

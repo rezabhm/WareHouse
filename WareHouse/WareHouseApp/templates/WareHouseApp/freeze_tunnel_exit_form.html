@@ -27,7 +27,7 @@
                   color: black;">Choose from blew object</p>
              </div>
 
-             <div class="fresh-table full-color-orange">
+             <div class="fresh-table full-color-blue badge filter badge-blue">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -41,9 +41,9 @@
                         <label for="{{ ft.freeze_tunnel_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ ft.weight }}</td>
-                                <td>{{ ft.pallet_id }}</td>
-                                <td>{{ ft.tunnel_id }}</td>
+                                <td><input  value="{{ ft.weight }}" id="{{ ft.weight }}" name="{{ ft.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ ft.pallet_id }}" id="{{ ft.pallet_id }}" name="{{ ft.pallet_id }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ ft.tunnel_id }}" id="{{ ft.tunnel_id }}" name="{{ ft.tunnel_id }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" name="ft_id" value="{{ ft.freeze_tunnel_id }}" id="{{ ft.freeze_tunnel_id }}" ></label>

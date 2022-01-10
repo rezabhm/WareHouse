@@ -131,11 +131,11 @@ def error(requests, error_text='here is error page to show error'):
 
     # load error.html for render
     error_temp = loader.get_template('WareHouseApp/error.html')
-
+    print(error_text)
     # build param dictionary
     context = {
 
-        'error_text': error_text
+        'error_text':error_text
 
     }
 

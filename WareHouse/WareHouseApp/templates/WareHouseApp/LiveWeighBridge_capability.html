@@ -27,7 +27,7 @@
                   color: black;">choose one of the blew list</p>
              </div>
 
-             <div class="fresh-table full-color-orange">
+             <div class="fresh-table full-color-blue badge filter badge-blue">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -43,11 +43,11 @@
                         <label for="{{ lwb.live_weighbridge_id}}">
                             <tbody>
                               <tr>
-                                <td>{{ lwb.driver.name }} {{ lwb.driver.last_name }}</td>
-                                <td>{{ lwb.driver.car.car_number }}</td>
-                                <td>{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}</td>
-                                <td>{{ lwb.final_weight }}</td>
-                                <td>{{ lwb.buying_price }}</td>
+                                <td><input  value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}"  style="border-bottom:0px;"/></td>
                                   <td><td>
                                     <div class="radio">
                                          <label><input  type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>

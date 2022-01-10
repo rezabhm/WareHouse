@@ -101,7 +101,7 @@ urlpatterns = [
     re_path(r'^live_WeighBridge/$', views.live_WeighBridge, name='live_WeighBridge'),
     re_path(r'^first_WeightLifting/$', views.first_WeightLifting, name='first_WeightLifting'),
     re_path(r'^monitor_data/$', views.monitor_data, name='monitor_data'),
-    re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
+    re_path(r'^error/(?P<error_text>.*)', views.error, name='Error'),
 
     # user url
     re_path(r'^sign_up/form/$', views.signup_form, name='SignUp_Form'),

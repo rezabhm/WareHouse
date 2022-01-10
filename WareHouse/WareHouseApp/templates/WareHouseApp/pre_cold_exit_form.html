@@ -25,7 +25,7 @@
                   padding: 5px;
                   color: black;">Choose one of the blew</p>
              </div>
-             <div class="fresh-table full-color-orange" >
+             <div class="fresh-table full-color-blue badge filter badge-blue" >
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -39,9 +39,9 @@
                         <label for="{{ pc.pc_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ pc.weight }}</td>
-                                <td>{{ pc.pre_cold_id }}</td>
-                                <td>{{ pc.pallet_id }}</td>
+                                <td><input  value="{{ pc.weight }}" id="{{ pc.weight }}" name="{{ pc.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pre_cold_id }}" id="{{ pc.pre_cold_id }}" name="{{ pc.pre_cold_id }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pallet_id }}" id="{{ pc.pallet_id }}" name="{{ pc.pallet_id }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="checkbox">
                                          <label><input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"></label>
