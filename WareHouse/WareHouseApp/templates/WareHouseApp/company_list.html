@@ -25,7 +25,36 @@
               color: black;">Company</p>
           </div>
 
-       {% for company in company_list %}
+           <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Name</th>
+                          <th>Id</th>
+                        </thead>
+
+                        {% for company in company_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <input  type="text" value="{{ company.name }}" id="{{ company.name }}" name="{{ company.name }}" style="border-bottom:0px;">
+                                </td>
+                                <td>
+                                    <input  type="text" value="{{ company.company_id }}" id="{{ company.company_id }}" name="{{ company.company_id }}" style="border-bottom:0px;">
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                      </table>
+           </div>
+          <div class="col-12"><button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5" style="padding: .8rem!important;width: 20%;">{{ company.name }} user list</button></div>
+          <input type="hidden" name="company_id" value="{{ company.company_id }}">
+
+          {% endfor %}
+
+
+       <!--{% for company in company_list %}
 
        <label >
 
@@ -51,7 +80,7 @@
 
          </div>
         </label>
-        {% endfor %}
+        {% endfor %}-->
 
       </div>
     </div>

@@ -41,8 +41,8 @@ body {
     border-radius: 3px;
 }
 .form-button {
-    background-color: #677276;
-    border-color: #0f5b7e;
+    background-color: #149ddd;
+    border-color: #149ddd;
     color: #e6e6e6;
 }
 .form-button:hover,
@@ -181,7 +181,7 @@ body {
     max-width: 400px;
     z-index: 100;
     margin: 0 auto;
-    padding-top: 100px;
+
 }
 .login.login-container {
     width: 300px;

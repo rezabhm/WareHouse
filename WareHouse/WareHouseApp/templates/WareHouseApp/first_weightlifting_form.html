@@ -15,7 +15,7 @@
     <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-             <div class="col-12 mt-5 mb-5">
+             <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
                   border-left-style: solid;
@@ -26,7 +26,40 @@
                   color: black;">choose one of the blew slaughter</p>
              </div>
 
-                {% for lwb in lwb_list %}
+              <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver</th>
+                          <th>Car</th>
+                          <th>Product owner</th>
+                          <th>CAr weight</th>
+                          <th>Buy Price</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for lwb in lwb_list %}
+                        <label for="{{ lwb.live_weighbridge_id}}">
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text"  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}"  style="border-bottom:0px;"/></td>
+                                <td><input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text"  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}" style="border-bottom:0px;" /></td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label><input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+               <!-- {% for lwb in lwb_list %}
 
            <label for="{{ lwb.live_weighbridge_id}}">
 
@@ -75,7 +108,7 @@
 
              </div>
             </label>
-            {% endfor %}
+            {% endfor %}-->
 
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;

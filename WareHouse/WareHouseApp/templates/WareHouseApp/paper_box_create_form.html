@@ -1,8 +1,82 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Paper box create</h2>
+{% endblock %}
+
 
 {% block content %}
 
+
+<form action="{% url 'PaperBox_Create' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Information</p>
+             </div>
+
+           <div class="col-6">
+             <label for="weight">
+                <span >weight</span>
+                <input type="text" id="weight" name="weight"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="product_number">
+                <span >number of product in box</span>
+                <input type="text" id="product_number" name="product_number"/>
+             </label>
+           </div>
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of product</p>
+             </div>
+                 <div class="col-4 mt-3">
+             <label for="chicken">
+                    <span >chicken</span>
+                    <input  type="radio" id="chicken" name="product_category" value="C"/>
+                 </label>
+             </div>
+             <div class="col-4 mt-3">
+             <label for="turkey">
+                    <span >turkey</span>
+                    <input type="radio" id="turkey" name="product_category" value="T"/>
+                 </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="quail">
+                <span >quail</span>
+                <input  type="radio" id="quail" name="product_category" value="Q"/>
+             </label>
+            </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!--
 <form action="{% url 'PaperBox_Create' %}" method="post">
 
   {% csrf_token %}
@@ -26,6 +100,6 @@
 
   <input type="submit">
 
-</form>
+</form>-->
 
 {% endblock %}

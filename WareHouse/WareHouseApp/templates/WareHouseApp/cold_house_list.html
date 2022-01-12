@@ -1,37 +1,102 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Cold house list</h2>
+{% endblock %}
+
 {% block content %}
 
-cold house : <br>
-{% for ch in ch_list %}
 
-    entry time : {{ ch.0 }}<br>
-    exit time : {{ ch.1 }}<br>
-    pallet status : {{ ch.2 }}<br>
-    total pallet weight : {{ ch.3 }}<br>
-    pallet weight without product : {{ ch.4 }}<br>
-    number of box : {{ ch.5 }}<br>
-    pallet id : {{ ch.6 }}<br>
-    cold house id : {{ ch.7 }}<br><br>
+<div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-{% endfor %}
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Could house</p>
+             </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue"  style="overflow-x: scroll;">
 
-<br>
-<br>
-<br>
 
-paper box :<br>
-{% for pb in pb_list %}
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>exit time</th>
+                          <th>pallet status</th>
+                          <th>total pallet weight</th>
+                          <th>pallet weight without product </th>
+                          <th>number of box</th>
+                          <th>pallet id </th>
+                          <th>cold house id </th>
+                        </thead>
 
-    product category : {{ pb.0 }}<br>
-    paper box weight: {{ pb.1 }}<br>
-    box status : {{ pb.2 }}<br>
-    number of product : {{ pb.3 }}<br>
-    packing time : {{ pb.4 }}<br>
-    box id: {{ pb.5 }}<br>
-    cold house id : {{ pb.6 }}<br>
-    pallet id that carry paper box : {{ pb.7 }}<br><br>
+                        {% for ch in ch_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ ch.1 }}</td>
+                                <td>{{ ch.2 }}</td>
+                                <td>{{ ch.3 }}</td>
+                                <td>{{ ch.4 }}</td>
+                                <td>{{ ch.5 }}</td>
+                                <td>{{ ch.6 }}</td>
+                                <td>{{ ch.7 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
-{% endfor %}
+               <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Paper box</p>
+             </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow-x: scroll;" >
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>product category </th>
+                          <th>paper box weight </th>
+                          <th>box status</th>
+                          <th>number of product</th>
+                          <th>packing time</th>
+                          <th>box id</th>
+                          <th>cold house id </th>
+                          <th>pallet id that carry paper box </th>
+                        </thead>
+
+                        {% for pb in pb_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ pb.0 }}</td>
+                                <td>{{ pb.1 }}</td>
+                                <td>{{ pb.2 }}</td>
+                                <td>{{ pb.3 }}</td>
+                                <td>{{ pb.4 }}</td>
+                                <td>{{ pb.5 }}</td>
+                                <td>{{ pb.6 }}</td>
+                                <td>{{ pb.7 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+         </div>
+    </div>
 
 {% endblock %}

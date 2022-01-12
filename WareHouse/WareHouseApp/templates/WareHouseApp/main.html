@@ -25,6 +25,9 @@
   <link href="{% static 'WareHouseApp/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
   <link href="{% static 'WareHouseApp/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{% static 'WareHouseApp/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{% static 'WareHouseApp/assets/img/favicon.ico' %}">
+  <link href="{% static  'WareHouseApp/assets/css/fresh-bootstrap-table.css' %}" rel="stylesheet" />
+  <link href="{% static  'WareHouseApp/assets/css/demo.css' %}" rel="stylesheet" />
 
   <!-- Template Main CSS File -->
   <link href="{% static 'WareHouseApp/css/logincss.css' %}" rel="stylesheet">
@@ -36,9 +39,14 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <script src="{% static 'WareHouseApp/assets/js/demo/gsdk-switch.js' %}"></script>
+  <script src="{% static  'WareHouseApp/assets/js/demo/jquery.sharrre.js' %}"></script>
+  <script src="{% static  'WareHouseApp/assets/js/demo/demo.js' %}"></script>
 </head>
 
+
 <body>
+
 
   <!-- ======= Mobile nav toggle button ======= -->
   <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
@@ -83,7 +91,7 @@
           <h2 >TiyurZanjan</h2>
           {% endblock %}
           <ol>
-            <li><a href="{% url 'LogOut' %}" class="bi bi-box-arrow-right size-7 " style="font-size: 30px"></a></li>
+            <li><a href="{% url 'LogOut' %}" class="bi bi-door-open-fill size-7 " style="font-size: 30px"></a></li>
           </ol>
         </div>
 
@@ -129,6 +137,125 @@
   <!-- Template Main JS File -->
   <script src="{% static 'WareHouseApp/js/main.js' %}"></script>
 
+
 </body>
+ <script type="text/javascript">
+    var $table = $('#fresh-table')
+    var $alertBtn = $('#alertBtn')
+
+    window.operateEvents = {
+      'click .like': function (e, value, row, index) {
+        alert('You click like icon, row: ' + JSON.stringify(row))
+        console.log(value, row, index)
+      },
+      'click .edit': function (e, value, row, index) {
+        alert('You click edit icon, row: ' + JSON.stringify(row))
+        console.log(value, row, index)
+      },
+      'click .remove': function (e, value, row, index) {
+        $table.bootstrapTable('remove', {
+          field: 'id',
+          values: [row.id]
+        })
+      }
+    }
+
+    function operateFormatter(value, row, index) {
+      return [
+        '<a rel="tooltip" title="Like" class="table-action like" href="javascript:void(0)" title="Like">',
+          '<i class="fa fa-heart"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Edit" class="table-action edit" href="javascript:void(0)" title="Edit">',
+          '<i class="fa fa-edit"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Remove" class="table-action remove" href="javascript:void(0)" title="Remove">',
+          '<i class="fa fa-remove"></i>',
+        '</a>'
+      ].join('')
+    }
+
+    $(function () {
+      $table.bootstrapTable({
+        classes: 'table table-hover table-striped',
+        toolbar: '.toolbar',
+
+        search: true,
+        showRefresh: true,
+        showToggle: true,
+        showColumns: true,
+        pagination: true,
+        striped: true,
+        sortable: true,
+        pageSize: 8,
+        pageList: [8, 10, 25, 50, 100],
+
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+          return ''
+        },
+        formatRecordsPerPage: function (pageNumber) {
+          return pageNumber + ' rows visible'
+        }
+      })
+
+      $alertBtn.click(function () {
+        alert('You pressed on Alert')
+      })
+    })
+
+    $('#sharrreTitle').sharrre({
+      share: {
+        twitter: true,
+        facebook: true
+      },
+      template: '',
+      enableHover: false,
+      enableTracking: true,
+      render: function (api, options) {
+        $("#sharrreTitle").html('Thank you for ' + options.total + ' shares!')
+      },
+      enableTracking: true,
+      url: location.href
+    })
+
+    $('#twitter').sharrre({
+      share: {
+        twitter: true
+      },
+      enableHover: false,
+      enableTracking: true,
+      buttons: { twitter: {via: 'CreativeTim'}},
+      click: function (api, options) {
+        api.simulateClick()
+        api.openPopup('twitter')
+      },
+      template: '<i class="fa fa-twitter"></i> {total}',
+      url: location.href
+    })
+
+    $('#facebook').sharrre({
+      share: {
+        facebook: true
+      },
+      enableHover: false,
+      enableTracking: true,
+      click: function (api, options) {
+        api.simulateClick()
+        api.openPopup('facebook')
+      },
+      template: '<i class="fa fa-facebook-square"></i> {total}',
+      url: location.href
+    })
+  </script>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga')
+
+    ga('create', 'UA-46172202-1', 'auto')
+    ga('send', 'pageview')
+
+  </script>
 
 </html>

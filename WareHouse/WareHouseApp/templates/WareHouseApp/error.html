@@ -1,7 +1,36 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2 style="color:#c32e50;">Error</h2>
+{% endblock %}
+
 {% block content %}
 
-{{ error_text }}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <div class="container h-100">
+      <div class="row align-items-center h-100">
+          <div class="col-6 mx-auto" style="margin-top: 8rem;">
+              <div class="jumbotron text-center">
+                  <h1 class="display-4">Sorry</h1>
+                  <p class="lead" style="color:#c32e50;">{{error_text}}</p>
+                  <p class="lead">
+                      <a class="btn border border-secondary btn-lg"  style=" background-color:#149ddd;" href="{% url 'Main_URL' %}" role="button">Main</a>
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <style>
+  body,html {
+    height: 100%;
+  }
+
+  </style>
 
 {% endblock %}

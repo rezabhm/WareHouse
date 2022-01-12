@@ -8,13 +8,77 @@
 
 {% block content %}
 
+
+<form action="{% url 'Capability_Slaughter' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of the blew list</p>
+             </div>
+
+             <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Driver</th>
+                          <th>Car</th>
+                          <th >Phone number</th>
+                          <th>CAr weight</th>
+                          <th>Buy price</th>
+                          <th>Selection</th>
+                        </thead>
+
+                        {% for lwb in lwb_list %}
+                        <label for="{{ lwb.live_weighbridge_id}}">
+                            <tbody>
+                              <tr>
+                                <td><input  value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}"  style="border-bottom:0px;"/></td>
+                                  <td><td>
+                                    <div class="radio">
+                                         <label><input  type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>
+                                    </div>
+                                </td></td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!--
+
+
+
+-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
+
 <form action="{% url 'Capability_Slaughter' %}" method="post">
 
     {% csrf_token %}
 
     <div class=" cont">
       <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-           <div class="col-12 mt-5 mb-5">
+       <div class="col-12 ">
              <p class="partition" style="background-color: lavender;
               border-radius: 2px;
               border-left-style: solid;
@@ -29,9 +93,9 @@
 
        <label for="{{ lwb.live_weighbridge_id}}">
 
-         <div class="col-8" data-aos="fade-in">
+         <div class="col-8 mt-5" data-aos="fade-in">
               <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                <div class="info col-12 p-5">
+                <div class="info col-12 p-2">
                    <div class="col-12">
                      <label for="{{ lwb.driver.name }} {{ lwb.driver.last_name }}">
                         <span >Driver</span>
@@ -51,7 +115,7 @@
                     </label>
                    </div>
                    <div class="col-12">
-                     <label for="{{ lwb.final_weight }}">
+                     <label for="">{{ lwb.final_weight }}
                         <span >Car Weight</span>
                         <input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" />
                     </label>
@@ -82,5 +146,6 @@
       </div>
     </div>
 </form>
+-->
 
 {% endblock %}

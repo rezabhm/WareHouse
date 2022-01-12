@@ -101,7 +101,7 @@ urlpatterns = [
     re_path(r'^live_WeighBridge/$', views.live_WeighBridge, name='live_WeighBridge'),
     re_path(r'^first_WeightLifting/$', views.first_WeightLifting, name='first_WeightLifting'),
     re_path(r'^monitor_data/$', views.monitor_data, name='monitor_data'),
-    re_path(r'^error/(?P<error_text>[\w]*)', views.error, name='Error'),
+    re_path(r'^error/(?P<error_text>.*)', views.error, name='Error'),
 
     # user url
     re_path(r'^sign_up/form/$', views.signup_form, name='SignUp_Form'),
@@ -158,10 +158,10 @@ urlpatterns = [
     re_path(r'^product_owner/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<po_name>[\w]+)/(?P<po_lastname>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$', views.product_owner_list,
             name='Product_Owner_List'),
 
-    re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exits>[\d]{1,2})/$',
+    re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
             views.weight_lifting_list, name='Weight_Lifting_List'),
 
-    re_path(r'^cold/house/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exits>[\d]{1,2})/$',
+    re_path(r'^cold/house/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
             views.cold_house_list, name='Cold_House_List'),
 
 ]

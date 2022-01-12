@@ -1,7 +1,71 @@
 {% extends 'WareHouseApp/main.html' %}
 
+{% load static %}
+
+{% block title%}
+<h2>Live Weightbridge list</h2>
+{% endblock %}
 
 {% block content %}
+
+<div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Live WeighBridge</p>
+             </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow-x: scroll;">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Time</th>
+                          <th>Car weight</th>
+                          <th>Final weight</th>
+                          <th>Car empty </th>
+                          <th>buy price</th>
+                          <th>slaughter status </th>
+                          <th>slaughter start date </th>
+                          <th>slaughter finish date </th>
+                          <th>Product owner last name</th>
+                          <th>Product category</th>
+                          <th>Driver name and last name</th>
+                          <th>Car number</th>
+                          <th>Product owner</th>
+                        </thead>
+
+                        {% for lwb in lwb_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>{{ lwb.0 }}</td>
+                                <td>{{ lwb.1 }}</td>
+                                <td>{{ lwb.2 }}</td>
+                                <td>{{ lwb.3 }}</td>
+                                <td>{{ lwb.4 }}</td>
+                                <td>{{ lwb.5 }}</td>
+                                <td>{{ lwb.6 }}</td>
+                                <td>{{ lwb.7 }}</td>
+                                <td>{{ lwb.8 }}</td>
+                                <td>{{ lwb.9 }}</td>
+                                <td>{{ lwb.10 }}</td>
+                                <td>{{ lwb.11 }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+         </div>
+    </div>
+<!--
+-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 
 {% for lwb in lwb_list %}
 
@@ -20,6 +84,6 @@
 
     <br>
 
-{% endfor %}
+{% endfor %}-->
 
 {% endblock %}

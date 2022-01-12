@@ -16,7 +16,7 @@
     <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-             <div class="col-12 mt-5 mb-5">
+             <div class="col-12 mt-5 mb-2">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
                   border-left-style: solid;
@@ -27,7 +27,37 @@
                   color: black;">Choose from blew driver</p>
              </div>
 
-                {% for driver in driver_list %}
+             <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th data-field="name" data-sortable="true">Name</th>
+                          <th data-field="salary" data-sortable="true">Last name</th>
+                          <th data-field="country" data-sortable="true">Phone number</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for driver in driver_list %}
+                        <label for="{{ driver.driver_id }}">
+                            <tbody>
+                              <tr>
+                                <td><input  value="{{ driver.name }}" id="{{ driver.name }}" name="{{ driver.name }}"  style="border-bottom:0px;"/></td>
+                                <td><input type="text" value="{{ driver.last_name }}" id="{{ driver.last_name }}" name="{{ driver.last_name }}" style="border-bottom:0px;" ></td>
+                                <td><input type="text" value="{{ driver.phone_number }}" id="{{ driver.phone_number }}" name="{{ driver.phone_number }}" style="border-bottom:0px;" /></td>
+                                <td>
+                                    <div class="radio">
+                                         <label><input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+
+              <!--  {% for driver in driver_list %}
 
            <label for="{{ driver.driver_id }}">
 
@@ -41,9 +71,9 @@
                         </label>
                        </div>
                        <div class="col-12">
-                         <label for="{{ driver.lastname }}">
+                         <label for="{{ driver.last_name }}">
                             <span >Last name</span>
-                            <input type="text" value="{{ driver.lastname }}" id="{{ driver.lastname }}" name="{{ driver.lastname }}" />
+                            <input type="text" value="{{ driver.last_name }}" id="{{ driver.last_name }}" name="{{ driver.last_name }}" />
                         </label>
                        </div>
                        <div class="col-12">
@@ -64,7 +94,7 @@
 
              </div>
             </label>
-            {% endfor %}
+            {% endfor %}-->
 
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
@@ -74,10 +104,38 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">Inter information</p>
+                  color: black;">information</p>
              </div>
 
-             {% for fwl in fwl_list %}
+              <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th data-field="name" data-sortable="true">Weight</th>
+                          <th data-field="salary" data-sortable="true">Product category</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for fwl in fwl_list %}
+                        <label for="{{ fwl.weight_lifting_id }}">
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" /></td>
+                                <td><input type="text" value="{{ fwl.product_category }}" id="{{ fwl.product_category }}" name="{{ fwl.product_category }}" style="border-bottom:0px;" /></td>
+                                <td>
+                                    <div class="radio">
+                                         <label><input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}" style="border-bottom:0px;"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+
+             <!--{% for fwl in fwl_list %}
 
            <label for="{{ fwl.weight_lifting_id }}">
 
@@ -105,7 +163,7 @@
                   </div>
              </div>
             </label>
-            {% endfor %}
+            {% endfor %}-->
 
            <div class="col-6">
              <label for="weight">

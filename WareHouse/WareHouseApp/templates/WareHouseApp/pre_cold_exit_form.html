@@ -25,8 +25,36 @@
                   padding: 5px;
                   color: black;">Choose one of the blew</p>
              </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue" >
 
-                {% for pc in pc_list %}
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Weight</th>
+                          <th>Pallet id</th>
+                          <th>Pre cold id</th>
+                          <th style="text-align: center;">selection</th>
+                        </thead>
+
+                        {% for pc in pc_list %}
+                        <label for="{{ pc.pc_id }}">
+                            <tbody>
+                              <tr>
+                                <td><input  value="{{ pc.weight }}" id="{{ pc.weight }}" name="{{ pc.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pre_cold_id }}" id="{{ pc.pre_cold_id }}" name="{{ pc.pre_cold_id }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pallet_id }}" id="{{ pc.pallet_id }}" name="{{ pc.pallet_id }}"  style="border-bottom:0px;"/></td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label><input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+              <!--  {% for pc in pc_list %}
 
            <label for="{{ pc.pc_id }}">
 
@@ -63,7 +91,7 @@
 
              </div>
             </label>
-            {% endfor %}
+            {% endfor %}-->
              <div><button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button></div>
          </div>
     </div>
