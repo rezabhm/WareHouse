@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
+import time
+import datetime
 
 # Create your views here.
 
@@ -172,3 +174,194 @@ def task_structure_list(requests):
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
+
+def task_create_form(requests):
+
+    """
+    create task
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = wh_models.CEO.objects.all().filter(username=requests.user.username)
+        task_user_list = dm_models.TaskUser.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(task_user_list) > 0 or requests.user.is_superuser:
+
+            # load template
+            task_create_temp = loader.get_template('DeviceMaintenance/task_create_form.html')
+
+            context = {
+
+                'task_structure_list': dm_models.TaskStructure.objects.all()
+
+            }
+
+            return HttpResponse(task_create_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def task_create(requests):
+
+    """
+    create task
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = wh_models.CEO.objects.all().filter(username=requests.user.username)
+        task_user_list = dm_models.TaskUser.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(task_user_list) > 0 or requests.user.is_superuser:
+
+            # get param
+
+            start_time_year = requests.POST['start_time_year']
+            start_time_month = requests.POST['start_time_month']
+            start_time_day = requests.POST['start_time_day']
+            deadline_year = requests.POST['deadline_year']
+            deadline_month = requests.POST['deadline_month']
+            deadline_day = requests.POST['deadline_day']
+            task_id = requests.POST['task_id']
+
+            # create start time and deadline time
+            string = '{0}/{1}/{2}'.format(str(start_time_day), str(start_time_month), str(start_time_year))
+            start_time = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+            string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
+            deadline_time = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+            # create task
+            task_obj = dm_models.Task()
+
+            # set param
+            task_obj.start_task_time = start_time
+            task_obj.deadline = deadline_time
+
+            task_structure_obj_list = dm_models.TaskStructure.objects.all().filter(task_structure_id=task_id)
+
+            if len(task_structure_obj_list) > 0:
+                task_obj.task_structure = task_structure_obj_list[0]
+
+            else:
+                return HttpResponseRedirect(reverse('Error', args=["your task selection is wrong"]))
+
+            # save task obj
+            task_obj.save()
+
+            # create sub-task
+            sub_structure_obj_list = dm_models.SubTaskStructure.objects.all().filter(task_structure__task_structure_id=task_id)
+
+            for sub_task in sub_structure_obj_list:
+
+                # create sub-task
+                sub_task_obj = dm_models.SubTask()
+
+                # set param
+                sub_task_obj.task = task_obj
+                sub_task_obj.sub_task_structure = sub_task
+
+                sub_task_obj.save()
+
+            return HttpResponseRedirect(reverse('Main'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def task_list(requests, task_status='0', time_status='0', start_year='0000', start_month='00', start_day='00',
+              deadline_year='0000', deadline_month='00', deadline_day='00'):
+
+    """
+    show all tasks list
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = wh_models.CEO.objects.all().filter(username=requests.user.username)
+        task_user_list = dm_models.TaskUser.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(task_user_list) > 0 or requests.user.is_superuser:
+
+            # user have access
+            # we must get object list and add filter
+
+            # here we check task status that determine what kind of task we must return
+            # if equal 1 we must get Done of sub-task
+            # if equal 2 we must get Trouble sub-task
+            # if equal 3 we must get Ignore sub-task
+            # else we must get all of sub-task
+            if task_status == '1':
+
+                sub_task_obj_list = dm_models.SubTask.objects.all().filter(task_status='D')
+
+            elif task_status == '2':
+
+                sub_task_obj_list = dm_models.SubTask.objects.all().filter(task_status='T')
+
+            elif task_status == '3':
+
+                sub_task_obj_list = dm_models.SubTask.objects.all().filter(task_status='I')
+
+            else:
+
+                sub_task_obj_list = dm_models.SubTask.objects.all()
+
+            # here we have 3 type of time_status
+            # if equal 1 we must return all sub-tasks that current time are before the start time
+            # if equal 2 we must return all sub-tasks that current time are between start time and deadline
+            # if equal 3 we must return all sub-tasks that deadline time are before current time
+            # else we must check if we have time filter we must add filter however we don't have
+            # we can't add filter
+            if time_status == '1':
+
+                sub_task_obj_list = sub_task_obj_list.filter(task__start_task_time__gte=time.time())
+
+            elif time_status == '2':
+
+                sub_task_obj_list = sub_task_obj_list.filter(task__start_task_time__lte=time.time()).filter(
+                    task__deadline__gte=time.time()
+                )
+
+            elif time_status == '3':
+
+                sub_task_obj_list = sub_task_obj_list.filter(task__deadline__lte=time.time())
+
+            else:
+
+                if start_year != '0000' and start_month != '00' and start_day != '00' and deadline_year != '0000' and deadline_month != '00' and deadline_day != '00':
+
+                    # we can add time filter
+                    # create start time and deadline time
+                    string = '{0}/{1}/{2}'.format(str(start_day), str(start_month), str(start_year))
+                    start_time = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                    string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
+                    deadline_time = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                    sub_task_obj_list = sub_task_obj_list.filter(task__start_task_time__lte=start_time).filter(
+                        task__start_task_time_gte=deadline_time
+                    )
+
+            # create final data list
+            final_list = []
+            task_obj_list = dm_models.Task.objects.all()
+            for task_obj in task_obj_list:
+
+                sub_task = sub_task_obj_list.filter(task__task_id=task_obj.task_id)
+                final_list.append([task_obj, time.ctime(task_obj.start_task_time), time.ctime(task_obj.deadline),
+                                   sub_task])
+
+            # load template
+            task_temp = loader.get_template('DeviceMaintenance/sub_task_list.html')
+
+            context = {
+
+                'data_list': final_list
+
+            }
+
+            return HttpResponse(task_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))

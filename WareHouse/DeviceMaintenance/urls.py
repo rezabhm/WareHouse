@@ -15,6 +15,8 @@ urlpatterns = [
     # task
     re_path(r'^task/create/form/$', views.task_create_form, name='Task_Create_Form'),
     re_path(r'^task/create/$', views.task_create, name='Task_Create'),
-    re_path(r'^task/list/$', views.task_list, name='Task_List'),
+
+    re_path(r'^task/list/(?P<task_status>[\d]{1})/(?P<time_status>[\d]{1})/(?P<start_year>[\d]{4})/(?P<start_month>[\d]{2})/(?P<start_day>[\d]{1})/(?P<deadline_year>[\d]{4})/(?P<deadline_month>[\d]{2})/(?P<deadline_day>[\d]{1})/$',
+            views.task_list, name='Task_List'),
 
 ]

@@ -1,0 +1,57 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+task create
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Task_Create' %}" method="post">
+
+    {% csrf_token %}
+
+    {% for ts in task_structure_list %}
+
+        <label for="{{ ts.task_structure_id }}">
+
+            title: {{ ts.title }}<br>
+            description : {{ ts.description }}<br>
+
+        </label>
+        <input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}">
+        <br>
+        <br>
+
+    {% endfor %}
+    <br>
+    <br>
+    <br>
+    <br>
+
+        <label for="start_time_year">start time year :</label>
+    <input type="text" id="start_time_year" name="start_time_year">
+
+        <label for="start_time_month">start time month :</label>
+    <input type="text" id="start_time_month" name="start_time_month">
+
+        <label for="start_time_day">start time day :</label>
+    <input type="text" id="start_time_day" name="start_time_day">
+
+    <br>
+    <br>
+
+        <label for="deadline_year">deadline year :</label>
+    <input type="text" id="deadline_year" name="deadline_year">
+
+        <label for="deadline_month">deadline month :</label>
+    <input type="text" id="deadline_month" name="deadline_month">
+
+        <label for="deadline_day">deadline day :</label>
+    <input type="text" id="deadline_day" name="deadline_day">
+
+    <input type="submit">
+
+</form>
+
+
+{% endblock %}

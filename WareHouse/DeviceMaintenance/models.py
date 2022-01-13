@@ -129,7 +129,7 @@ class SubTask(models.Model):
         ('I', 'Ignore task')
 
     )
-    task_status = models.CharField(choices=task_status_tuple, max_length=1)
+    task_status = models.CharField(choices=task_status_tuple, max_length=1, default='I')
 
     # id
     sub_task_id = models.CharField(default=str(uuid1().int), max_length=250)

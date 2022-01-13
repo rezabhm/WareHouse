@@ -1,0 +1,27 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+
+task list
+
+{% endblock %}
+
+{% block content %}
+
+{% for data in data_list %}
+
+    title : {{ data.0.task_structure.title }}<br>
+    description : {{ data.0.task_structure.description }}<br>
+    start task time : {{ data.1 }}<br>
+    deadline time : {{ data.2 }}<br>
+
+    <br>
+    {% for sub_task in data.3 %}
+
+        task status : {{ sub_task.task_status }}<br>
+        trouble description : {{ sub_task.trouble_description }}<br>
+    {% endfor %}
+    <br><br><br><br>
+{% endfor %}
+
+{% endblock %}
