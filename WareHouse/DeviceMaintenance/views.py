@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from . import models as dm_models
-from WareHouse.WareHouseApp import models as wh_models
+from WareHouseApp import models as wh_models
 from django.template import loader, Context
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
 import time
 import datetime
+from uuid import uuid1
 
 # Create your views here.
 
@@ -61,6 +62,7 @@ def task_structure_create(requests):
             task_structure_obj.title = title
             task_structure_obj.description = description
             task_structure_obj.cycle_time = cycle_time
+            task_structure_obj.task_structure_id = str(uuid1().int)
 
             # save
             task_structure_obj.save()
@@ -123,6 +125,7 @@ def sub_structure_create(requests):
             # set param
             sub_structure_obj.title = title
             sub_structure_obj.description = description
+            sub_structure_obj.sub_task_structure_id = str(uuid1().int)
 
             # get task structure list
             task_structure_object_list = dm_models.TaskStructure.objects.all().filter(task_structure_id=task_id)
@@ -239,6 +242,7 @@ def task_create(requests):
             # set param
             task_obj.start_task_time = start_time
             task_obj.deadline = deadline_time
+            task_obj.task_id = str(uuid1().int)
 
             task_structure_obj_list = dm_models.TaskStructure.objects.all().filter(task_structure_id=task_id)
 
@@ -262,6 +266,7 @@ def task_create(requests):
                 # set param
                 sub_task_obj.task = task_obj
                 sub_task_obj.sub_task_structure = sub_task
+                sub_task_obj.sub_task_id = str(uuid1().int)
 
                 sub_task_obj.save()
 
@@ -365,3 +370,94 @@ def task_list(requests, task_status='0', time_status='0', start_year='0000', sta
             return HttpResponse(task_temp.render(context))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def task_done_form(requests):
+
+    """
+    render task list
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = wh_models.CEO.objects.all().filter(username=requests.user.username)
+        user_list = dm_models.TaskUser.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(user_list) > 0 or requests.user.is_superuser:
+
+            task_done_temp = loader.get_template('DeviceMaintenance/task_done.html')
+
+            # add filter
+            # return only tasks that current time are between start task time and deadline time
+            data_list = []
+            task_list_objs = dm_models.Task.objects.all().filter(start_task_time__lte=time.time()).filter(
+                deadline__gte=time.time()
+            )
+
+            for task in task_list_objs:
+
+                sub_task_objs = dm_models.SubTask.objects.all().filter(task__task_id=task.task_id)
+
+                data_list.append([task, time.ctime(task.start_task_time), time.ctime(task.deadline), sub_task_objs])
+
+            context = {
+
+                'data_list': data_list
+
+            }
+
+            return HttpResponse(task_done_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def task_done(requests):
+
+    """
+    change task status
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = wh_models.CEO.objects.all().filter(username=requests.user.username)
+        user_list = dm_models.TaskUser.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or len(user_list) > 0 or requests.user.is_superuser:
+
+            for key in requests.POST.keys():
+
+                if key[:2] == 'ts':
+
+                    sub_id = key[2:]
+                    sub_task_object = dm_models.SubTask.objects.all().filter(sub_task_id=sub_id)[0]
+
+                    sub_task_object.task_status = requests.POST[key]
+                    sub_task_object.trouble_description = requests.POST['des'+sub_id]
+
+                    sub_task_object.save()
+
+            return HttpResponseRedirect(reverse('Main'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def filter(requests):
+
+    """
+    do filter for another views
+    """
+
+    return HttpResponseRedirect(reverse('Task_List', args=[
+
+        requests.POST['task_status'],
+        requests.POST['time_status'],
+        requests.POST['start_year'],
+        requests.POST['start_month'],
+        requests.POST['start_day'],
+        requests.POST['deadline_year'],
+        requests.POST['deadline_month'],
+        requests.POST['deadline_day'],
+
+    ]))

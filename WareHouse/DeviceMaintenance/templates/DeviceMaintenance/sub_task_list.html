@@ -20,8 +20,50 @@ task list
 
         task status : {{ sub_task.task_status }}<br>
         trouble description : {{ sub_task.trouble_description }}<br>
+
     {% endfor %}
     <br><br><br><br>
+
 {% endfor %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+filter
+<br>
+<br>
+<form action="{% url 'Filter' %}" method="post">
+
+    {% csrf_token %}
+
+        <label for="task_status">task status :</label>
+    <input type="text" id="task_status" name="task_status" >
+
+        <label for="time_status">time status :</label>
+    <input type="text" id="time_status" name="time_status" >
+
+        <label for="start_year">start year :</label>
+    <input type="text" id="start_year" name="start_year" >
+
+        <label for="start_month">start month :</label>
+    <input type="text" id="start_month" name="start_month" >
+
+        <label for="start_day">start day:</label>
+    <input type="text" id="start_day" name="start_day" >
+
+        <label for="deadline_year">deadline year :</label>
+    <input type="text" id="deadline_year" name="deadline_year" >
+
+        <label for="deadline_month">deadline month:</label>
+    <input type="text" id="deadline_month" name="deadline_month" >
+
+        <label for="deadline_day">deadline day:</label>
+    <input type="text" id="deadline_day" name="deadline_day" >
+
+    <input type="submit">
+
+</form>
 
 {% endblock %}

@@ -23,7 +23,7 @@ class SubTaskStructureAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("information", {"fields": ('task_structure_id', 'title', 'description', 'sub_task_structure_id',
+        ("information", {"fields": ('title', 'description', 'sub_task_structure_id',
                                     'task_structure')}),
 
     )
@@ -46,7 +46,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(models.SubTask)
 class SubTaskAdmin(admin.ModelAdmin):
-    list_display = ['start_task_time', 'deadline', ]
+    list_display = ['sub_task_id', 'task_status', ]
 
     fieldsets = (
 

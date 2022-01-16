@@ -1,0 +1,48 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% block title %}
+
+task done list
+
+{% endblock %}
+
+{% block content %}
+
+{% for data in data_list %}
+<form action="{% url 'Task_Done' %}" method="post">
+
+    {{ csrf_token }}
+
+    title : {{ data.0.task_structure.title }}<br>
+    description : {{ data.0.task_structure.description }}<br>
+    start task time : {{ data.1 }}<br>
+    deadline time : {{ data.2 }}<br>
+
+    <br>
+    {% for sub_task in data.3 %}
+
+        title: {{ sub_task.sub_task_structure.title }}<br>
+        description : {{ sub_task.sub_task_structure.description }}<br>
+
+        <label for="{{ sub_task.sub_task_id }}ig">ignore</label>
+        <input type="radio" name="ts{{ sub_task.sub_task_id }}" value="I" id="{{ sub_task.sub_task_id }}ig"><br>
+
+        <label for="{{ sub_task.sub_task_id }}t">trouble</label>
+        <input type="radio" name="ts{{ sub_task.sub_task_id }}" value="T" id="{{ sub_task.sub_task_id }}t"><br>
+
+        <label for="{{ sub_task.sub_task_id }}d">done</label>
+        <input type="radio" name="ts{{ sub_task.sub_task_id }}" value="D" id="{{ sub_task.sub_task_id }}d"><br><br>
+
+        <label for="{{ sub_task.sub_Task_id }}">trouble description : </label>
+        <input type="text" name="des{{ sub_task.sub_task_id }}" id="{{ sub_task.sub_task_id }}" value="{{ sub_task.trouble_description }}"><br><br><br>
+
+    {% endfor %}
+    <input type="submit">
+
+    <br><br><br><br><br>
+
+
+</form>
+{% endfor %}
+
+{% endblock %}

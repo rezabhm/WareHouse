@@ -149,19 +149,31 @@ urlpatterns = [
     re_path(r'^live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_empty>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
             views.company_live_weighbridge_list, name='Company_Live_WeighBridge_List'),
 
+    re_path(r'lw/filter/$', views.lw_filter, name='LW_Filter'),
+
     re_path(r'^driver/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
             views.driver_list, name='Driver_List'),
+
+    re_path(r'driver/filter/$', views.driver_filter, name='Driver_Filter'),
 
     re_path(r'^car/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
             views.car_list, name='Car_List'),
 
+    re_path(r'car/filter/$', views.car_filter, name='Car_Filter'),
+
     re_path(r'^product_owner/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<po_name>[\w]+)/(?P<po_lastname>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$', views.product_owner_list,
             name='Product_Owner_List'),
+
+    re_path(r'po/filter/$', views.po_filter, name='PO_Filter'),
 
     re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
             views.weight_lifting_list, name='Weight_Lifting_List'),
 
+    re_path(r'wl/filter/$', views.wl_filter, name='WL_Filter'),
+
     re_path(r'^cold/house/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
             views.cold_house_list, name='Cold_House_List'),
+
+    re_path(r'ch/filter/$', views.ch_filter, name='ch_Filter'),
 
 ]

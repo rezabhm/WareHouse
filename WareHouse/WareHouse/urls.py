@@ -20,6 +20,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', include('WareHouseApp.urls')),
-    path('^task/', include('DeviceMaintenance.urls')),
+    path('task/', include('DeviceMaintenance.urls')),
 
 ]

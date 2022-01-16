@@ -135,7 +135,7 @@ def error(requests, error_text='here is error page to show error'):
     # build param dictionary
     context = {
 
-        'error_text':error_text
+        'error_text': error_text
 
     }
 
@@ -311,7 +311,7 @@ def sign_in(request):
         else:
 
             # username or password is incorrect
-            return HttpResponseRedirect(reverse("SignIn_Form", args=["نام كاربري يا رمز عبور اشتباه است "]))
+            return HttpResponseRedirect(reverse('Error', args=["password is incorect"]))
 
     else:
 
