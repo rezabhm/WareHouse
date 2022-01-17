@@ -1655,7 +1655,7 @@ def company_user_list(requests):
     return HttpResponse(user_list_temp.render(context))
 
 
-def company_live_weighbridge_list(requests, year=0, month=0, day=0, car_empty=0, product_category=0, slaughter_status=0):
+def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_empty='0', product_category='0', slaughter_status='0'):
 
     """
     show company live WeighBridge data with it filter
@@ -2670,3 +2670,107 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
 
     # user can't access to this page
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def lw_filter(requests):
+
+    """
+    filter view for live weighbridge list
+    """
+
+    return HttpResponseRedirect(reverse('Company_Live_WeighBridge_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['car_empty'],
+        requests.POST['product_category'],
+        requests.POST['slaughter_status'],
+
+    ]))
+
+
+def driver_filter(requests):
+    """
+    filter view for driver list
+    """
+
+    return HttpResponseRedirect(reverse('Driver_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['phone_number'],
+        requests.POST['product_category'],
+        requests.POST['model_type'],
+
+    ]))
+
+
+def car_filter(requests):
+    """
+    filter view for car list
+    """
+
+    return HttpResponseRedirect(reverse('Car_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['car_number'],
+        requests.POST['product_category'],
+        requests.POST['model_type'],
+
+    ]))
+
+
+def po_filter(requests):
+    """
+    filter view for product owner list
+    """
+
+    return HttpResponseRedirect(reverse('Product_Owner_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['po_name'],
+        requests.POST['po_lastname'],
+        requests.POST['product_category'],
+        requests.POST['model_type'],
+
+    ]))
+
+
+def wl_filter(requests):
+    """
+    filter view for weight lifting list
+    """
+
+    return HttpResponseRedirect(reverse('Weight_Lifting_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['product_category'],
+        requests.POST['model_type'],
+        requests.POST['exist'],
+
+    ]))
+
+
+def ch_filter(requests):
+    """
+    filter view for cold house list
+    """
+
+    return HttpResponseRedirect(reverse('Cold_House_List', args=[
+
+        requests.POST['year'],
+        requests.POST['month'],
+        requests.POST['day'],
+        requests.POST['product_category'],
+        requests.POST['model_type'],
+        requests.POST['exist'],
+
+    ]))
