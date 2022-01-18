@@ -12,6 +12,17 @@ from uuid import uuid1
 
 # Create your views here.
 
+def main(request):
+
+    """
+    this is main & primary page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('DeviceMaintenance/main.html')
+
+    return HttpResponse(main_template.render())
+
 
 def task_structure_create_form(requests):
 

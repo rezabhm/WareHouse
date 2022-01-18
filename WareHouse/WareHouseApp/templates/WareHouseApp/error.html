@@ -14,9 +14,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <div class="container h-100">
       <div class="row align-items-center h-100">
-          <div class="col-6 mx-auto" style="margin-top: 8rem;">
+          <div class="col-6 mx-auto" style="margin-top: 3rem;">
               <div class="jumbotron text-center">
-                  <h1 class="display-4">Sorry</h1>
+                  <img  class="img-thumbnail" src="{% static 'WareHouseApp/img/turkeyprotest-preview4-o.jpg' %}" alt=":)">
+                  <!--<h1 class="display-4">Sorry</h1>-->
                   <p class="lead" style="color:#c32e50;">{{error_text}}</p>
                   <p class="lead">
                       <a class="btn border border-secondary btn-lg"  style=" background-color:#149ddd;" href="{% url 'Main_URL' %}" role="button">Main</a>
