@@ -1501,7 +1501,7 @@ input[type=file] > input[type=button]::-moz-focus-inner {
   /* Opera 12+ */
   background: -ms-radial-gradient(center, ellipse cover, #533ce1 0%, #4087ea 100%);
   /* IE10+ */
-  background: radial-gradient(ellipse at center, #8dcde5 0%, #0c6a97 100%);
+  background: radial-gradient(ellipse at center, #e6ecff 0%, #0041cc 100%);
   /* W3C */
   background-size: 250% 250%;
 }

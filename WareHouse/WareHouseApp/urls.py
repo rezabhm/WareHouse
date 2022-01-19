@@ -175,6 +175,6 @@ urlpatterns = [
     re_path(r'^cold/house/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
             views.cold_house_list, name='Cold_House_List'),
 
-    re_path(r'ch/filter/$', views.ch_filter, name='ch_Filter'),
+    re_path(r'ch/filter/$', views.ch_filter, name='CH_Filter'),
 
 ]
