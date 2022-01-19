@@ -43,6 +43,18 @@ def main_url(request):
     return HttpResponse(main_template.render())
 
 
+def task(request):
+
+    """
+    this is task page
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/task.html')
+
+    return HttpResponse(main_template.render())
+
+
 def live_WeighBridge(request):
 
     """

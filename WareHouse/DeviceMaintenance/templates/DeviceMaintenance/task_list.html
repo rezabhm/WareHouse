@@ -1,10 +1,87 @@
 {% extends 'WareHouseApp/main.html' %}
 
 {% block title %}
-task list
+<h2>Task list</h2>
 {% endblock %}
 
 {% block content %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Task List</p>
+             </div>
+
+              <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Task title</th>
+                          <th>Task description</th>
+                          <th>Task cycle time</th>
+                        </thead>
+
+                        {% for dt in data_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ dt.0.title }}" id="{{ dt.0.title }}" name="{{ dt.0.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ dt.0.description }}" id="{{ dt.0.description }}" name="{{ dt.0.description }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ dt.0.cycle_time }}" id="{{ dt.0.cycle_time }}" name="{{ dt.0.cycle_time }}" style="border-bottom:0px;" /></td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Sub Structure</p>
+             </div>
+
+             <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Sub structure title</th>
+                          <th>Sub structure description</th>
+                        </thead>
+                        {%  for dt in data_list %}
+                        {% for sub_structure in dt.1 %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ sub_structure.title }}" id="{{ sub_structure.title }}" name="{{ sub_structure.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ sub_structure.description }}" id="{{ sub_structure.description }}" name="{{ sub_structure.description }}" style="border-bottom:0px;" /></td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                         {% endfor %}
+                      </table>
+             </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+<!--
+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 
 {% for dt in data_list %}
 
@@ -24,6 +101,6 @@ task list
     <br>
     <br>
 
-{% endfor %}
+{% endfor %}-->
 
 {% endblock %}

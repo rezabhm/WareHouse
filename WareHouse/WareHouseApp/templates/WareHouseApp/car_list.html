@@ -122,6 +122,70 @@
     </div>
 
 
+
+<form action="{% url 'Car_Filter' %}" method="post">
+
+  {% csrf_token %}
+
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Filter</p>
+       </div>
+          <div class="col-4">
+             <label for="year">
+            <span >year</span>
+            <input type="text" id="year" name="year"  value="0"/>
+          </label>
+          </div>
+          <div class="col-4">
+             <label for="month">
+                <span >month</span>
+                <input type="text" id="month" name="month" value="0"/>
+             </label>
+          </div>
+         <div class="col-4">
+         <label for="day">
+            <span >day</span>
+            <input  type="text" id="day" name="day" value="0"/>
+         </label>
+         </div>
+         <div class="col-6">
+         <label for="car_number">
+            <span >Car number</span>
+            <input  type="text" id="car_number" name="car_number" value="0"/>
+         </label>
+         </div>
+         <div class="col-6">
+         <label for="product_category">
+            <span >Product category</span>
+            <input  type="text" id="product_category" name="product_category" value="0"/>
+         </label>
+         </div>
+         <div class="col-6">
+         <label for="model_type">
+            <span >Model type</span>
+            <input  type="text" id="model_type" name="model_type" value="0"/>
+         </label>
+         </div>
+
+
+    </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+
+    </div>
+
+</form>
+
+<!--
+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 <br><br><br><br>
 <form action="{% url 'Car_Filter' %}" method="post">
 
@@ -145,7 +209,7 @@
 
     <input type="submit">
 
-</form>
+</form>-->
 
 
 <!--

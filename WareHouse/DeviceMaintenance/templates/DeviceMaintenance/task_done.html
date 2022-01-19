@@ -2,11 +2,116 @@
 
 {% block title %}
 
-task done list
+<h2>Task Done List</h2>
 
 {% endblock %}
 
 {% block content %}
+
+<form action="{% url 'Task_Done' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Information</p>
+             </div>
+
+              <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Start task time</th>
+                          <th>Deadline time</th>
+                        </thead>
+
+                        {% for data in data_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ data.0.task_structure.title }}" id="{{ data.0.task_structure.title }}" name="{{ data.0.task_structure.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.0.task_structure.description }}" id="{{ data.0.task_structure.description }}" name="{{ data.0.task_structure.description }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.1 }}" id="{{ data.1 }}" name="{{ data.1 }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.2 }}" id="{{ data.2 }}" name="{{ data.2 }}" style="border-bottom:0px;" /></td>
+                               <!-- <td>
+                                    <div class="checkbox">
+                                         <label><input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}"></label>
+                                    </div>
+                                </td>-->
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+             <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Ignore</th>
+                          <th>Trouble</th>
+                          <th>Done</th>
+                        </thead>
+
+                        {% for data in data_list %}
+                          {% for sub_task in data.3 %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ sub_task.sub_task_structure.title }}" id="{{ sub_task.sub_task_structure.title }}" name="{{ sub_task.sub_task_structure.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ sub_task.sub_task_structure.description }}" id="{{ sub_task.sub_task_structure.description }}" name="{{ sub_task.sub_task_structure.description }}" style="border-bottom:0px;" /></td>
+                                <td>
+                                    <div class="checkbox" >
+                                         <label for="{{ sub_task.sub_task_id }}ig"><input type="radio" id="{{ sub_task.sub_task_id }}ig" name="ts{{ sub_task.sub_task_id }}" value="I"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label for="{{ sub_task.sub_task_id }}t"><input type="radio" id="{{ sub_task.sub_task_id }}t" name="ts{{ sub_task.sub_task_id }}" value="T"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label for="{{ sub_task.sub_task_id }}d"><input type="radio" id="{{ sub_task.sub_task_id }}d" name="ts{{ sub_task.sub_task_id }}" value="D"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                          {% endfor %}
+                      </table>
+             </div>
+
+                         <div class="col-12">
+                             <label for="{{ sub_task.sub_Task_id }}">
+                                 <span >Trouble description</span>
+                                 <input type="text" name="des{{ sub_task.sub_task_id }}" id="{{ sub_task.sub_task_id }}" value="{{ sub_task.trouble_description }}"/>
+                             </label>
+                         </div>
+
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+<!--
+&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 
 {% for data in data_list %}
 <form action="{% url 'Task_Done' %}" method="post">
@@ -43,6 +148,6 @@ task done list
 
 
 </form>
-{% endfor %}
+{% endfor %}-->
 
 {% endblock %}

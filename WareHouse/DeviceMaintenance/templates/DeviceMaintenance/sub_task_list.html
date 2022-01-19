@@ -1,12 +1,167 @@
 {% extends 'WareHouseApp/main.html' %}
+{% load static %}
 
 {% block title %}
 
-task list
+<h2> Task List </h2>
 
 {% endblock %}
 
 {% block content %}
+
+<div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Task</p>
+             </div>
+
+                    {% for data in data_list %}
+
+                      <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Start task time</th>
+                          <th>deadline time</th>
+                        </thead>
+
+                        <label  ><h4 style="color: #0a0a0a">Task</h4>
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ data.0.task_structure.title }}" id="{{ data.0.task_structure.title }}" name="{{ data.0.task_structure.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.0.task_structure.description }}" id="{{ data.0.task_structure.description }}" name="{{ data.0.task_structure.description }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.1 }}" id="{{ data.1 }}" name="{{ data.1 }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ data.2 }}" id="{{ data.2 }}" name="{{ data.2 }}" style="border-bottom:0px;" /></td>
+                              </tr>
+                            </tbody>
+                        </label>
+
+                      </table>
+                        <br><br>
+                      <table id="fresh-table" class="table   shadow-lg p-3 mb-5 bg-white rounded  <!--border border-secondary -->">
+                        <thead>
+                          <th>Task status</th>
+                          <th>Trouble description</th>
+                        </thead>
+                        <h5 style="color: #0a0a0a">Sub Task</h5>
+
+                        {% for sub_task in data.3 %}
+                        <label>
+                            <tbody >
+                              <tr>
+                                <td>
+                                    {% if  sub_task.task_status  == 'I' %}
+                                         <img src="{% static 'WareHouseApp/img/Web capture_19-1-2022_111725_clipart-library.com.jpeg' %}" alt="" class="img-fluid rounded-circle" style="max-width: 6%">
+
+                                    {% elif  sub_task.task_status  == 'D' %}
+                                        <img src="{% static 'WareHouseApp/img/Web capture_19-1-2022_105653_www.iconfinder.com.jpeg' %}" alt="" class="img-fluid rounded-circle" style="max-width: 12%">
+                                    {% else %}
+                                        <img src="{% static 'WareHouseApp/img/Web capture_19-1-2022_1194_www.vectorstock.com.jpeg' %}" alt="" class="img-fluid rounded-circle" style="max-width: 12%">
+
+                                    {% endif %}
+                                </td>
+                                <td><input type="text" value="{{ sub_task.trouble_description }}" id="{{ sub_task.trouble_description }}" name="{{ sub_task.trouble_description }}" style="border-bottom:0px;" /></td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+
+                      </table>
+                     </div>
+
+                            <br><br><br><br>
+                          {% endfor %}
+            </div>
+        </div>
+        </div>
+    </div>
+
+<!--=======================-->
+
+
+<form action="{% url 'Filter' %}" method="post">
+
+  {% csrf_token %}
+
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-left-style: solid;
+          border-left-color: #17a2b8;
+          border-left-width: 5px;
+          padding-left: 10px;
+          padding: 5px;
+          color: black;">Filter</p>
+       </div>
+          <div class="col-6">
+             <label for="task_status">
+            <span >Task status</span>
+            <input type="text" id="task_status" name="task_status" />
+          </label>
+          </div>
+          <div class="col-6">
+             <label for="time_status">
+                <span >Time status</span>
+                <input type="text" id="time_status" name="time_status"/>
+             </label>
+          </div>
+         <div class="col-4">
+         <label for="start_year">
+            <span >Start year</span>
+            <input  type="text" id="start_year" name="start_year"/>
+         </label>
+         </div>
+         <div class="col-4">
+         <label for="start_month">
+            <span >Start month</span>
+            <input  type="text" id="start_month" name="start_month"/>
+         </label>
+         </div>
+         <div class="col-4">
+         <label for="start_day">
+            <span >Start day</span>
+            <input  type="text" id="start_day" name="start_day"/>
+         </label>
+         </div>
+         <div class="col-4">
+         <label for="deadline_year">
+            <span >deadline year</span>
+            <input  type="text" id="deadline_year" name="deadline_year"/>
+         </label>
+         </div>
+         <div class="col-4">
+         <label for="deadline_month">
+            <span >deadline month</span>
+            <input  type="text" id="deadline_month" name="deadline_month"/>
+         </label>
+         </div>
+         <div class="col-4">
+         <label for="deadline_day">
+            <span >deadline day</span>
+            <input  type="text" id="deadline_day" name="deadline_day"/>
+         </label>
+         </div>
+
+    </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+
+    </div>
+
+</form>
+
+-<!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 
 {% for data in data_list %}
 
@@ -64,6 +219,6 @@ filter
 
     <input type="submit">
 
-</form>
+</form>-->
 
 {% endblock %}

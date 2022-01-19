@@ -1,11 +1,90 @@
-{% extends 'DeviceMaintenance/main.html' %}
+{% extends 'WareHouseApp/main.html' %}
 {% load static %}
 
 {% block title %}
-create sub-task structure
+<h2>Create sub task structure</h2>
 {% endblock %}
 
 {% block content %}
+
+
+<form action="{% url 'Sub_Structure_Create' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">choose one of the blew list</p>
+             </div>
+
+              <div class="fresh-table full-color-blue badge filter badge-blue">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>selection</th>
+                        </thead>
+
+                        {% for ts in task_structure_list %}
+                        <label for="{{ ts.task_structure_id }}">
+                            <tbody>
+                              <tr>
+                                <td><input type="text" value="{{ ts.title }}" id="{{ ts.title }}" name="{{ ts.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ ts.description }}" id="{{ ts.description }}" name="{{ ts.description }}" style="border-bottom:0px;" /></td>
+                                <td>
+                                    <div class="checkbox">
+                                         <label><input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}"></label>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Information</p>
+             </div>
+
+           <div class="col-6">
+             <label for="title">
+                <span >title</span>
+                <input type="text" id="title" name="title"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="description">
+                <span >description</span>
+                <input type="text" id="description" name="description"/>
+             </label>
+           </div>
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
+
+<!--
+-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
 
 <form action="{% url 'Sub_Structure_Create' %}" method="post">
 
@@ -31,6 +110,6 @@ create sub-task structure
 
     <input type="submit">
 
-</form>
+</form>-->
 
 {% endblock%}

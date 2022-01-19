@@ -101,6 +101,7 @@ urlpatterns = [
     re_path(r'^live_WeighBridge/$', views.live_WeighBridge, name='live_WeighBridge'),
     re_path(r'^first_WeightLifting/$', views.first_WeightLifting, name='first_WeightLifting'),
     re_path(r'^monitor_data/$', views.monitor_data, name='monitor_data'),
+    re_path(r'^task/$', views.task, name='task'),
     re_path(r'^error/(?P<error_text>.*)', views.error, name='Error'),
 
     # user url
