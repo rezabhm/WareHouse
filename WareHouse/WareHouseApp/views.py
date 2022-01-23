@@ -28,7 +28,13 @@ def main(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/home.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'user': not request.user.is_authenticated
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def main_url(request):
@@ -40,7 +46,13 @@ def main_url(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/main.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def task(request):
@@ -64,7 +76,13 @@ def live_WeighBridge(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/live_WeighBridge.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def monitor_data(request):
@@ -100,13 +118,11 @@ def user_url(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/user.html')
 
-
     context = {
 
-        'user': request.user.username if request.user.is_authenticated else 'anonymouse'
-
+        'user': request.user.username if request.user.is_authenticated else 'anonymouse',
+        'request': request
     }
-
 
     return HttpResponse(main_template.render(context))
 
@@ -177,7 +193,8 @@ def signup_form(requests, error_text='fill blank'):
         context = {
 
             'company_list': models.Company.objects.all(),
-            'error_text': error_text
+            'error_text': error_text,
+            'request': requests
 
         }
 
@@ -250,7 +267,7 @@ def signup(requests):
             else:
 
                 # raised error and redirect to error page
-                return HttpResponseRedirect(reverse('Error', args=['etelaat vard shode (tayin noe user) eshtebah ast']))
+                return HttpResponseRedirect(reverse('Error', args=['incorrect information']))
 
             # set user model param
 
@@ -264,7 +281,7 @@ def signup(requests):
             # save user model
             user_model.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('User_url'))
 
         else:
 
@@ -370,14 +387,15 @@ def change_password_form(request, error_text='fill blank'):
 
         context = {
 
-            'error_text': error_text
+            'error_text': error_text,
+            'request': request
         }
 
         return HttpResponse(change_password_form_page.render(context))
 
     else:
         # redirect to error page
-        return HttpResponseRedirect(reverse('Error', args=['اجازه دسترسی ندارید']))
+        return HttpResponseRedirect(reverse('Error', args=["you don't have permission"]))
 
 
 @csrf_exempt
@@ -408,7 +426,7 @@ def change_password(request):
             user_obj.set_password(password)
             user_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('User_url'))
 
         else:
 
@@ -444,7 +462,13 @@ def lwb_create_form(requests):
 
             driver_temp = loader.get_template('WareHouseApp/lwb_create_form.html')
 
-            return HttpResponse(driver_temp.render())
+            context = {
+
+                'request': requests
+
+            }
+
+            return HttpResponse(driver_temp.render(context))
 
         else:
 
@@ -481,6 +505,7 @@ def lwb_create(requests):
             product_owner_lastname = requests.POST['product_owner_lastname']
             buy_price = requests.POST['buy_price']
             car_weight = requests.POST['car_weight']
+            car_empty_weight = requests.POST['car_empty_weight']
             product_category = requests.POST['product_category']
 
             # create product owner
@@ -538,6 +563,7 @@ def lwb_create(requests):
                 driver_obj.name = driver_name
                 driver_obj.last_name = driver_last_name
                 driver_obj.phone_number = driver_phone_number
+                driver_obj.driver_id = str(uuid1().int)
 
             driver_obj.car = car_obj
 
@@ -549,6 +575,7 @@ def lwb_create(requests):
             lwb_obj.buy_price = buy_price
             lwb_obj.live_weighbridge_id = str(uuid1().int)
             lwb_obj.final_weight = car_weight
+            lwb_obj.car_weight = car_empty_weight
             lwb_obj.product_category = product_category
             lwb_obj.driver = driver_obj
 
@@ -558,7 +585,7 @@ def lwb_create(requests):
             # save live weighbridge
             lwb_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('live_WeighBridge'))
 
         else:
 
@@ -593,7 +620,10 @@ def lwb_start_slaughter_form(requests):
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=False).filter(
                     weighting_date__gte=time.time()-(60*60*6)
-                )
+
+                ),
+
+                'request': requests,
 
             }
 
@@ -641,7 +671,7 @@ def lwb_start_slaughter(requests):
                 # save changes
                 lwb_obj.save()
 
-                return HttpResponseRedirect(reverse('Main'))
+                return HttpResponseRedirect(reverse('live_WeighBridge'))
 
             else:
 
@@ -677,7 +707,9 @@ def lwb_finish_slaughter_form(requests):
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True).filter(
                     weighting_date__gte=time.time() - (60 * 60 * 6)
-                )
+                ),
+
+                'request': requests
 
             }
 
@@ -724,7 +756,7 @@ def lwb_finish_slaughter(requests):
                 # save changes
                 lwb_obj.save()
 
-                return HttpResponseRedirect(reverse('Main'))
+                return HttpResponseRedirect(reverse('live_WeighBridge'))
 
             else:
 
@@ -758,7 +790,9 @@ def lwb_capability_form(requests):
 
             context = {
 
-                'lwb_list': models.LiveWeighbridge.objects.all().filter(car_empty=False)
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(car_empty=False),
+                'request': requests
+
             }
 
             return HttpResponse(slaughter_temp.render(context))
@@ -803,7 +837,7 @@ def lwb_capability(requests):
                 # save changes
                 lwb_obj.save()
 
-                return HttpResponseRedirect(reverse('Main'))
+                return HttpResponseRedirect(reverse('live_WeighBridge'))
 
             else:
 
@@ -1597,8 +1631,6 @@ def cold_house_exit(requests):
 
             # user have access to this page
             pallet_id = requests.POST['pallet_id']
-
-            print('pallet id = ',pallet_id)
 
             # get object
             cold_house_obj = models.ColdHouse.objects.all().filter(pallet_id=pallet_id)[0]
@@ -2647,28 +2679,29 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
             # create paper box objects
             pb_final_list = []
             for pb in pb_list:
+                if pb.cold_house:
 
-                if pb.product_category == 'C':
-                    prod_category = 'Chicken'
+                    if pb.product_category == 'C':
+                        prod_category = 'Chicken'
 
-                elif pb.product_category == 'T':
-                    prod_category = 'turkey'
+                    elif pb.product_category == 'T':
+                        prod_category = 'turkey'
 
-                elif pb.product_category == 'Q':
-                    prod_category = 'Quail'
+                    elif pb.product_category == 'Q':
+                        prod_category = 'Quail'
 
-                pb_final_list.append([
+                    pb_final_list.append([
 
-                    prod_category,
-                    pb.paper_box_weight,
-                    pb.box_status,
-                    pb.number_of_product,
-                    time.ctime(pb.packing_time),
-                    pb.box_id,
-                    pb.cold_house.pallet_id,
-                    pb.cold_house.cold_house_id
+                        prod_category,
+                        pb.paper_box_weight,
+                        pb.box_status,
+                        pb.number_of_product,
+                        time.ctime(pb.packing_time),
+                        pb.box_id,
+                        pb.cold_house.pallet_id,
+                        pb.cold_house.cold_house_id
 
-                ])
+                    ])
 
             # return data
             context = {
@@ -2684,6 +2717,7 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
+@csrf_exempt
 def lw_filter(requests):
 
     """
@@ -2702,6 +2736,7 @@ def lw_filter(requests):
     ]))
 
 
+@csrf_exempt
 def driver_filter(requests):
     """
     filter view for driver list
@@ -2719,6 +2754,7 @@ def driver_filter(requests):
     ]))
 
 
+@csrf_exempt
 def car_filter(requests):
     """
     filter view for car list
@@ -2736,6 +2772,7 @@ def car_filter(requests):
     ]))
 
 
+@csrf_exempt
 def po_filter(requests):
     """
     filter view for product owner list
@@ -2754,6 +2791,7 @@ def po_filter(requests):
     ]))
 
 
+@csrf_exempt
 def wl_filter(requests):
     """
     filter view for weight lifting list
@@ -2771,6 +2809,7 @@ def wl_filter(requests):
     ]))
 
 
+@csrf_exempt
 def ch_filter(requests):
     """
     filter view for cold house list

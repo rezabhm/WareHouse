@@ -30,28 +30,42 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th data-field="name" data-sortable="true">Driver</th>
+                          <th>selection</th>
+                         <th data-field="name" data-sortable="true">Driver</th>
                           <th data-field="salary" data-sortable="true">Car</th>
                           <th data-field="country" data-sortable="true">Product owner</th>
+                          <th>CAr weight with product</th>
                           <th>CAr weight</th>
                           <th>Buy price</th>
-                          <th>selection</th>
+                          <th>Product Category</th>
                         </thead>
 
                         {% for slaughter in slaughter_list %}
                         <label >
                             <tbody>
                               <tr>
-                                <td><input  value="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" id="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" name="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}"  style="border-bottom:0px;"/></td>
-                                <td><input type="text" value="{{ slaughter.driver.car.car_number }}" id="{{ slaughter.driver.car.car_number }}" name="{{ slaughter.driver.car.car_number }}" style="border-bottom:0px;" ></td>
-                                <td><input type="text" value="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" id="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" name="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ slaughter.final_weight }}" id="{{ slaughter.final_weight }}" name="{{ slaughter.final_weight }}" style="border-bottom:0px;"></td>
-                                <td><input type="text" name="{{ slaughter.buying_price }}" id="{{ slaughter.buying_price }}" value="{{ slaughter.buying_price }}" style="border-bottom:0px;"></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" name="slaughter_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
                                     </div>
                                 </td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.car_number }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.final_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.car_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.buy_price }} تومان</td>
+
+                                  {% if slaughter.product_category == 'C' %}
+                                    <td style="border-bottom:0px;">Chicken</td>
+                                  {% elif slaughter.product_category == 'T' %}
+                                    <td style="border-bottom:0px;">Turkey</td>
+                                  {% elif slaughter.product_category == 'Q' %}
+                                    <td style="border-bottom:0px;">Quail</td>
+                                  {% else %}
+                                    <td style="border-bottom:0px;">-</td>
+                                  {% endif %}
+
                               </tr>
                             </tbody>
                         </label>

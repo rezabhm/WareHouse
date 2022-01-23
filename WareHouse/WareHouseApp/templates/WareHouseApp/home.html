@@ -60,7 +60,9 @@
       <nav id="navbar" class="nav-menu navbar">
         <ul>
           <li><a href="{% url 'Main_URL' %}" class="nav-link scrollto "><i class="bx bx-home"></i> <span>Main</span></a></li>
-          <li><a href="{% url 'SignIn_Form' %}" class="nav-link scrollto "><i class="bi bi-door-open"></i> <span>Sign in</span></a></li>
+          {% if user %}
+            <li><a href="{% url 'SignIn_Form' %}" class="nav-link scrollto "><i class="bi bi-door-open"></i> <span>Sign in</span></a></li>
+          {% endif %}
           <li><a href="{% url 'About' %}" class="nav-link scrollto "><i class="bi bi-tags"></i> <span>About</span></a></li>
           <li><a href="{% url 'Contact' %}" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
 
