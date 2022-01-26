@@ -27,7 +27,7 @@
                   color: black;">choose one of the blew list</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -47,7 +47,7 @@
                               <tr>
                                 <td>
                                     <div class="radio">
-                                         <label><input type="radio" name="lwb_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
+                                         <label style="margin:0px;"><input type="radio" name="lwb_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
                                     </div>
                                 </td>
                                 <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
