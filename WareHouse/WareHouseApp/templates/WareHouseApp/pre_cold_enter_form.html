@@ -26,6 +26,36 @@
                   color: black;">choose first weight lifting</p>
              </div>
 
+             <div class="fresh-table full-color-blue badge filter badge-blue" >
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th style="text-align: center;">selection</th>
+                          <th>Weight</th>
+
+
+                        </thead>
+
+                        {% for fwl in fwl_list %}
+                        <label for="{{ fwl.weight_lifting_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="checkbox">
+                                         <label style="margin:0px;"><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"></label>
+                                    </div>
+                                </td>
+                                <td><input  type="text" style="border-bottom: 0px;" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}"></td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+            <!-- =================
+
           {% for fwl in fwl_list %}
 
               <label for="{{ fwl.weight_lifting_id }}">
@@ -35,7 +65,7 @@
                         <div class="info col-12 p-5">
                            <div class="col-12">
                              <label for="{{ fwl.weight }}">
-                                <!--<span >weight</span>-->
+                                &lt;!&ndash;<span >weight</span>&ndash;&gt;
                                 <input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" />
                             </label>
                            </div>
@@ -50,7 +80,7 @@
 
               </label>
 
-           {% endfor %}
+           {% endfor %}-->
 
              <div class="col-6 mt-3">
                  <label for="weight">

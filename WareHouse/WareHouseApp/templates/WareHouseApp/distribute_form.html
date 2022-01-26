@@ -237,37 +237,69 @@
     </div>
 </form>
 
+<form action="{% url 'Driver_Create_Distribute' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-left-style: solid;
+                  border-left-color: #17a2b8;
+                  border-left-width: 5px;
+                  padding-left: 10px;
+                  padding: 5px;
+                  color: black;">Create Driver</p>
+             </div>
+
+             <div class="col-6">
+                 <label for="driver_name">
+                    <span >Driver name</span>
+                    <input type="text" id="driver_name" name="driver_name"/>
+                 </label>
+             </div>
+             <div class="col-6">
+                 <label for="driver_last_name">
+                    <span >Driver last name</span>
+                    <input type="text" id="driver_last_name" name="driver_last_name"/>
+                 </label>
+             </div>
+             <div class="col-6">
+                 <label for="driver_phone_number">
+                    <span >Driver phone number</span>
+                    <input type="text" id="driver_phone_number" name="driver_phone_number"/>
+                 </label>
+             </div>
+             <div class="col-6">
+                 <label for="car_number">
+                    <span >Car number</span>
+                    <input type="text" id="car_number" name="car_number"/>
+                 </label>
+             </div>
+              <div class="col-6">
+                 <label for="po_name">
+                    <span >Product owner name</span>
+                    <input type="text" id="po_name" name="po_name"/>
+                 </label>
+             </div>
+             <div class="col-6">
+                 <label for="po_last_name">
+                    <span >product last name</span>
+                    <input type="text" id="po_last_name" name="po_last_name"/>
+                 </label>
+             </div>
 
 
-             <br><br><br><br>
-             <form action="{% url 'Driver_Create_Distribute' %}" method="post">
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+        </div>
+    </div>
+</form>
 
-                 {% csrf_token %}
-
-                 <label for="driver_name">driver name</label>
-                 <input type="text" name="driver_name" id="driver_name"><br>
-
-                 <label for="driver_lastname">driver last name</label>
-                 <input type="text" name="driver_last_name" id="driver_lastname"><br>
-
-                 <label for="phone_number">phone number</label>
-                 <input type="text" name="driver_phone_number" id="phone_number"><br><br>
-
-                 <label for="car_number">car number</label>
-                 <input type="text" name="car_number" id="car_number"><br>
-
-
-                 <label for="po_name">product owner name</label>
-                 <input type="text" name="po_name" id="po_name"><br>
-
-                 <label for="po_last_name">product last name</label>
-                 <input type="text" name="po_last_name" id="po_last_name"><br>
-
-                 <input type="submit">
-
-             </form>
-
-             <br><br><br><br>
 
 
 
