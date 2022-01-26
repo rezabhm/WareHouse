@@ -60,11 +60,14 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+
                           <th>Title</th>
                           <th>Description</th>
                           <th>Ignore</th>
                           <th>Trouble</th>
                           <th>Done</th>
+                          <th>Trouble Description</th>
+
                         </thead>
 
                         {% for data in data_list %}
@@ -89,6 +92,12 @@
                                          <label for="{{ sub_task.sub_task_id }}d"><input type="radio" id="{{ sub_task.sub_task_id }}d" name="ts{{ sub_task.sub_task_id }}" value="D"></label>
                                     </div>
                                 </td>
+
+                                <td>
+                                     <input type="text" name="des{{ sub_task.sub_task_id }}" id="{{ sub_task.sub_task_id }}" value="{{ sub_task.trouble_description }}"/>
+
+                                </td>
+
                               </tr>
                             </tbody>
                         </label>
@@ -97,12 +106,6 @@
                       </table>
              </div>
 
-                         <div class="col-12">
-                             <label for="{{ sub_task.sub_Task_id }}">
-                                 <span >Trouble description</span>
-                                 <input type="text" name="des{{ sub_task.sub_task_id }}" id="{{ sub_task.sub_task_id }}" value="{{ sub_task.trouble_description }}"/>
-                             </label>
-                         </div>
 
             </div>
             <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
