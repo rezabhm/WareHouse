@@ -12,6 +12,7 @@ from uuid import uuid1
 
 # Create your views here.
 
+
 def main(request):
 
     """
@@ -41,7 +42,13 @@ def task_structure_create_form(requests):
             # user have access
             task_structure_temp = loader.get_template('DeviceMaintenance/task_structure.html')
 
-            return HttpResponse(task_structure_temp.render())
+            context = {
+
+                'request':requests,
+
+            }
+
+            return HttpResponse(task_structure_temp.render(context))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
@@ -78,7 +85,7 @@ def task_structure_create(requests):
             # save
             task_structure_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('task'))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
@@ -101,7 +108,8 @@ def sub_structure_create_form(requests):
 
             context = {
 
-                "task_structure_list": dm_models.TaskStructure.objects.all()
+                "task_structure_list": dm_models.TaskStructure.objects.all(),
+                'request': requests,
 
             }
 
@@ -147,7 +155,7 @@ def sub_structure_create(requests):
             # save
             sub_structure_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('task'))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
@@ -180,7 +188,8 @@ def task_structure_list(requests):
 
             context = {
 
-                'data_list': final_list
+                'data_list': final_list,
+                'request': requests,
 
             }
 
@@ -207,7 +216,8 @@ def task_create_form(requests):
 
             context = {
 
-                'task_structure_list': dm_models.TaskStructure.objects.all()
+                'task_structure_list': dm_models.TaskStructure.objects.all(),
+                'request': requests,
 
             }
 
@@ -281,7 +291,7 @@ def task_create(requests):
 
                 sub_task_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('task'))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
@@ -374,7 +384,8 @@ def task_list(requests, task_status='0', time_status='0', start_year='0000', sta
 
             context = {
 
-                'data_list': final_list
+                'data_list': final_list,
+                'request': requests,
 
             }
 
@@ -413,7 +424,8 @@ def task_done_form(requests):
 
             context = {
 
-                'data_list': data_list
+                'data_list': data_list,
+                'request': requests,
 
             }
 
@@ -448,7 +460,7 @@ def task_done(requests):
 
                     sub_task_object.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('task'))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
