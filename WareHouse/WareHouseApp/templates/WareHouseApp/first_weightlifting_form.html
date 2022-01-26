@@ -30,28 +30,43 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>selection</th>
                           <th>Driver</th>
                           <th>Car</th>
                           <th>Product owner</th>
+                          <th>CAr weight with product</th>
                           <th>CAr weight</th>
                           <th>Buy Price</th>
-                          <th>selection</th>
+                          <th>Product Category</th>
                         </thead>
 
                         {% for lwb in lwb_list %}
                         <label for="{{ lwb.live_weighbridge_id}}">
                             <tbody>
                               <tr>
-                                <td><input type="text" value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text"  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}"  style="border-bottom:0px;"/></td>
-                                <td><input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text"  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}" style="border-bottom:0px;" /></td>
-                                <td>
+                                <td style="border-bottom:0px;" >
                                     <div class="checkbox">
                                          <label><input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>
                                     </div>
                                 </td>
+                                <td style="border-bottom:0px;" >{{ lwb.driver.name }} {{ lwb.driver.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.driver.car.car_number }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.final_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.car_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.buy_price }}</td>
+
+                                {% if lwb.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif lwb.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif lwb.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
+
                               </tr>
                             </tbody>
                         </label>

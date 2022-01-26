@@ -29,6 +29,7 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>Selection</th>
                           <th>Name</th>
                           <th>Id</th>
                         </thead>
@@ -37,6 +38,11 @@
                         <label >
                             <tbody>
                               <tr>
+                                <td>
+                                    <div class="checkbox mr-10">
+                                         <label><input type="radio" id="{{ company.company_id }}1" name="company_id" value="{{ company.company_id }}"></label>
+                                    </div>
+                                </td>
                                 <td>
                                     <input  type="text" value="{{ company.name }}" id="{{ company.name }}" name="{{ company.name }}" style="border-bottom:0px;">
                                 </td>
@@ -48,8 +54,7 @@
                         </label>
                       </table>
            </div>
-          <div class="col-12"><button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5" style="padding: .8rem!important;width: 20%;">{{ company.name }} user list</button></div>
-          <input type="hidden" name="company_id" value="{{ company.company_id }}">
+          <div class="col-12"><button type="submit" value="{{ company.name }} user list" class="submit text-center col-2 p-2 mb-5" style="padding: .8rem!important;width: 20%;">user list</button></div>
 
           {% endfor %}
 

@@ -67,7 +67,7 @@ def task(request):
     return HttpResponse(main_template.render())
 
 
-def live_WeighBridge(request):
+def live_weighbridge_main(request):
 
     """
     this is main & primary page
@@ -97,7 +97,7 @@ def monitor_data(request):
     return HttpResponse(main_template.render())
 
 
-def first_WeightLifting(request):
+def first_weightlifting_main(request):
 
     """
     this is main & primary page
@@ -106,7 +106,13 @@ def first_WeightLifting(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/first_WeightLifting.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def user_url(request):
@@ -873,7 +879,8 @@ def first_weightlifting_form(requests):
 
             context = {
 
-                'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True)
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True),
+                'request': requests
 
             }
 
@@ -929,7 +936,7 @@ def first_weightlifting(requests):
             # save objects
             fwl.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
@@ -942,7 +949,7 @@ def first_weightlifting(requests):
         return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def pre_cdld_enter_form(requests):
+def pre_cold_enter_form(requests):
 
     """
     render pre_cold enter form to add new
@@ -964,7 +971,8 @@ def pre_cdld_enter_form(requests):
 
                 "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='P').filter(
                     weighting_time__gte=time.time() - (60*60*5)
-                ).filter(choise_status=False)
+                ).filter(choise_status=False),
+                'request': requests
 
             }
 
@@ -1026,7 +1034,7 @@ def pre_cold_enter(requests):
             # save
             pc.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
@@ -1059,7 +1067,8 @@ def pre_cold_exit_form(requests):
 
             context = {
 
-                'pc_list': models.PreCold.objects.all().filter(product_pre_cold_status=True)
+                'pc_list': models.PreCold.objects.all().filter(product_pre_cold_status=True),
+                'request': requests
 
             }
 
@@ -1110,7 +1119,7 @@ def pre_cold_exit(requests):
                 # save param
                 pc_obj.save()
 
-                return HttpResponseRedirect(reverse('Main'))
+                return HttpResponseRedirect(reverse('first_WeightLifting'))
 
             else:
 
@@ -1148,10 +1157,11 @@ def distribute_form(requests):
 
             context = {
 
-                "driver_list": models.Driver.objects.all(),
+                "driver_list": models.Driver.objects.all().filter(car__live_product=False),
                 "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='D').filter(
                     weighting_time__gte=time.time() - (60*60*5)
                 ).filter(choise_status=False),
+                'request': requests
 
             }
 
@@ -1218,7 +1228,7 @@ def distribute(requests):
             # save model
             dist_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
@@ -1229,6 +1239,117 @@ def distribute(requests):
 
         # raised Error
         return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def distribute_driver_create(requests):
+
+    """
+    create driver for distribute
+    """
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            # get product owner object list with filter
+            po_list = models.ProductOwner.objects.all().filter(name=requests.POST['po_name']).filter(
+                last_name=requests.POST['po_last_name']
+            )
+
+            if len(po_list) > 0:
+                po_obj = po_list[0]
+            else:
+
+                po_obj = models.ProductOwner()
+                po_obj.name = requests.POST['po_name']
+                po_obj.last_name = requests.POST['po_last_name']
+                po_obj.product_owner_id = str(uuid1().int)
+
+                po_obj.save()
+
+            # get car object list with filter
+            car_list = models.Car.objects.all().filter(car_number=requests.POST['car_number'])
+
+            if len(car_list) > 0 :
+
+                if car_list[0].product_owner == po_obj:
+
+                    car_obj = car_list[0]
+
+                else:
+
+                    # create object
+                    car_obj = models.Car()
+
+                    # set param
+                    car_obj.car_number = requests.POST['car_number']
+                    car_obj.car_id = str(uuid1().int)
+                    car_obj.product_owner = po_obj
+                    car_obj.live_product = False
+
+                    # save model
+                    car_obj.save()
+
+            else:
+
+                # create object
+                car_obj = models.Car()
+
+                # set param
+                car_obj.car_number = requests.POST['car_number']
+                car_obj.car_id = str(uuid1().int)
+                car_obj.live_product = False
+                car_obj.product_owner = po_obj
+
+                # save model
+                car_obj.save()
+
+            # get driver list
+            driver_obj_list = models.Driver.objects.all().filter(name=requests.POST['driver_name'])
+
+            if len(driver_obj_list) > 0:
+
+                if driver_obj_list[0].car == car_obj:
+
+                    driver_obj = driver_obj_list[0]
+
+                else:
+
+                    # create object
+                    driver_obj = models.Driver()
+
+                    # set param
+                    driver_obj.name = requests.POST['driver_name']
+                    driver_obj.last_name = requests.POST['driver_last_name']
+                    driver_obj.phone_number = requests.POST['driver_phone_number']
+                    driver_obj.driver_id = str(uuid1().int)
+                    driver_obj.car = car_obj
+
+                    # save
+                    driver_obj.save()
+
+            else:
+
+                # create object
+                driver_obj = models.Driver()
+
+                # set param
+                driver_obj.name = requests.POST['driver_name']
+                driver_obj.last_name = requests.POST['driver_last_name']
+                driver_obj.phone_number = requests.POST['driver_phone_number']
+                driver_obj.driver_id = str(uuid1().int)
+                driver_obj.car = car_obj
+
+                # save
+                driver_obj.save()
+
+            return HttpResponseRedirect(reverse('Distribute_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
 def freeze_tunnel_enter_form(requests):
@@ -1252,7 +1373,8 @@ def freeze_tunnel_enter_form(requests):
 
                 'fwl_list': models.FirstWeightLifting.objects.all().filter(sales_category='F').filter(
                     weighting_time__gte=time.time() - (60 * 60 *5)
-                ).filter(choise_status=False)
+                ).filter(choise_status=False),
+                'request': requests
 
             }
 
@@ -1311,7 +1433,7 @@ def freeze_tunnel_enter(requests):
         # save object
         ft_obj.save()
 
-        return HttpResponseRedirect(reverse('Main'))
+        return HttpResponseRedirect(reverse('first_WeightLifting'))
 
     else:
 
@@ -1338,7 +1460,8 @@ def freeze_tunnel_exit_form(requests):
 
             context = {
 
-                'ft_list': models.FreezingTunnel.objects.all().filter(status=True)
+                'ft_list': models.FreezingTunnel.objects.all().filter(status=True),
+                'request': requests
 
             }
 
@@ -1382,7 +1505,7 @@ def freeze_tunnel_exit(requests):
             # save
             ft_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
@@ -1412,7 +1535,13 @@ def paper_box_create_form(requests):
             # render template
             paper_box_temp = loader.get_template('WareHouseApp/paper_box_create_form.html')
 
-            return HttpResponse(paper_box_temp.render())
+            context = {
+
+                'request': requests
+
+            }
+
+            return HttpResponse(paper_box_temp.render(context))
 
         else:
 
@@ -1462,7 +1591,8 @@ def paper_box_create(requests):
 
             context = {
 
-                'id': paper_box_obj.box_id
+                'id': paper_box_obj.box_id,
+                'request': requests
 
             }
 
@@ -1497,7 +1627,9 @@ def cold_house_enter_form(requests):
 
             context = {
 
-                "paper_box_list": models.PaperBox.objects.all().filter(box_status=False)
+                "paper_box_list": models.PaperBox.objects.all().filter(box_status=False).filter(
+                    box_cold_house_exp=False),
+                'request': requests
 
             }
 
@@ -1563,10 +1695,11 @@ def cold_house_enter(requests):
 
                     paper_box_obj.cold_house = cold_house_obj
                     paper_box_obj.box_status = True
+                    paper_box_obj.box_cold_house_exp = True
 
                     paper_box_obj.save()
 
-            return HttpResponseRedirect(reverse("Main"))
+            return HttpResponseRedirect(reverse("first_WeightLifting"))
 
         else:
 
@@ -1598,7 +1731,8 @@ def cold_house_exit_form(requests):
 
             context = {
 
-                'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True)
+                'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True),
+                'request': requests
 
             }
 
@@ -1642,7 +1776,7 @@ def cold_house_exit(requests):
             # save object
             cold_house_obj.save()
 
-            return HttpResponseRedirect(reverse('Main'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
@@ -1666,7 +1800,8 @@ def company_list(requests):
 
     context = {
 
-        'company_list': models.Company.objects.all()
+        'company_list': models.Company.objects.all(),
+        'request': requests
 
     }
 
@@ -1693,6 +1828,7 @@ def company_user_list(requests):
         'lw_list': models.LiveWeighbridgeManager.objects.all().filter(company__company_id=company_id),
         'pc_list': models.PreColdManager.objects.all().filter(company__company_id=company_id),
         'sales_list': models.SalesManager.objects.all().filter(company__company_id=company_id),
+        'request': requests
 
     }
 
@@ -1779,14 +1915,17 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
                     prod = 'Nothing'
 
                 lwb_list_final.append([time.ctime(lwb.weighting_date), lwb.car_weight,
-                        lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
-                        lwb.slaughter_start_date, lwb.slaughter_finish_date, prod,
-                        lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
-                        lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name])
+                    lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
+                   time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
+                   time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
+                   prod,
+                   lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
+                    lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name])
 
             context = {
 
-                "lwb_list": lwb_list_final
+                "lwb_list": lwb_list_final,
+                'request': requests
 
             }
 
@@ -1890,6 +2029,8 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
 
                 elif dist.product_category == 'Q':
                     prod_category = 'quail'
+                else:
+                    '-'
 
                 dist_final_list.append([
 
@@ -1921,7 +2062,9 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
                     lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
-                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    prod_category, lwb.slaughter_status,
+                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
+                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
                     lwb.buy_price
 
                 ])
@@ -1930,7 +2073,8 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
             context = {
 
                 'dist_list': dist_final_list,
-                'lwb_list': lwb_final_list
+                'lwb_list': lwb_final_list,
+                'request': requests
 
             }
 
@@ -2036,6 +2180,9 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
                 elif dist.product_category == 'Q':
                     prod_category = 'quail'
 
+                else:
+                    '-'
+
                 dist_final_list.append([
 
                     dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
@@ -2066,7 +2213,9 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
                     lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
-                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    prod_category, lwb.slaughter_status,
+                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
+                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
                     lwb.buy_price
 
                 ])
@@ -2075,7 +2224,8 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
             context = {
 
                 'dist_list': dist_final_list,
-                'lwb_list': lwb_final_list
+                'lwb_list': lwb_final_list,
+                'request': requests
 
             }
 
@@ -2230,6 +2380,8 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
 
                 elif dist.product_category == 'Q':
                     prod_category = 'quail'
+                else:
+                    '-'
 
                 dist_final_list.append([
 
@@ -2261,7 +2413,9 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
                     lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
-                    prod_category, lwb.slaughter_status, lwb.slaughter_start_date, lwb.slaughter_finish_date,
+                    prod_category, lwb.slaughter_status,
+                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
+                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
                     lwb.buy_price
 
                 ])
@@ -2341,7 +2495,8 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                 'dist_list': dist_final_list,
                 'lwb_list': lwb_final_list,
                 'ft_list': ft_final_list,
-                'pd_list': pd_final_list
+                'pd_list': pd_final_list,
+                'request': requests
 
             }
 
@@ -2563,7 +2718,8 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
 
                 'dist_list': dist_final_list,
                 'ft_list': ft_final_list,
-                'pd_list': pd_final_list
+                'pd_list': pd_final_list,
+                'request': requests
 
             }
 
@@ -2690,6 +2846,9 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
                     elif pb.product_category == 'Q':
                         prod_category = 'Quail'
 
+                    else:
+                        '-'
+
                     pb_final_list.append([
 
                         prod_category,
@@ -2707,7 +2866,8 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
             context = {
 
                 'pb_list': pb_final_list,
-                'ch_list':ch_final_list
+                'ch_list': ch_final_list,
+                'request': requests
 
             }
 

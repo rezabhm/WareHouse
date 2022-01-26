@@ -33,6 +33,11 @@
                       <table id="fresh-table" class="table">
                         <thead>
                           <th>selection</th>
+                            <th>weight</th>
+                            <th>number of product</th>
+                            <th>box id</th>
+                            <th>product category</th>
+
                         </thead>
 
                         {% for paper_box in paper_box_list %}
@@ -44,6 +49,22 @@
                                          <label><input type="checkbox" value="{{ paper_box.box_id }}" name="{{ paper_box.box_id }}" id="{{ paper_box.box_id }}"></label>
                                     </div>
                                 </td>
+
+                                  <td>{{ paper_box.paper_box_weight  }}</td>
+                                  <td>{{ paper_box.number_of_product  }}</td>
+                                  <td>{{ paper_box.box_id }}</td>
+
+
+                            {% if paper_box.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif paper_box.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif paper_box.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
                               </tr>
                             </tbody>
                         </label>

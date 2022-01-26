@@ -22,6 +22,6 @@ urlpatterns = [
     re_path(r'^done/form/$', views.task_done_form, name='Task_Done_Form'),
     re_path(r'^done/$', views.task_done, name='Task_Done'),
 
-    re_path(r'filter/', views.filter, name='Filter'),
+    re_path(r'filter/', views.task_filter, name='Filter'),
 
 ]

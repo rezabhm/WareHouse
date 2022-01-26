@@ -31,24 +31,37 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>selection</th>
                           <th data-field="name" data-sortable="true">Weight</th>
                           <th data-field="salary" data-sortable="true">Pallet id</th>
                           <th data-field="country" data-sortable="true">Tunnel id</th>
-                          <th>selection</th>
+                          <th data-field="country" data-sortable="true">Product Category</th>
                         </thead>
 
                         {% for ft in ft_list %}
                         <label for="{{ ft.freeze_tunnel_id }}">
                             <tbody>
                               <tr>
-                                <td><input  value="{{ ft.weight }}" id="{{ ft.weight }}" name="{{ ft.weight }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ ft.pallet_id }}" id="{{ ft.pallet_id }}" name="{{ ft.pallet_id }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ ft.tunnel_id }}" id="{{ ft.tunnel_id }}" name="{{ ft.tunnel_id }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" name="ft_id" value="{{ ft.freeze_tunnel_id }}" id="{{ ft.freeze_tunnel_id }}" ></label>
                                     </div>
                                 </td>
+
+                                <td><input  value="{{ ft.weight }}" id="{{ ft.weight }}" name="{{ ft.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ ft.pallet_id }}" id="{{ ft.pallet_id }}" name="{{ ft.pallet_id }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ ft.tunnel_id }}" id="{{ ft.tunnel_id }}" name="{{ ft.tunnel_id }}"  style="border-bottom:0px;"/></td>
+
+                              {% if ft.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif ft.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif ft.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
                               </tr>
                             </tbody>
                         </label>
