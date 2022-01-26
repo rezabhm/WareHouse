@@ -454,7 +454,7 @@ def task_done(requests):
 
 
 @csrf_exempt
-def filter(requests):
+def task_filter(requests):
 
     """
     do filter for another views

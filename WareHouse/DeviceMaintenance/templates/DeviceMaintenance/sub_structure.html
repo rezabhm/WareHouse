@@ -30,22 +30,23 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>selection</th>
                           <th>Title</th>
                           <th>Description</th>
-                          <th>selection</th>
                         </thead>
 
                         {% for ts in task_structure_list %}
                         <label for="{{ ts.task_structure_id }}">
                             <tbody>
                               <tr>
-                                <td><input type="text" value="{{ ts.title }}" id="{{ ts.title }}" name="{{ ts.title }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ ts.description }}" id="{{ ts.description }}" name="{{ ts.description }}" style="border-bottom:0px;" /></td>
                                 <td>
                                     <div class="checkbox">
                                          <label><input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}"></label>
                                     </div>
                                 </td>
+                                <td><input type="text" value="{{ ts.title }}" id="{{ ts.title }}" name="{{ ts.title }}" style="border-bottom:0px;" /></td>
+                                <td><input type="text" value="{{ ts.description }}" id="{{ ts.description }}" name="{{ ts.description }}" style="border-bottom:0px;" /></td>
+
                               </tr>
                             </tbody>
                         </label>

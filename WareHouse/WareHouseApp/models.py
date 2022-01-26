@@ -731,6 +731,8 @@ class PaperBox(models.Model):
     # it didn't enter to coldHouse
     box_status = models.BooleanField(default=False)
 
+    box_cold_house_exp = models.BooleanField(default=False)
+
     # number of product in box
     number_of_product = models.IntegerField()
 

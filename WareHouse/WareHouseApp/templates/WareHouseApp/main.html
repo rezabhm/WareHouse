@@ -69,7 +69,11 @@
 
       <nav id="navbar" class="nav-menu navbar">
         <ul>
-          <li><a href="{% url 'User_url' %}" class="nav-link scrollto"><i class="bi bi-person-bounding-box"></i> <span>User</span></a></li>
+
+          {% if request.user.is_superuser %}
+            <li><a href="{% url 'User_url' %}" class="nav-link scrollto"><i class="bi bi-person-bounding-box"></i> <span>User {{ request.user.is_super_user }}</span></a></li>
+          {% endif %}
+
           <li><a href="{% url 'live_WeighBridge' %}" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Live WeighBridge</span></a></li>
           <li><a href="{% url 'first_WeightLifting' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>First WeightLifting</span></a></li>
           <li><a href="{% url 'monitor_data' %}" class="nav-link scrollto"><i class="bi bi-laptop"></i> <span>Monitor data</span></a></li>
@@ -89,7 +93,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
           {% block title %}
-          <h2 >TiyurZanjan</h2>
+          <h2 >{{ request.user.username }}</h2>
           {% endblock %}
           <ol>
             <li><a href="{% url 'LogOut' %}" class="bi bi-door-open-fill size-7 " style="font-size: 30px"></a></li>

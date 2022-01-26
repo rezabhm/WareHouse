@@ -31,28 +31,42 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>Driver</th>
-                          <th>Car</th>
-                          <th >Phone number</th>
+                          <th>selection</th>
+                         <th data-field="name" data-sortable="true">Driver</th>
+                          <th data-field="salary" data-sortable="true">Car</th>
+                          <th data-field="country" data-sortable="true">Product owner</th>
+                          <th>CAr weight with product</th>
                           <th>CAr weight</th>
                           <th>Buy price</th>
-                          <th>Selection</th>
+                          <th>Product Category</th>
                         </thead>
 
-                        {% for lwb in lwb_list %}
-                        <label for="{{ lwb.live_weighbridge_id}}">
+                        {% for slaughter in lwb_list %}
+                        <label for="{{ slaughter.live_weighbridge_id}}">
                             <tbody>
                               <tr>
-                                <td><input  value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}"  style="border-bottom:0px;"/></td>
-                                  <td><td>
+                                <td>
                                     <div class="radio">
-                                         <label><input  type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"></label>
+                                         <label><input type="radio" name="lwb_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
                                     </div>
-                                </td></td>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.car_number }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.final_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.car_weight }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.buy_price }} تومان</td>
+
+                                  {% if slaughter.product_category == 'C' %}
+                                    <td style="border-bottom:0px;">Chicken</td>
+                                  {% elif slaughter.product_category == 'T' %}
+                                    <td style="border-bottom:0px;">Turkey</td>
+                                  {% elif slaughter.product_category == 'Q' %}
+                                    <td style="border-bottom:0px;">Quail</td>
+                                  {% else %}
+                                    <td style="border-bottom:0px;">-</td>
+                                  {% endif %}
+
                               </tr>
                             </tbody>
                         </label>

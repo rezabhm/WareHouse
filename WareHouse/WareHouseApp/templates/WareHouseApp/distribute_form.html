@@ -31,31 +31,38 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th data-field="name" data-sortable="true">Name</th>
-                          <th data-field="salary" data-sortable="true">Last name</th>
-                          <th data-field="country" data-sortable="true">Phone number</th>
                           <th>selection</th>
+                          <th data-field="name" data-sortable="true">Driver Name</th>
+                          <th data-field="salary" data-sortable="true">Driver Last name</th>
+                          <th data-field="country" data-sortable="true">Driver Phone number</th>
+                          <th data-field="country" data-sortable="true">car number</th>
+                          <th data-field="country" data-sortable="true">Product Owner Name</th>
+                          <th data-field="country" data-sortable="true">Product Owner LastName</th>
+
                         </thead>
 
                         {% for driver in driver_list %}
                         <label for="{{ driver.driver_id }}">
                             <tbody>
                               <tr>
-                                <td><input  value="{{ driver.name }}" id="{{ driver.name }}" name="{{ driver.name }}"  style="border-bottom:0px;"/></td>
-                                <td><input type="text" value="{{ driver.last_name }}" id="{{ driver.last_name }}" name="{{ driver.last_name }}" style="border-bottom:0px;" ></td>
-                                <td><input type="text" value="{{ driver.phone_number }}" id="{{ driver.phone_number }}" name="{{ driver.phone_number }}" style="border-bottom:0px;" /></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"></label>
                                     </div>
                                 </td>
+                                <td>{{ driver.name }}</td>
+                                <td>{{ driver.last_name }}</td>
+                                <td>{{ driver.phone_number }}</td>
+                                <td>{{ driver.car.car_number }}</td>
+                                <td>{{ driver.car.product_owner.name }}</td>
+                                <td>{{ driver.car.product_owner.last_name }}</td>
+
                               </tr>
                             </tbody>
                         </label>
                           {% endfor %}
                       </table>
              </div>
-
 
               <!--  {% for driver in driver_list %}
 
@@ -111,22 +118,33 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>selection</th>
                           <th data-field="name" data-sortable="true">Weight</th>
                           <th data-field="salary" data-sortable="true">Product category</th>
-                          <th>selection</th>
                         </thead>
 
                         {% for fwl in fwl_list %}
                         <label for="{{ fwl.weight_lifting_id }}">
                             <tbody>
                               <tr>
-                                <td><input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" /></td>
-                                <td><input type="text" value="{{ fwl.product_category }}" id="{{ fwl.product_category }}" name="{{ fwl.product_category }}" style="border-bottom:0px;" /></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" value="{{ fwl.weight_lifting_id }}" name="fwl_id" id="{{ fwl.weight_lifting_id }}" style="border-bottom:0px;"></label>
                                     </div>
                                 </td>
+
+                                <td>{{ fwl.weight }}</td>
+
+                                {% if fwl.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif fwl.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif fwl.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
                               </tr>
                             </tbody>
                         </label>
@@ -221,6 +239,35 @@
 
 
 
+             <br><br><br><br>
+             <form action="{% url 'Driver_Create_Distribute' %}" method="post">
+
+                 {% csrf_token %}
+
+                 <label for="driver_name">driver name</label>
+                 <input type="text" name="driver_name" id="driver_name"><br>
+
+                 <label for="driver_lastname">driver last name</label>
+                 <input type="text" name="driver_last_name" id="driver_lastname"><br>
+
+                 <label for="phone_number">phone number</label>
+                 <input type="text" name="driver_phone_number" id="phone_number"><br><br>
+
+                 <label for="car_number">car number</label>
+                 <input type="text" name="car_number" id="car_number"><br>
+
+
+                 <label for="po_name">product owner name</label>
+                 <input type="text" name="po_name" id="po_name"><br>
+
+                 <label for="po_last_name">product last name</label>
+                 <input type="text" name="po_last_name" id="po_last_name"><br>
+
+                 <input type="submit">
+
+             </form>
+
+             <br><br><br><br>
 
 
 

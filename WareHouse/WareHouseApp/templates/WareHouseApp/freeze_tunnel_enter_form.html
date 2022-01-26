@@ -32,24 +32,49 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th>selection</th>
                           <th data-field="name" data-sortable="true">Weight</th>
                           <th data-field="salary" data-sortable="true">Sales category</th>
                           <th data-field="country" data-sortable="true">User name</th>
-                          <th>selection</th>
+                          <th data-field="country" data-sortable="true">Product Category</th>
                         </thead>
 
                         {% for fwl in fwl_list %}
                         <label for="{{ fwl.weight_lifting_id }}">
                             <tbody>
                               <tr>
-                                <td><input  value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ fwl.sales_category }}" id="{{ fwl.sales_category }}" name="{{ fwl.sales_category }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ fwl.Weight_Lifting_Manager.username }}" id="{{ fwl.Weight_Lifting_Manager.username }}" name="{{ fwl.Weight_Lifting_Manager.username }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="radio">
                                          <label><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}" ></label>
                                     </div>
                                 </td>
+                                <td>{{ fwl.weight }}</td>
+
+                              {% if fwl.sales_category == 'P' %}
+                                <td style="border-bottom:0px;" >Pre-Cold</td>
+                              {% elif fwl.sales_category == 'D' %}
+                                <td style="border-bottom:0px;" >Distribute</td>
+                              {% elif fwl.sales_category == 'F' %}
+                                <td style="border-bottom:0px;" >Freeze Tunnel</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
+
+                                <td>{{ fwl.Weight_Lifting_Manager.username }}</td>
+
+
+
+                                {% if fwl.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif fwl.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif fwl.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
                               </tr>
                             </tbody>
                         </label>

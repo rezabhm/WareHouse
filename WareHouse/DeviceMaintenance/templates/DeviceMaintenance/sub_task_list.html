@@ -51,6 +51,8 @@
                       <table id="fresh-table" class="table   shadow-lg p-3 mb-5 bg-white rounded  <!--border border-secondary -->">
                         <thead>
                           <th>Task status</th>
+                          <th>sub task title</th>
+                          <th>sub task description</th>
                           <th>Trouble description</th>
                         </thead>
                         <h5 style="color: #0a0a0a">Sub Task</h5>
@@ -70,7 +72,9 @@
 
                                     {% endif %}
                                 </td>
-                                <td><input type="text" value="{{ sub_task.trouble_description }}" id="{{ sub_task.trouble_description }}" name="{{ sub_task.trouble_description }}" style="border-bottom:0px;" /></td>
+                                  <td>{{ sub_task.sub_task_structure.title }}</td>
+                                  <td>{{ sub_task.sub_task_structure.description }}</td>
+                                <td>{{ sub_task.trouble_description }}</td>
                               </tr>
                             </tbody>
                         </label>

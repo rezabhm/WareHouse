@@ -32,20 +32,30 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>id</th>
                           <th style=" text-align: center;">selection</th>
+                          <th>pallet id</th>
+                          <th>cold house id</th>
+                          <th>pallet weight with product</th>
+                          <th>pallet weight</th>
+                          <th>number of box</th>
+
                         </thead>
 
                          {% for cold_house in cold_house_list %}
                         <label for="{{ cold_house.pallet_id }}">
                             <tbody>
                               <tr>
-                                <td>{{ cold_house.pallet_id }}</td>
                                 <td>
                                     <div class="checkbox mr-10">
                                          <label><input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id" value="{{ cold_house.pallet_id }}"></label>
                                     </div>
                                 </td>
+                                <td>{{ cold_house.pallet_id }}</td>
+                                <td>{{ cold_house.cold_house_id }}</td>
+                                <td>{{ cold_house.total_pallet_weight }}</td>
+                                <td>{{ cold_house.pallet_weight_without_product }}</td>
+                                <td>{{ cold_house.number_of_box }}</td>
+
                               </tr>
                             </tbody>
                         </label>

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<h3> user </h3>
+<h3> {{ request.user.username }} </h3>
 {% endblock %}
 
 {% block content %}

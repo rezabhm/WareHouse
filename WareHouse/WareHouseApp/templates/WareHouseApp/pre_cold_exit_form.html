@@ -29,24 +29,37 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
+                          <th style="text-align: center;">selection</th>
                           <th>Weight</th>
                           <th>Pallet id</th>
                           <th>Pre cold id</th>
-                          <th style="text-align: center;">selection</th>
+                          <th>Product Category</th>
+
                         </thead>
 
                         {% for pc in pc_list %}
                         <label for="{{ pc.pc_id }}">
                             <tbody>
                               <tr>
-                                <td><input  value="{{ pc.weight }}" id="{{ pc.weight }}" name="{{ pc.weight }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ pc.pre_cold_id }}" id="{{ pc.pre_cold_id }}" name="{{ pc.pre_cold_id }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ pc.pallet_id }}" id="{{ pc.pallet_id }}" name="{{ pc.pallet_id }}"  style="border-bottom:0px;"/></td>
                                 <td>
                                     <div class="checkbox">
                                          <label><input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"></label>
                                     </div>
                                 </td>
+                                <td><input  value="{{ pc.weight }}" id="{{ pc.weight }}" name="{{ pc.weight }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pre_cold_id }}" id="{{ pc.pre_cold_id }}" name="{{ pc.pre_cold_id }}"  style="border-bottom:0px;"/></td>
+                                <td><input  value="{{ pc.pallet_id }}" id="{{ pc.pallet_id }}" name="{{ pc.pallet_id }}"  style="border-bottom:0px;"/></td>
+
+                                {% if pc.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >Chicken</td>
+                              {% elif pc.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >Turkey</td>
+                              {% elif pc.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >Quail</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
                               </tr>
                             </tbody>
                         </label>
