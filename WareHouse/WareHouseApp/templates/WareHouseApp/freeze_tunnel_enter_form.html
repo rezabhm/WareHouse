@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Freeze tunnel enter</h2>
+<h2>ورود محصول به تونل انجماد</h2>
 {% endblock %}
 
 
@@ -32,11 +32,9 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th data-field="name" data-sortable="true">Weight</th>
-                          <th data-field="salary" data-sortable="true">Sales category</th>
-                          <th data-field="country" data-sortable="true">User name</th>
-                          <th data-field="country" data-sortable="true">Product Category</th>
+                          <th>انتخاب کنید</th>
+                          <th data-field="name" data-sortable="true">وزن</th>
+                          <th data-field="country" data-sortable="true">نوع محصول</th>
                         </thead>
 
                         {% for fwl in fwl_list %}
@@ -50,27 +48,14 @@
                                 </td>
                                 <td>{{ fwl.weight }}</td>
 
-                              {% if fwl.sales_category == 'P' %}
-                                <td style="border-bottom:0px;" >Pre-Cold</td>
-                              {% elif fwl.sales_category == 'D' %}
-                                <td style="border-bottom:0px;" >Distribute</td>
-                              {% elif fwl.sales_category == 'F' %}
-                                <td style="border-bottom:0px;" >Freeze Tunnel</td>
-                              {% else %}
-                                <td style="border-bottom:0px;" >-</td>
-                              {% endif %}
-
-
-                                <td>{{ fwl.Weight_Lifting_Manager.username }}</td>
-
 
 
                                 {% if fwl.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >Chicken</td>
+                                <td style="border-bottom:0px;" >مرغ</td>
                               {% elif fwl.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >Turkey</td>
+                                <td style="border-bottom:0px;" >بوقلمون</td>
                               {% elif fwl.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >Quail</td>
+                                <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
@@ -84,20 +69,26 @@
 
            <div class="col-6">
              <label for="weight">
-                <span >weight</span>
+                <span >وزن محصول</span>
                 <input type="text" id="weight" name="weight"/>
              </label>
            </div>
            <div class="col-6">
              <label for="tunnel_id">
-                <span >tunnel id</span>
+                <span >آیدی تونل انجماد</span>
                 <input type="text" id="tunnel_id" name="tunnel_id"/>
              </label>
            </div>
            <div class="col-6">
              <label for="pallet_id">
-                <span >Number of box</span>
+                <span >آیدی پالت</span>
                 <input type="text" id="pallet_id" name="pallet_id"/>
+             </label>
+           </div>
+           <div class="col-6">
+             <label for="box_num">
+                <span >تعداد جعبه</span>
+                <input type="number" id="box_num" name="box_num" value="1"/>
              </label>
            </div>
 
@@ -109,28 +100,28 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">choose one of product</p>
+                  color: black;">یکی از گزینه های زیر را انتخاب کنید</p>
              </div>
                  <div class="col-4 mt-3">
              <label for="chicken">
-                    <span >chicken</span>
+                    <span >مرغ</span>
                     <input  type="radio" id="chicken" name="product_category" value="C"/>
                  </label>
              </div>
              <div class="col-4 mt-3">
              <label for="turkey">
-                    <span >turkey</span>
+                    <span >بوقلمون</span>
                     <input type="radio" id="turkey" name="product_category" value="T"/>
                  </label>
             </div>
             <div class="col-4 mt-3">
              <label for="quail">
-                <span >quail</span>
+                <span >بلدرچین</span>
                 <input  type="radio" id="quail" name="product_category" value="Q"/>
              </label>
             </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

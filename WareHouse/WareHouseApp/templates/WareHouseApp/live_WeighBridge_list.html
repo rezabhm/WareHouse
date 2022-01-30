@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Live Weightbridge list</h2>
+<h2>نمایش اطلاعات باسکول زنده</h2>
 {% endblock %}
 
 {% block content %}
@@ -25,18 +25,20 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>Time</th>
-                          <th>Car weight</th>
-                          <th>Final weight</th>
-                          <th>Car empty </th>
-                          <th>buy price</th>
-                          <th>slaughter status </th>
-                          <th>slaughter start date </th>
-                          <th>slaughter finish date </th>
-                          <th>Product category</th>
-                          <th>Driver name and last name</th>
-                          <th>Car number</th>
-                          <th>Product owner</th>
+                          <th>زمان وزن کشی</th>
+                          <th>وزن ماشین</th>
+                          <th>وزن ماشین با محصول</th>
+                          <th>وضعیت موجودی ماشین </th>
+                          <th>قیمت خرید</th>
+                          <th>وضعیت کشتار </th>
+                          <th>زمان شروع کشتار </th>
+                          <th>زمان پایان کشتار </th>
+                          <th>نوع محصول</th>
+                          <th>نام و نام خانوادگی راننده</th>
+                          <th>شماره پلاک ماشین</th>
+                          <th>نام و نام خانوادگی صاحبت محصول</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
                         </thead>
 
                         {% for lwb in lwb_list %}
@@ -51,10 +53,22 @@
                                 <td>{{ lwb.5 }}</td>
                                 <td>{{ lwb.6 }}</td>
                                 <td>{{ lwb.7 }}</td>
-                                <td>{{ lwb.8 }}</td>
+
+                                  {% if lwb.8  == 'chicken' %}
+                                    <td>مرغ</td>
+                                  {% elif lwb.8  == 'turkey' %}
+                                    <td>بوقلمون</td>
+                                  {% elif lwb.8  == 'quail' %}
+                                    <td>بلدرچین</td>
+                                  {% else %}
+                                    <td>-</td>
+                                  {% endif %}
+
                                 <td>{{ lwb.9 }}</td>
                                 <td>{{ lwb.10 }}</td>
                                 <td>{{ lwb.11 }}</td>
+                                <td>{{ lwb.12 }}</td>
+                                <td>{{ lwb.13 }}</td>
                               </tr>
                             </tbody>
                         </label>
@@ -84,38 +98,50 @@
        </div>
           <div class="col-4">
              <label for="year">
-            <span >year</span>
+            <span >سال</span>
             <input type="text" id="year" name="year"  value="0"/>
           </label>
           </div>
           <div class="col-4">
              <label for="month">
-                <span >month</span>
+                <span >ماه</span>
                 <input type="text" id="month" name="month" value="0"/>
              </label>
           </div>
          <div class="col-4">
          <label for="day">
-            <span >day</span>
+            <span >روز</span>
             <input  type="text" id="day" name="day" value="0"/>
          </label>
          </div>
          <div class="col-6">
          <label for="car_empty">
-            <span >Car empty</span>
-            <input  type="text" id="car_empty" name="car_empty" value="0"/>
+            <span >وضعیت موجودی ماشین</span>
+              <select id="car_empty" name="car_empty">
+                <option value="0">همه</option>
+                <option value="1">موجودی خالی</option>
+                <option value="2">موجودی پر</option>
+              </select>
+
          </label>
          </div>
          <div class="col-6">
          <label for="product_category">
-            <span >Product category</span>
-            <input  type="text" id="product_category" name="product_category" value="0"/>
+              <select id="product_category" name="product_category">
+                <option value="0">همه</option>
+                <option value="1">مرغ</option>
+                <option value="2">بوقلمون</option>
+                <option value="3">بلدرچین</option>
+              </select>
          </label>
          </div>
          <div class="col-6">
          <label for="slaughter_status">
-            <span >Slaughter status</span>
-            <input  type="text" id="slaughter_status" name="slaughter_status" value="0"/>
+              <select id="slaughter_status" name="slaughter_status">
+                <option value="0">همه</option>
+                <option value="1">کشتار های فعال</option>
+                <option value="2">کشتار های غیر فعال</option>
+              </select>
          </label>
          </div>
 

@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Freeze tunnel exit</h2>
+<h2>خروج محصول از تونل انجماد</h2>
 {% endblock %}
 
 {% block content %}
@@ -31,11 +31,12 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th data-field="name" data-sortable="true">Weight</th>
-                          <th data-field="salary" data-sortable="true">Pallet id</th>
-                          <th data-field="country" data-sortable="true">Tunnel id</th>
-                          <th data-field="country" data-sortable="true">Product Category</th>
+                          <th>انتخاب کنید</th>
+                          <th data-field="name" data-sortable="true">وزن محصول</th>
+                          <th data-field="salary" data-sortable="true">آیدی پالت </th>
+                          <th data-field="country" data-sortable="true">آیدی تونل انجماد</th>
+                          <th data-field="country" data-sortable="true">تعداد جعبه</th>
+                          <th data-field="country" data-sortable="true">نوع محصول</th>
                         </thead>
 
                         {% for ft in ft_list %}
@@ -48,16 +49,17 @@
                                     </div>
                                 </td>
 
-                                <td><input  value="{{ ft.weight }}" id="{{ ft.weight }}" name="{{ ft.weight }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ ft.pallet_id }}" id="{{ ft.pallet_id }}" name="{{ ft.pallet_id }}"  style="border-bottom:0px;"/></td>
-                                <td><input  value="{{ ft.tunnel_id }}" id="{{ ft.tunnel_id }}" name="{{ ft.tunnel_id }}"  style="border-bottom:0px;"/></td>
+                                <td>{{ ft.weight }}</td>
+                                <td>{{ ft.pallet_id }}</td>
+                                <td>{{ ft.tunnel_id }}</td>
+                                <td>{{ ft.box_num }}</td>
 
                               {% if ft.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >Chicken</td>
+                                <td style="border-bottom:0px;" >مرغ</td>
                               {% elif ft.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >Turkey</td>
+                                <td style="border-bottom:0px;" >بوقلمون</td>
                               {% elif ft.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >Quail</td>
+                                <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
@@ -69,7 +71,7 @@
                       </table>
              </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

@@ -90,7 +90,7 @@ class LiveWeighbridgeManagerAdmin(admin.ModelAdmin):
 
 @admin.register(models.PreColdManager)
 class PreColdManagerAdmin(admin.ModelAdmin):
-    list_display = ["name", "username", "lastname", "phone_number", "Pre_Cold_id", "company", "user", ]
+    list_display = ["name", "username", "lastname", "phone_number", "Pre_Cold_id"]
 
     fieldsets = (
 
@@ -104,11 +104,11 @@ class PreColdManagerAdmin(admin.ModelAdmin):
 
 @admin.register(models.ProductOwner)
 class ProductOwnerAdmin(admin.ModelAdmin):
-    list_display = ["name", "product_owner_id", ]
+    list_display = ["name",'last_name', "product_owner_id", ]
 
     fieldsets = (
 
-        ("information product_owner", {"fields": ("name", "product_owner_id")}),
+        ("information product_owner", {"fields": ("name", 'last_name',"product_owner_id")}),
 
     )
 
@@ -122,7 +122,7 @@ class CarAdmin(admin.ModelAdmin):
     fieldsets = (
 
         ("car information", {"fields": ("car_number", "live_product", "car_id", )}),
-        ("relation information", {"fields": ("product_owner ",)}),
+        ("relation information", {"fields": ("product_owner",)}),
 
     )
 
@@ -135,7 +135,7 @@ class DriverAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("Driver information", {"fields": ("car_number", "live_product", "car_id", )}),
+        ("Driver information", {"fields": ("name", "last_name", "phone_number", "driver_id",)}),
         ("relation information", {"fields": ("car",)}),
 
     )
@@ -145,17 +145,18 @@ class DriverAdmin(admin.ModelAdmin):
 
 @admin.register(models.LiveWeighbridge)
 class LiveWeighbridgeAdmin(admin.ModelAdmin):
+
     list_display = ["live_weighbridge_id", "final_weight", "car_weight", "car_empty", "weighting_date",
                     "product_category", "slaughter_start_date", "slaughter_finish_date",
                     "buy_price", ]
 
     fieldsets = (
 
-        ("Time information", {"fields": ("slaughter_status ", "slaughter_start_date", "slaughter_finish_date",
+        ("Time information", {"fields": ("slaughter_status", "slaughter_start_date", "slaughter_finish_date",
          "weighting_date", )}),
         ("Weight information", {"fields": ("final_weight", "car_weight", "car_empty",)}),
         ("other information", {"fields": ("live_weighbridge_id", "product_category", "buy_price", )}),
-        ("relation information", {"fields": ("driver ", "Live_Weighbridge_Manager")}),
+        ("relation information", {"fields": ("driver", "Live_Weighbridge_Manager")}),
 
     )
 
@@ -195,14 +196,14 @@ class PreColdAdmin(admin.ModelAdmin):
 
 @admin.register(models.Distributed)
 class DistributedAdmin(admin.ModelAdmin):
-    list_display = ["weight", "date", "weight", "product_category", "sale_price",
-                    "bill_of_lading", "number_of_box", ]
+    list_display = ["weight", "date", "product_category", "sale_price",
+                    "bill_of_lading", "number_of_box"]
 
     fieldsets = (
 
         ("main information", {"fields": ("weight", "product_category", "date", "sale_price",
          "bill_of_lading", "number_of_box",)}),
-        ("relation information", {"fields": ("First_Weight_Lifting", "sales_manager", "driver", )}),
+        ("relation information", {"fields": ("first_weight_lifting", "sales_manager", "driver", )}),
 
     )
 
@@ -230,7 +231,7 @@ class ColdHouseAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("main information", {"fields": ("pallet_status", "total_pallet_weight", "pallet_weight_whitout_product",
+        ("main information", {"fields": ("pallet_status", "total_pallet_weight", "pallet_weight_without_product",
          "number_of_box", "cold_house_id", "pallet_id", )}),
         ("time information", {"fields": ("entry_date", "exit_date", )}),
         ("relation information", {"fields": ("freezing_tunnel_manager", )}),

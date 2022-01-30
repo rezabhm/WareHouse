@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Distributed</h2>
+<h2>فروش گرم</h2>
 {% endblock %}
 
 {% block content %}
@@ -29,15 +29,15 @@
 
              <div class="fresh-table full-color-blue badge filter badge-blue">
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table" class="table" style="    overflow: scroll;">
                         <thead>
-                          <th>selection</th>
-                          <th data-field="name" data-sortable="true">Driver Name</th>
-                          <th data-field="salary" data-sortable="true">Driver Last name</th>
-                          <th data-field="country" data-sortable="true">Driver Phone number</th>
-                          <th data-field="country" data-sortable="true">car number</th>
-                          <th data-field="country" data-sortable="true">Product Owner Name</th>
-                          <th data-field="country" data-sortable="true">Product Owner LastName</th>
+                          <th>انتخاب کنید</th>
+                          <th data-field="name" data-sortable="true">نام راننده</th>
+                          <th data-field="salary" data-sortable="true">نام خانوادگی راننده</th>
+                          <th data-field="country" data-sortable="true">شماره تلفن راننده</th>
+                          <th data-field="country" data-sortable="true">شماره پلاک ماشین</th>
+                          <th data-field="country" data-sortable="true">نام صاحب محصول</th>
+                          <th data-field="country" data-sortable="true">نام خانوادگی صاحب محصول</th>
 
                         </thead>
 
@@ -118,9 +118,9 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th data-field="name" data-sortable="true">Weight</th>
-                          <th data-field="salary" data-sortable="true">Product category</th>
+                          <th>انتخاب کنید</th>
+                          <th data-field="name" data-sortable="true">وزن محصول</th>
+                          <th data-field="salary" data-sortable="true">نوع محصول</th>
                         </thead>
 
                         {% for fwl in fwl_list %}
@@ -136,11 +136,11 @@
                                 <td>{{ fwl.weight }}</td>
 
                                 {% if fwl.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >Chicken</td>
+                                <td style="border-bottom:0px;" >مرغ</td>
                               {% elif fwl.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >Turkey</td>
+                                <td style="border-bottom:0px;" >بوقلمون</td>
                               {% elif fwl.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >Quail</td>
+                                <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
@@ -185,19 +185,19 @@
 
            <div class="col-6">
              <label for="weight">
-                <span >weight</span>
+                <span >وزن محصول</span>
                 <input type="text" id="weight" name="weight"/>
              </label>
            </div>
            <div class="col-6">
              <label for="sale_price">
-                <span >Sale price</span>
+                <span >قیمت فروش</span>
                 <input type="text" id="sale_price" name="sale_price"/>
              </label>
            </div>
            <div class="col-6">
              <label for="number_of_box">
-                <span >Number of box</span>
+                <span >تعداد جعبه</span>
                 <input type="text" id="number_of_box" name="number_of_box"/>
              </label>
            </div>
@@ -210,28 +210,28 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">choose one of product</p>
+                  color: black;">یکی از گزینه های زیر را انتخاب کنید</p>
              </div>
                  <div class="col-4 mt-3">
              <label for="chicken">
-                    <span >chicken</span>
+                    <span >مرغ</span>
                     <input  type="radio" id="chicken" name="product_category" value="C"/>
                  </label>
              </div>
              <div class="col-4 mt-3">
              <label for="turkey">
-                    <span >turkey</span>
+                    <span >بوقلمون</span>
                     <input type="radio" id="turkey" name="product_category" value="T"/>
                  </label>
             </div>
             <div class="col-4 mt-3">
              <label for="quail">
-                <span >quail</span>
+                <span >بلدرچین</span>
                 <input  type="radio" id="quail" name="product_category" value="Q"/>
              </label>
             </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>
@@ -257,44 +257,44 @@
 
              <div class="col-6">
                  <label for="driver_name">
-                    <span >Driver name</span>
+                    <span >نام راننده</span>
                     <input type="text" id="driver_name" name="driver_name"/>
                  </label>
              </div>
              <div class="col-6">
                  <label for="driver_last_name">
-                    <span >Driver last name</span>
+                    <span >نام خانوادگی راننده</span>
                     <input type="text" id="driver_last_name" name="driver_last_name"/>
                  </label>
              </div>
              <div class="col-6">
                  <label for="driver_phone_number">
-                    <span >Driver phone number</span>
+                    <span >شماره تلفن راننده</span>
                     <input type="text" id="driver_phone_number" name="driver_phone_number"/>
                  </label>
              </div>
              <div class="col-6">
                  <label for="car_number">
-                    <span >Car number</span>
-                    <input type="text" id="car_number" name="car_number"/>
+                    <span >شماره پلاک ماشین</span>
+                    <input type="text" id="car_number" name="car_number" dir="rtl"/>
                  </label>
              </div>
               <div class="col-6">
                  <label for="po_name">
-                    <span >Product owner name</span>
+                    <span >نام صاحب محصول</span>
                     <input type="text" id="po_name" name="po_name"/>
                  </label>
              </div>
              <div class="col-6">
                  <label for="po_last_name">
-                    <span >product last name</span>
+                    <span >نام خانوادگی صاحب محصول</span>
                     <input type="text" id="po_last_name" name="po_last_name"/>
                  </label>
              </div>
 
 
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

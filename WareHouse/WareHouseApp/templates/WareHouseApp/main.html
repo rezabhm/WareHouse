@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>TiyurZanjan | WareHouse</title>
+  <title>طیور زنجان</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -52,12 +52,12 @@
   <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
   <!-- ======= Header ======= -->
-  <header id="header">
+  <header id="header" style="overflow: scroll;">
     <div class="d-flex flex-column">
 
       <div class="profile">
         <img src="{% static 'WareHouseApp/img/arm.jpeg' %}" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light"><a href="index.html">WareHouse</a></h1>
+        <h1 class="text-light"><a href="index.html">طیور زنجان</a></h1>
         <div class="social-links mt-3 text-center">
           <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
           <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -71,13 +71,13 @@
         <ul>
 
           {% if request.user.is_superuser %}
-            <li><a href="{% url 'User_url' %}" class="nav-link scrollto"><i class="bi bi-person-bounding-box"></i> <span>User {{ request.user.is_super_user }}</span></a></li>
+            <li><a href="{% url 'User_url' %}" class="nav-link scrollto"><i class="bi bi-person-bounding-box"></i> <span>کاربر {{ request.user.is_super_user }}</span></a></li>
           {% endif %}
 
-          <li><a href="{% url 'live_WeighBridge' %}" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Live WeighBridge</span></a></li>
-          <li><a href="{% url 'first_WeightLifting' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>First WeightLifting</span></a></li>
-          <li><a href="{% url 'monitor_data' %}" class="nav-link scrollto"><i class="bi bi-laptop"></i> <span>Monitor data</span></a></li>
-          <li><a href="{% url 'task' %}" class="nav-link scrollto"><i class="bi bi-grid-3x3-gap-fill"></i> <span>task</span></a></li>
+          <li><a href="{% url 'live_WeighBridge' %}" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>باسکول زنده</span></a></li>
+          <li><a href="{% url 'first_WeightLifting' %}" class="nav-link scrollto"><i class="bx bx-server"></i> <span>وزن کشی مرحله اول</span></a></li>
+          <li><a href="{% url 'monitor_data' %}" class="nav-link scrollto"><i class="bi bi-laptop"></i> <span>نمایش اطلاعات</span></a></li>
+          <li><a href="{% url 'task' %}" class="nav-link scrollto"><i class="bi bi-grid-3x3-gap-fill"></i> <span>نگهداری</span></a></li>
           <!--<li><a href="{% url 'About' %}" class="nav-link scrollto"><i class="bi bi-tags"></i> <span>About</span></a></li>
           <li><a href="{% url 'Contact' %}" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>-->
         </ul>

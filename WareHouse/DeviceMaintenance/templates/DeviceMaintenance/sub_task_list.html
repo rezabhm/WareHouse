@@ -29,19 +29,19 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>Title</th>
-                          <th>Description</th>
-                          <th>Start task time</th>
-                          <th>deadline time</th>
+                          <th>عنوان وظیفه</th>
+                          <th>توضیحات وظیفه</th>
+                          <th>زمان شروع وظیفه</th>
+                          <th>زمان مهلت انجام وظیفه</th>
                         </thead>
 
-                        <label  ><h4 style="color: #0a0a0a">Task</h4>
+                        <label  ><h4 style="color: #0a0a0a">وظیفه</h4>
                             <tbody>
                               <tr>
-                                <td><input type="text" value="{{ data.0.task_structure.title }}" id="{{ data.0.task_structure.title }}" name="{{ data.0.task_structure.title }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ data.0.task_structure.description }}" id="{{ data.0.task_structure.description }}" name="{{ data.0.task_structure.description }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ data.1 }}" id="{{ data.1 }}" name="{{ data.1 }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ data.2 }}" id="{{ data.2 }}" name="{{ data.2 }}" style="border-bottom:0px;" /></td>
+                                <td>{{ data.0.task_structure.title }}</td>
+                                <td>{{ data.0.task_structure.description }}</td>
+                                <td>{{ data.1 }}</td>
+                                <td>{{ data.2 }}</td>
                               </tr>
                             </tbody>
                         </label>
@@ -50,12 +50,12 @@
                         <br><br>
                       <table id="fresh-table" class="table   shadow-lg p-3 mb-5 bg-white rounded  <!--border border-secondary -->">
                         <thead>
-                          <th>Task status</th>
-                          <th>sub task title</th>
-                          <th>sub task description</th>
-                          <th>Trouble description</th>
+                          <th>وضعیت انجان زیر وظیفه</th>
+                          <th>عنوان زیر وظیفه</th>
+                          <th>توضیحات زیر وظیفه</th>
+                          <th>مشکل زیر وظیفه</th>
                         </thead>
-                        <h5 style="color: #0a0a0a">Sub Task</h5>
+                        <h5 style="color: #0a0a0a">زیر وظیفه</h5>
 
                         {% for sub_task in data.3 %}
                         <label>
@@ -111,55 +111,65 @@
        </div>
           <div class="col-6">
              <label for="task_status">
-            <span >Task status</span>
-            <input type="text" id="task_status" name="task_status" />
+            <span >وضعیت انجام وظیفه</span>
+              <select id="task_status" name="task_status">
+                <option value="0">همه ی وظایف</option>
+                <option value="1">انجام شده ها</option>
+                <option value="2">وظایفی که مشکل دارند</option>
+                <option value="3">وظایفی که انجام نشده اند</option>
+              </select>
           </label>
           </div>
           <div class="col-6">
              <label for="time_status">
-                <span >Time status</span>
-                <input type="text" id="time_status" name="time_status"/>
+                <span >وضعیت زمانی وظایف</span>
+              <select id="time_status" name="time_status">
+                <option value="0">همه ی وضعیت</option>
+                <option value="1">قبل از شروع وظیفه</option>
+                <option value="2">وظایفی که باید حالا انجام شوند</option>
+                <option value="3">وظایفی که مهلت انها تمام شده است</option>
+              </select>
              </label>
           </div>
          <div class="col-4">
          <label for="start_year">
-            <span >Start year</span>
-            <input  type="text" id="start_year" name="start_year"/>
+            <span >سال شروع وظیفه</span>
+            <input  type="text" id="start_year" name="start_year" value="0000"/>
          </label>
          </div>
          <div class="col-4">
          <label for="start_month">
-            <span >Start month</span>
-            <input  type="text" id="start_month" name="start_month"/>
+            <span >ماه شروع وظیفه</span>
+            <input  type="text" id="start_month" name="start_month" value="00"/>
          </label>
          </div>
          <div class="col-4">
          <label for="start_day">
-            <span >Start day</span>
-            <input  type="text" id="start_day" name="start_day"/>
+            <span >روز شروع وظیفه</span>
+            <input  type="text" id="start_day" name="start_day" value="00"/>
          </label>
          </div>
          <div class="col-4">
          <label for="deadline_year">
-            <span >deadline year</span>
-            <input  type="text" id="deadline_year" name="deadline_year"/>
+            <span >سال مهلت انجام وظیفه</span>
+            <input  type="text" id="deadline_year" name="deadline_year" value="0000"/>
          </label>
          </div>
          <div class="col-4">
          <label for="deadline_month">
-            <span >deadline month</span>
-            <input  type="text" id="deadline_month" name="deadline_month"/>
+            <span >ماه مهلت انجام وظیفه</span>
+            <input  type="text" id="deadline_month" name="deadline_month" value="00"/>
          </label>
          </div>
          <div class="col-4">
          <label for="deadline_day">
-            <span >deadline day</span>
-            <input  type="text" id="deadline_day" name="deadline_day"/>
+            <span >روز مهلت انجام وظیفه</span>
+            <input  type="text" id="deadline_day" name="deadline_day" value="00"/>
          </label>
          </div>
 
     </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
 
     </div>
 

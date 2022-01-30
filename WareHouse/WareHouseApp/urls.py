@@ -163,7 +163,7 @@ urlpatterns = [
 
     re_path(r'car/filter/$', views.car_filter, name='Car_Filter'),
 
-    re_path(r'^product_owner/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<po_name>[\w]+)/(?P<po_lastname>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$', views.product_owner_list,
+    re_path(r'^product_owner/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<po_name>[\w]+)/(?P<po_lastname>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<car_number>.*)/$', views.product_owner_list,
             name='Product_Owner_List'),
 
     re_path(r'po/filter/$', views.po_filter, name='PO_Filter'),

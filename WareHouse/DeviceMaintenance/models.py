@@ -104,7 +104,7 @@ class Task(models.Model):
     task_structure = models.ForeignKey(TaskStructure, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.start_task_time
+        return str(self.start_task_time)
 
 
 class SubTask(models.Model):
@@ -144,7 +144,7 @@ class SubTask(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.task.title
+        return str(self.sub_task_id)
 
 
 class TaskUser(models.Model):

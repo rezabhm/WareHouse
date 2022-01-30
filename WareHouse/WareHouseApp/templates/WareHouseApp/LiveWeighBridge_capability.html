@@ -3,7 +3,7 @@
  {% load static %}
 
  {% block title%}
-<h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">Capability</h2>
+<h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">خالی کردن ظرفیت ماشین</h2>
  {% endblock %}
 
 {% block content %}
@@ -31,14 +31,17 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                         <th data-field="name" data-sortable="true">Driver</th>
-                          <th data-field="salary" data-sortable="true">Car</th>
-                          <th data-field="country" data-sortable="true">Product owner</th>
-                          <th>CAr weight with product</th>
-                          <th>CAr weight</th>
-                          <th>Buy price</th>
-                          <th>Product Category</th>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام و نام خانوادگی راننده</th>
+                          <th data-field="salary" data-sortable="true">شماره پلاک ماشین</th>
+                          <th data-field="country" data-sortable="true">نام و نام خانوداگی صاحب محصول</th>
+                          <th>وزن ماشین با محصول (کیلوگرم)</th>
+                          <th>وزن ماشین (کیلوگرم)</th>
+                          <th>قیمت خرید (تومان)</th>
+                          <th>نوع محصول</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
+
                         </thead>
 
                         {% for slaughter in lwb_list %}
@@ -55,17 +58,20 @@
                                 <td style="border-bottom:0px;" >{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}</td>
                                 <td style="border-bottom:0px;" >{{ slaughter.final_weight }}</td>
                                 <td style="border-bottom:0px;" >{{ slaughter.car_weight }}</td>
-                                <td style="border-bottom:0px;" >{{ slaughter.buy_price }} تومان</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.buy_price }} </td>
 
                                   {% if slaughter.product_category == 'C' %}
-                                    <td style="border-bottom:0px;">Chicken</td>
+                                    <td style="border-bottom:0px;">مرغ</td>
                                   {% elif slaughter.product_category == 'T' %}
-                                    <td style="border-bottom:0px;">Turkey</td>
+                                    <td style="border-bottom:0px;">بوقلمون</td>
                                   {% elif slaughter.product_category == 'Q' %}
-                                    <td style="border-bottom:0px;">Quail</td>
+                                    <td style="border-bottom:0px;">بلدرچین</td>
                                   {% else %}
                                     <td style="border-bottom:0px;">-</td>
                                   {% endif %}
+
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـname }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـcity }}</td>
 
                               </tr>
                             </tbody>
@@ -74,7 +80,7 @@
                       </table>
              </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

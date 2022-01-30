@@ -30,14 +30,17 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th>Driver</th>
-                          <th>Car</th>
-                          <th>Product owner</th>
-                          <th>CAr weight with product</th>
-                          <th>CAr weight</th>
-                          <th>Buy Price</th>
-                          <th>Product Category</th>
+                          <th>انتخاب کنید</th>
+                          <th>نام و نام خانوادگی راننده</th>
+                          <th>شماره پلاک ماشین</th>
+                          <th>نام و نام خانوادگی صاحب محصول</th>
+                          <th>وزن ماشین با محصول (کیلوگرم)</th>
+                          <th>وزن ماشین بدون محصول ( کیلوگرم)</th>
+                          <th>قیمت خرید</th>
+                          <th>نوع محصول</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
+
                         </thead>
 
                         {% for lwb in lwb_list %}
@@ -57,15 +60,17 @@
                                 <td style="border-bottom:0px;" >{{ lwb.buy_price }}</td>
 
                                 {% if lwb.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >Chicken</td>
+                                <td style="border-bottom:0px;" >مرغ</td>
                               {% elif lwb.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >Turkey</td>
+                                <td style="border-bottom:0px;" >بوقلمون</td>
                               {% elif lwb.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >Quail</td>
+                                <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
 
+                                <td style="border-bottom:0px;" >{{ lwb.avicultureـname }}</td>
+                                <td style="border-bottom:0px;" >{{ lwb.avicultureـcity }}</td>
 
                               </tr>
                             </tbody>
@@ -138,7 +143,7 @@
 
            <div class="col-6">
              <label for="weight">
-                <span >weight</span>
+                <span >وزن محصول</span>
                 <input type="text" id="weight" name="weight"/>
              </label>
            </div>
@@ -151,23 +156,23 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">choose one of product</p>
+                  color: black;">یکی از گزینه های زیر را برای تعیین نوع محصول انتخاب کنید</p>
              </div>
                  <div class="col-4 mt-3">
              <label for="chicken">
-                    <span >chicken</span>
+                    <span >مرغ</span>
                     <input  type="radio" id="chicken" name="product_category" value="C"/>
                  </label>
              </div>
              <div class="col-4 mt-3">
              <label for="turkey">
-                    <span >turkey</span>
+                    <span >بوقلمون</span>
                     <input type="radio" id="turkey" name="product_category" value="T"/>
                  </label>
             </div>
             <div class="col-4 mt-3">
              <label for="quail">
-                <span >quail</span>
+                <span >بلدرچین</span>
                 <input  type="radio" id="quail" name="product_category" value="Q"/>
              </label>
             </div>
@@ -180,29 +185,29 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">choose one of product</p>
+                  color: black;">یکی از گزینه های زیر را انتخاب کنید</p>
              </div>
 
              <div class="col-4 mt-3">
              <label for="precold">
-                <span >pre-cold</span>
+                <span >پیش سرد</span>
                 <input type="radio" name="sales_category" id="precold" value="P"/>
              </label>
             </div>
             <div class="col-4 mt-3">
              <label for="dist">
-                <span >distribute</span>
+                <span >فروش گرم</span>
                 <input type="radio" name="sales_category" id="dist" value="D"/>
              </label>
             </div>
              <div class="col-4 mt-3">
              <label for="ft">
-                <span >freezing tunnel</span>
+                <span >تونل انجماد</span>
                 <input type="radio" name="sales_category" id="ft" value="F"/>
              </label>
             </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

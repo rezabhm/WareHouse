@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Cold house list</h2>
+<h2>اطلاعات سردخانه</h2>
 {% endblock %}
 
 {% block content %}
@@ -27,13 +27,13 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>exit time</th>
-                          <th>pallet status</th>
-                          <th>total pallet weight</th>
-                          <th>pallet weight without product </th>
-                          <th>number of box</th>
-                          <th>pallet id </th>
-                          <th>cold house id </th>
+                          <th>زمان خروج</th>
+                          <th>آیا پالت در سرد خانه است ؟</th>
+                          <th>وزن پالت با محصول</th>
+                          <th>وزن پالت بدون محصول </th>
+                          <th>تعداد جعبه</th>
+                          <th>آیدی پالت </th>
+                          <th>آیدی سردخانه</th>
                         </thead>
 
                         {% for ch in ch_list %}
@@ -41,7 +41,16 @@
                             <tbody>
                               <tr>
                                 <td>{{ ch.1 }}</td>
-                                <td>{{ ch.2 }}</td>
+
+                                  {% if ch.2 == True %}
+
+                                  <td>بله</td>
+
+                                  {% else %}
+                                    <td>خیر</td>
+
+                                  {% endif %}
+
                                 <td>{{ ch.3 }}</td>
                                 <td>{{ ch.4 }}</td>
                                 <td>{{ ch.5 }}</td>
@@ -68,21 +77,70 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>product category </th>
-                          <th>paper box weight </th>
-                          <th>box status</th>
-                          <th>number of product</th>
-                          <th>packing time</th>
-                          <th>box id</th>
-                          <th>cold house id </th>
-                          <th>pallet id that carry paper box </th>
+                          <th>نوع محصول</th>
+                          <th>نوع محصول بسته بندی شده</th>
+                          <th>مدت زمان تا تاریخ انقضا</th>
+                          <th>آیا تاریخ انقضای محصول گذشته است ؟ </th>
+                          <th>وزن جعبه محصول</th>
+                          <th>آیا جعبه در سردخانه است ؟</th>
+                          <th>تعداد محصول در جعبه</th>
+                          <th>زمان بسته بندی</th>
+                          <th>آیدی جعبه محصول</th>
+                          <th>آیدی سردخانه</th>
+                          <th>آیدی پالت </th>
                         </thead>
 
                         {% for pb in pb_list %}
                         <label >
                             <tbody>
                               <tr>
-                                <td>{{ pb.0 }}</td>
+                            {% if pb.0 == 'Chicken' %}
+                                <td style="border-bottom:0px;" >مرغ</td>
+                              {% elif pb.0 == 'turkey' %}
+                                <td style="border-bottom:0px;" >بوقلمون</td>
+                              {% elif pb.0 == 'Quail' %}
+                                <td style="border-bottom:0px;" >بلدرچین</td>
+                              {% else %}
+                                <td style="border-bottom:0px;" >-</td>
+                              {% endif %}
+
+                            {% if pb.8 == 'W' %}
+                                <td style="border-bottom:0px;" >بال</td>
+
+                            {% elif pb.8 == 'N' %}
+                                <td style="border-bottom:0px;" >گردن</td>
+
+                            {% elif pb.8 == 'E' %}
+                                <td style="border-bottom:0px;" >پا</td>
+
+                            {% elif pb.8 == 'H' %}
+                                <td style="border-bottom:0px;" >قلب</td>
+
+                            {% elif pb.8 == 'L' %}
+                                <td style="border-bottom:0px;" >جگر</td>
+
+                            {% elif pb.8 == 'K' %}
+                                <td style="border-bottom:0px;" >قلوه</td>
+
+                            {% elif pb.8 == 'S' %}
+                                <td style="border-bottom:0px;" >سنگدان</td>
+
+                            {% elif pb.8 == 'B' %}
+                                <td style="border-bottom:0px;" >درسته</td>
+
+                            {% else %}
+                                <td style="border-bottom:0px;" >بقیه</td>
+
+                            {% endif %}
+
+                                <td>{{ pb.9 }}</td>
+
+                              {% if pb.10 == True %}
+                                <td>خیر</td>
+                              {% else %}
+                                <td>بله</td>
+                              {% endif %}
+
                                 <td>{{ pb.1 }}</td>
                                 <td>{{ pb.2 }}</td>
                                 <td>{{ pb.3 }}</td>
@@ -118,44 +176,58 @@
        </div>
           <div class="col-4">
              <label for="year">
-            <span >year</span>
+            <span >سال</span>
             <input type="text" id="year" name="year"  value="0"/>
           </label>
           </div>
           <div class="col-4">
              <label for="month">
-                <span >month</span>
+                <span >ماه</span>
                 <input type="text" id="month" name="month" value="0"/>
              </label>
           </div>
          <div class="col-4">
          <label for="day">
-            <span >day</span>
+            <span >روز</span>
             <input  type="text" id="day" name="day" value="0"/>
          </label>
          </div>
          <div class="col-6">
          <label for="exist">
-            <span >Exist</span>
-            <input  type="text" id="exist" name="exist" value="0"/>
+            <span >وضعیت محصول در سردخانه</span>
+              <select id="exist" name="exist">
+                <option value="0">هردو</option>
+                <option value="1">موجود در سردخانه</option>
+                <option value="2">از سردخانه خارج شده است</option>
+              </select>
          </label>
+
          </div>
          <div class="col-6">
          <label for="product_category">
-            <span >Product category</span>
-            <input  type="text" id="product_category" name="product_category" value="0"/>
+            <span >نوع محصول</span>
+              <select id="product_category" name="product_category">
+                <option value="0">همه</option>
+                <option value="1">مرغ</option>
+                <option value="2">بوقلمون</option>
+                <option value="3">بلدرچین</option>
+              </select>
          </label>
          </div>
          <div class="col-6">
          <label for="model_type">
-            <span >Model type</span>
-            <input  type="text" id="model_type" name="model_type" value="0"/>
+            <span >نوع اطلاعات</span>
+              <select id="model_type" name="model_type">
+                <option value="0">هر دو</option>
+                <option value="1">سردخانه</option>
+                <option value="2">جعبه محصول</option>
+              </select>
          </label>
          </div>
 
 
     </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
 
     </div>
 

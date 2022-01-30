@@ -28,15 +28,18 @@
                   color: black;">Choose from blew object</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table" class="table" >
                         <thead>
-                          <th>selection</th>
-                            <th>weight</th>
-                            <th>number of product</th>
-                            <th>box id</th>
-                            <th>product category</th>
+                          <th>انتخاب کنید</th>
+                            <th>وزن محصول</th>
+                            <th>تعداد روز باقی مانده تا انقضا</th>
+                            <th>آیا تاریخ انقضای محصول گذشته است ؟</th>
+                            <th>تعداد محصول</th>
+                            <th>آیدی جعبه</th>
+                            <th>نوع محصول</th>
+                            <th>نوع محصول بسته بندی شده</th>
 
                         </thead>
 
@@ -50,20 +53,59 @@
                                     </div>
                                 </td>
 
-                                  <td>{{ paper_box.paper_box_weight  }}</td>
-                                  <td>{{ paper_box.number_of_product  }}</td>
-                                  <td>{{ paper_box.box_id }}</td>
+                                  <td>{{ paper_box.0.paper_box_weight  }}</td>
+                                  <td> {{ paper_box.1 }}</td>
+
+                                  {% if paper_box.2 == True %}
+                                  <td>خیر</td>
+                                  {% else %}
+                                  <td>بله</td>
+                                  {% endif %}
+
+                                  <td>{{ paper_box.0.number_of_product  }}</td>
+                                  <td>{{ paper_box.0.box_id }}</td>
 
 
-                            {% if paper_box.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >Chicken</td>
-                              {% elif paper_box.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >Turkey</td>
-                              {% elif paper_box.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >Quail</td>
+                            {% if paper_box.0.product_category == 'C' %}
+                                <td style="border-bottom:0px;" >مرغ</td>
+                              {% elif paper_box.0.product_category == 'T' %}
+                                <td style="border-bottom:0px;" >بوقلمون</td>
+                              {% elif paper_box.0.product_category == 'Q' %}
+                                <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
+
+
+
+                            {% if paper_box.0.sub_product_category == 'W' %}
+                                <td style="border-bottom:0px;" >بال</td>
+
+                            {% elif paper_box.0.sub_product_category == 'N' %}
+                                <td style="border-bottom:0px;" >گردن</td>
+
+                            {% elif paper_box.0.sub_product_category == 'E' %}
+                                <td style="border-bottom:0px;" >پا</td>
+
+                            {% elif paper_box.0.sub_product_category == 'H' %}
+                                <td style="border-bottom:0px;" >قلب</td>
+
+                            {% elif paper_box.0.sub_product_category == 'L' %}
+                                <td style="border-bottom:0px;" >جگر</td>
+
+                            {% elif paper_box.0.sub_product_category == 'K' %}
+                                <td style="border-bottom:0px;" >قلوه</td>
+
+                            {% elif paper_box.0.sub_product_category == 'S' %}
+                                <td style="border-bottom:0px;" >سنگدان</td>
+
+                            {% elif paper_box.0.sub_product_category == 'B' %}
+                                <td style="border-bottom:0px;" >درسته</td>
+
+                            {% else %}
+                                <td style="border-bottom:0px;" >بقیه</td>
+
+                            {% endif %}
 
                               </tr>
                             </tbody>
@@ -74,36 +116,36 @@
 
            <div class="col-6">
              <label for="pallet_weight_with_product">
-                <span >pallet weight with product</span>
+                <span >وزن پالت با محصول</span>
                 <input type="text" id="pallet_weight_with_product" name="pallet_weight_with_product"/>
              </label>
            </div>
            <div class="col-6">
              <label for="pallet_weight_without_product">
-                <span >pallet weight without product </span>
+                <span >وزن پالت بدون محصول </span>
                 <input type="text" id="pallet_weight_without_product" name="pallet_weight_without_product"/>
              </label>
            </div>
            <div class="col-6">
              <label for="number_of_box">
-                <span >Cold house id</span>
+                <span >آیدی سردخانه</span>
                 <input type="text" id="number_of_box" name="number_of_box"/>
              </label>
            </div>
            <div class="col-6">
              <label for="cold_house_id">
-                <span >Number of box</span>
+                <span >تعداد جعبه</span>
                 <input type="text" id="cold_house_id" name="cold_house_id"/>
              </label>
            </div>
            <div class="col-6">
              <label for="pallet_id">
-                <span >Pallet id</span>
+                <span >آیدی پالت</span>
                 <input type="text" id="pallet_id" name="pallet_id"/>
              </label>
            </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

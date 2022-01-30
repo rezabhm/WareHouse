@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-<h2 xmlns="http://www.w3.org/1999/html"> Task </h2>
+<h2 xmlns="http://www.w3.org/1999/html"> نگهداری </h2>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
               <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch " >
                 <div class="info">
                   <div class="icon"><i class="bi bi-journals"></i></div>
-                  <h4 class="title"><a href="{% url 'Task_Structure_Create_Form' %}">Task Structure Create</a></h4>
+                  <h4 class="title"><a href="{% url 'Task_Structure_Create_Form' %}">ایجاد ساختار وظیفه</a></h4>
                 </div>
               </div>
           </div>
@@ -24,7 +24,7 @@
               <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
                 <div class="info">
                   <div class="icon"><i class="bi bi-journals"></i></div>
-                  <h4 class="title"><a href="{% url 'Sub_Structure_Create_Form' %}">Sub Structure Create</a></h4>
+                  <h4 class="title"><a href="{% url 'Sub_Structure_Create_Form' %}">ایجاد ساختار زیر وظیفه</a></h4>
                 </div>
               </div>
           </div>
@@ -32,7 +32,7 @@
               <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
                 <div class="info">
                   <div class="icon"><i class="bi bi-journals"></i></div>
-                  <h4 class="title"><a href="{% url 'Task_Create_Form' %}">Task Create</a></h4>
+                  <h4 class="title"><a href="{% url 'Task_Create_Form' %}">ایجاد وظیفه</a></h4>
                 </div>
               </div>
             </div>
@@ -40,7 +40,7 @@
               <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
                 <div class="info">
                   <div class="icon"><i class="bi bi-journals"></i></div>
-                  <h4 class="title"><a href="{% url 'Task_Done_Form' %}">Task Done</a></h4>
+                  <h4 class="title"><a href="{% url 'Task_Done_Form' %}">انجام وظیفه</a></h4>
                 </div>
               </div>
           </div>
@@ -48,7 +48,7 @@
             <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
                 <div class="info">
                   <div class="icon"><i class="bi bi-journals"></i></div>
-                     <h4 class="title"><a href="{% url 'Task_Structure_List' %}">Task Structure List</a></h4>
+                     <h4 class="title"><a href="{% url 'Task_Structure_List' %}">اطلاعات ساختار وظایف</a></h4>
                   </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             <div class="shadow p-3 mb-5 bg-white rounded d-flex align-items-stretch">
                 <div class="info">
                     <div class="icon"><i class="bi bi-journals"></i></div>
-                      <h4 class="title"><a href="{% url 'Task_List' task_status='0'  time_status='0'  start_year='0000'  start_month='00'  start_day='00'   deadline_year='0000'  deadline_month='00'  deadline_day='00'  %}">Task List</a></h4>
+                      <h4 class="title"><a href="{% url 'Task_List' task_status='0'  time_status='0'  start_year='0000'  start_month='00'  start_day='00'   deadline_year='0000'  deadline_month='00'  deadline_day='00'  %}">اطلاعات وظایف</a></h4>
                     </div>
                 </div>
             </div>

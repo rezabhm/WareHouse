@@ -47,7 +47,7 @@
 
       <div class="profile">
         <img src="{% static 'WareHouseApp/img/arm.jpeg' %}" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light"><a href="index.html">WareHouse</a></h1>
+        <h1 class="text-light"><a href="index.html">طیور زنجان</a></h1>
         <div class="social-links mt-3 text-center">
           <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
           <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -59,12 +59,12 @@
 
       <nav id="navbar" class="nav-menu navbar">
         <ul>
-          <li><a href="{% url 'Main_URL' %}" class="nav-link scrollto "><i class="bx bx-home"></i> <span>Main</span></a></li>
+          <li><a href="{% url 'Main_URL' %}" class="nav-link scrollto "><i class="bx bx-home"></i> <span>صفحه اصلی</span></a></li>
           {% if user %}
-            <li><a href="{% url 'SignIn_Form' %}" class="nav-link scrollto "><i class="bi bi-door-open"></i> <span>Sign in</span></a></li>
+            <li><a href="{% url 'SignIn_Form' %}" class="nav-link scrollto "><i class="bi bi-door-open"></i> <span>ورود</span></a></li>
           {% endif %}
-          <li><a href="{% url 'About' %}" class="nav-link scrollto "><i class="bi bi-tags"></i> <span>About</span></a></li>
-          <li><a href="{% url 'Contact' %}" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
+          <li><a href="{% url 'About' %}" class="nav-link scrollto "><i class="bi bi-tags"></i> <span>درباره ما</span></a></li>
+          <li><a href="{% url 'Contact' %}" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>ارتباط با ما</span></a></li>
 
         </ul>
       </nav><!-- .nav-menu -->

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<h2>Create sub task structure</h2>
+<h2>ایجاد ساختار زیر وظیفه</h2>
 {% endblock %}
 
 {% block content %}
@@ -30,9 +30,9 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th>Title</th>
-                          <th>Description</th>
+                          <th>انتخاب کنید</th>
+                          <th>عنوان وظیفه</th>
+                          <th>توضیحات وظیفه</th>
                         </thead>
 
                         {% for ts in task_structure_list %}
@@ -44,8 +44,8 @@
                                          <label><input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}"></label>
                                     </div>
                                 </td>
-                                <td><input type="text" value="{{ ts.title }}" id="{{ ts.title }}" name="{{ ts.title }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ ts.description }}" id="{{ ts.description }}" name="{{ ts.description }}" style="border-bottom:0px;" /></td>
+                                <td>{{ ts.title }}</td>
+                                <td>{{ ts.description }}</td>
 
                               </tr>
                             </tbody>
@@ -67,18 +67,18 @@
 
            <div class="col-6">
              <label for="title">
-                <span >title</span>
+                <span >عنوان زیر وظیفه</span>
                 <input type="text" id="title" name="title"/>
              </label>
            </div>
            <div class="col-6">
              <label for="description">
-                <span >description</span>
+                <span >توضیحات زیر وظیفه</span>
                 <input type="text" id="description" name="description"/>
              </label>
            </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

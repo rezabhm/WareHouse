@@ -104,8 +104,10 @@ class SalesManager(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.username)
-
+        if self.username:
+            return str(self.username)
+        else:
+            return 'admin/ceo'
 
 class WeightLiftingManager(models.Model):
 
@@ -415,6 +417,10 @@ class LiveWeighbridge(models.Model):
     # slaughter status that if equal True slaughting has start
     slaughter_status = models.BooleanField(default=False)
 
+    # aviculture information
+    avicultureـcity = models.CharField(max_length=25, default='-')
+    avicultureـname = models.CharField(max_length=25, default='-')
+
     # slaughting start time
     slaughter_start_date = models.FloatField(null=True)
 
@@ -482,7 +488,7 @@ class FirstWeightLifting(models.Model):
     Weight_Lifting_Manager = models.ForeignKey(WeightLiftingManager, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return self.Weight_Lifting_Manager.username + ' ' + self.sales_category + ' ' + str(self.weight)
+        return self.sales_category + ' ' + str(self.weight)
 
 
 class PreCold(models.Model):
@@ -516,6 +522,9 @@ class PreCold(models.Model):
 
     # exit time
     exit_time = models.FloatField(null=True)
+
+    # number of box
+    box_num = models.IntegerField(default=1)
 
     # weight
     weight = models.FloatField()
@@ -589,7 +598,7 @@ class Distributed(models.Model):
     # relation
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
-    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True)
+    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True, default='admin')
 
     def __str__(self):
         return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)
@@ -633,6 +642,9 @@ class FreezingTunnel(models.Model):
 
     # weight of product
     weight = models.FloatField()
+
+    # number of box
+    box_num = models.IntegerField(default=1)
 
     # tunnel id that product freeze in it
     tunnel_id = models.IntegerField()
@@ -724,6 +736,23 @@ class PaperBox(models.Model):
                       ('Q', "quail"))
     product_category = models.CharField(choices=type_of_gender, max_length=1)
 
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
+
     # paper box weight
     paper_box_weight = models.FloatField()
 
@@ -738,6 +767,9 @@ class PaperBox(models.Model):
 
     # packing time
     packing_time = models.FloatField(default=time.time())
+
+    # Expiration time
+    expiration_time = models.IntegerField(default=30)
 
     # box id
     box_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)

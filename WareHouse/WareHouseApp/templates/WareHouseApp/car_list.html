@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Car list</h2>
+<h2>اطلاعات ماشین</h2>
 {% endblock %}
 
 {% block content %}
@@ -25,18 +25,18 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>Driver name</th>
-                          <th>Diver last name</th>
-                          <th>Driver phone number</th>
-                          <th>car number</th>
-                          <th>Product owner name</th>
-                          <th>Product owner last name</th>
-                          <th>Weight</th>
-                          <th>Time</th>
-                          <th>Sale price</th>
-                          <th>Product category</th>
-                          <th>Bill of lading</th>
-                          <th>Number of box</th>
+                          <th>نام راننده</th>
+                          <th>نام خانوادگی</th>
+                          <th>شماره تلفن راننده</th>
+                          <th>شماره پلاک راننده</th>
+                          <th>نام صاحب محصول</th>
+                          <th>نام خانوادگی صاحب محصول</th>
+                          <th>وزن محصول</th>
+                          <th>زمان وزن کشی</th>
+                          <th>قیمت فروش</th>
+                          <th>نوع محصول</th>
+                          <th>بارنامه</th>
+                          <th>تعداد جعبه</th>
                         </thead>
 
                         {% for dist in dist_list %}
@@ -52,7 +52,17 @@
                                 <td>{{ dist.6 }}</td>
                                 <td>{{ dist.7 }}</td>
                                 <td>{{ dist.8 }}</td>
-                                <td>{{ dist.9 }}</td>
+
+                                  {% if dist.9  == 'chicken' %}
+                                    <td>مرغ</td>
+                                  {% elif dist.9  == 'turkey' %}
+                                    <td>بوقلمون</td>
+                                  {% elif dist.9  == 'quail' %}
+                                    <td>بلدرچین</td>
+                                  {% else %}
+                                    <td>-</td>
+                                  {% endif %}
+
                                 <td>{{ dist.10 }}</td>
                                 <td>{{ dist.11 }}</td>
                               </tr>
@@ -76,21 +86,23 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>Driver name</th>
-                          <th>Diver last name</th>
-                          <th>Driver phone number</th>
-                          <th>Car number</th>
-                          <th>Product owner name</th>
-                          <th>Product owner last name</th>
-                          <th>Car final weight</th>
-                          <th>Car weight</th>
-                          <th>Car empty status</th>
-                          <th>weighting time</th>
-                          <th>product category</th>
-                          <th>slaughter status </th>
-                          <th>slaughter start time </th>
-                          <th>slaughter finish time </th>
-                          <th>buy price</th>
+                          <th>نام راننده</th>
+                          <th>نام خانوادگی راننده</th>
+                          <th>شماره تلفن راننده</th>
+                          <th>شماره پلاک ماشین</th>
+                          <th>نام صاحب محصول</th>
+                          <th>نام خانوادگی صاحب محصول</th>
+                          <th>وزن ماشین با محصول</th>
+                          <th>وزن ماشین</th>
+                          <th>وضعیت موجودی ماشین</th>
+                          <th>زمان وزن کشی</th>
+                          <th>نوع محصول</th>
+                          <th>وضعیت کشتار </th>
+                          <th>زمان شروع کشتار </th>
+                          <th>زمان پایان کشتار </th>
+                          <th>قیمت خرید</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
                         </thead>
 
                         {% for lwb in lwb_list %}
@@ -107,11 +119,23 @@
                                 <td>{{ lwb.7 }}</td>
                                 <td>{{ lwb.8 }}</td>
                                 <td>{{ lwb.9 }}</td>
-                                <td>{{ lwb.10 }}</td>
+
+                                  {% if dist.10  == 'chicken' %}
+                                    <td>مرغ</td>
+                                  {% elif dist.10  == 'turkey' %}
+                                    <td>بوقلمون</td>
+                                  {% elif dist.10  == 'quail' %}
+                                    <td>بلدرچین</td>
+                                  {% else %}
+                                    <td>-</td>
+                                  {% endif %}
+
                                 <td>{{ lwb.11 }}</td>
                                 <td>{{ lwb.12 }}</td>
                                 <td>{{ lwb.13 }}</td>
                                 <td>{{ lwb.14 }}</td>
+                                <td>{{ lwb.15 }}</td>
+                                <td>{{ lwb.16 }}</td>
                               </tr>
                             </tbody>
                         </label>
@@ -141,44 +165,53 @@
        </div>
           <div class="col-4">
              <label for="year">
-            <span >year</span>
+            <span >سال</span>
             <input type="text" id="year" name="year"  value="0"/>
           </label>
           </div>
           <div class="col-4">
              <label for="month">
-                <span >month</span>
+                <span >ماه</span>
                 <input type="text" id="month" name="month" value="0"/>
              </label>
           </div>
          <div class="col-4">
          <label for="day">
-            <span >day</span>
+            <span >روز</span>
             <input  type="text" id="day" name="day" value="0"/>
          </label>
          </div>
          <div class="col-6">
          <label for="car_number">
-            <span >Car number</span>
+            <span >شماره پلاک ماشین</span>
             <input  type="text" id="car_number" name="car_number" value="0"/>
          </label>
          </div>
          <div class="col-6">
          <label for="product_category">
-            <span >Product category</span>
-            <input  type="text" id="product_category" name="product_category" value="0"/>
+            <span >نوع محصول</span>
+              <select id="product_category" name="product_category">
+                <option value="0">همه</option>
+                <option value="1">مرغ</option>
+                <option value="2">بوقلمون</option>
+                <option value="3">بلدرچین</option>
+              </select>
          </label>
          </div>
          <div class="col-6">
          <label for="model_type">
-            <span >Model type</span>
-            <input  type="text" id="model_type" name="model_type" value="0"/>
+            <span >نوع اطلاعات</span>
+              <select id="model_type" name="model_type">
+                <option value="0">باسکول زنده و فروش گرم</option>
+                <option value="1">باسکول زنده</option>
+                <option value="2">فروش گرم</option>
+              </select>
          </label>
          </div>
 
 
     </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
 
     </div>
 

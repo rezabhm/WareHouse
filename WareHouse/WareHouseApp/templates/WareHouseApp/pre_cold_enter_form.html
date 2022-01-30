@@ -3,7 +3,7 @@
 {% load static %}
 
  {% block title%}
- <h2>Pre Cold Enter</h2>
+ <h2>ورود محصول به پیش سرد</h2>
  {% endblock %}
 
 {% block content %}
@@ -30,8 +30,9 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th style="text-align: center;">selection</th>
-                          <th>Weight</th>
+                          <th style="text-align: center;">انتخاب کنید</th>
+                          <th>وزن محصول</th>
+                          <th>نوع محصول</th>
 
 
                         </thead>
@@ -45,7 +46,17 @@
                                          <label style="margin:0px;"><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"></label>
                                     </div>
                                 </td>
-                                <td><input  type="text" style="border-bottom: 0px;" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}"></td>
+                                <td>{{ fwl.weight }}</td>
+
+                                  {% if fwl.product_category == 'C' %}
+                                    <td style="border-bottom:0px;">مرغ</td>
+                                  {% elif fwl.product_category == 'T' %}
+                                    <td style="border-bottom:0px;">بوقلمون</td>
+                                  {% elif fwl.product_category == 'Q' %}
+                                    <td style="border-bottom:0px;">بلدرچین</td>
+                                  {% else %}
+                                    <td style="border-bottom:0px;">-</td>
+                                  {% endif %}
 
                               </tr>
                             </tbody>
@@ -84,20 +95,26 @@
 
              <div class="col-6 mt-3">
                  <label for="weight">
-                    <span >weight</span>
+                    <span >وزن محصول</span>
                     <input type="text" name="weight" id="weight"/>
                  </label>
              </div>
              <div class="col-6 mt-3">
                  <label for="pc_id">
-                    <span >pre-cold id</span>
+                    <span >آیدی پیش سرد</span>
                     <input type="number" name="pc_id" id="pc_id"/>
                  </label>
              </div>
              <div class="col-6 mt-3">
                  <label for="pallet_id">
-                    <span >pallet id</span>
-                    <input type=type="text" name="pallet_id" id="pallet_id" value="00000"/>
+                    <span >آیدی پالت</span>
+                    <input type="text" name="pallet_id" id="pallet_id" value="00000"/>
+                 </label>
+             </div>
+             <div class="col-6 mt-3">
+                 <label for="box_num">
+                    <span >تعداد جعبه</span>
+                    <input type="number" name="box_num" id="box_num" value="1"/>
                  </label>
              </div>
               <div class="col-12 mt-5 mb-5">
@@ -108,30 +125,30 @@
                   border-left-width: 5px;
                   padding-left: 10px;
                   padding: 5px;
-                  color: black;">choose one of product category</p>
+                  color: black;">یکی از گزینه های زیر را انتخاب کنید</p>
              </div>
 
               <div class="col-4 mt-3">
              <label for="chicken">
-                    <span >chicken</span>
+                    <span >مرغ</span>
                     <input  type="radio" id="chicken" name="product_category" value="C"/>
                  </label>
              </div>
              <div class="col-4 mt-3">
              <label for="turkey">
-                    <span >turkey</span>
+                    <span >بوقلمون</span>
                     <input type="radio" id="turkey" name="product_category" value="T"/>
                  </label>
             </div>
             <div class="col-4 mt-3">
              <label for="quail">
-                <span >quail</span>
+                <span >بلدرچین</span>
                 <input  type="radio" id="quail" name="product_category" value="Q"/>
              </label>
             </div>
 
              <div>
-                 <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+                 <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
              </div>
 
          </div>

@@ -64,7 +64,13 @@ def task(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/task.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def live_weighbridge_main(request):
@@ -94,7 +100,13 @@ def monitor_data(request):
     # load main.html for render
     main_template = loader.get_template('WareHouseApp/monitor_data.html')
 
-    return HttpResponse(main_template.render())
+    context = {
+
+        'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
 
 
 def first_weightlifting_main(request):
@@ -513,6 +525,8 @@ def lwb_create(requests):
             car_weight = requests.POST['car_weight']
             car_empty_weight = requests.POST['car_empty_weight']
             product_category = requests.POST['product_category']
+            avicultureـcity = requests.POST['Avicultureـcity']
+            avicultureـname = requests.POST['Avicultureـname']
 
             # create product owner
             pro_obj_list = models.ProductOwner.objects.all().filter(name=product_owner_name).filter(
@@ -584,6 +598,8 @@ def lwb_create(requests):
             lwb_obj.car_weight = car_empty_weight
             lwb_obj.product_category = product_category
             lwb_obj.driver = driver_obj
+            lwb_obj.avicultureـcity = avicultureـcity
+            lwb_obj.avicultureـname = avicultureـname
 
             if len(lwb_user_list) > 0:
                 lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
@@ -1010,6 +1026,7 @@ def pre_cold_enter(requests):
             fwl_id = requests.POST['fwl_id']
             pc_id = int(requests.POST['pc_id'])
             pallet_id = requests.POST['pallet_id']
+            box_num = requests.POST['box_num']
             product_category = requests.POST['product_category']
 
             # create pre-cold object
@@ -1019,6 +1036,7 @@ def pre_cold_enter(requests):
             pc.weight = weight
             pc.product_category = product_category
             pc.pallet_id = pallet_id
+            pc.box_num = int(box_num)
             pc.pre_cold_id = pc_id
 
             # relation
@@ -1408,6 +1426,7 @@ def freeze_tunnel_enter(requests):
         weight = float(requests.POST['weight'])
         tunnel_id = requests.POST['tunnel_id']
         pallet_id = requests.POST['pallet_id']
+        box_num = requests.POST['box_num']
         prod_category = requests.POST['product_category']
         fwl_id = requests.POST['fwl_id']
 
@@ -1418,6 +1437,7 @@ def freeze_tunnel_enter(requests):
         ft_obj.weight = weight
         ft_obj.tunnel_id = tunnel_id
         ft_obj.pallet_id = pallet_id
+        ft_obj.box_num = int(box_num)
         ft_obj.product_category = prod_category
         ft_obj.first_weight_lifting = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)[0]
         ft_obj.freeze_tunnel_id = str(uuid1().int)
@@ -1572,6 +1592,8 @@ def paper_box_create(requests):
             # get param
             weight = float(requests.POST['weight'])
             product_category = requests.POST['product_category']
+            expiration_time = requests.POST['expiration_time']
+            sub_prod_cat = requests.POST['sub_prod_cat']
             product_number = requests.POST['product_number']
 
             # create model
@@ -1581,6 +1603,8 @@ def paper_box_create(requests):
             paper_box_obj.paper_box_weight = weight
             paper_box_obj.number_of_product = product_number
             paper_box_obj.product_category = product_category
+            paper_box_obj.sub_product_category = sub_prod_cat
+            paper_box_obj.expiration_time = int(expiration_time)
             paper_box_obj.box_id = str(uuid1().int)
 
             # save model
@@ -1625,10 +1649,25 @@ def cold_house_enter_form(requests):
             # load template
             cold_house_enter_temp = loader.get_template('WareHouseApp/cold_house_enter.html')
 
+            paper_box_obj_list = models.PaperBox.objects.all().filter(box_status=False).filter(
+                    box_cold_house_exp=False)
+
+            paper_list = []
+            for paper_obj in paper_box_obj_list:
+
+                pack_time = paper_obj.packing_time + (paper_obj.expiration_time * 3600 * 24)
+                exp = int((time.time() - pack_time) / (3600 * 24))
+
+                if exp >= 0:
+                    exp_state = False
+                else:
+                    exp_state = True
+
+                paper_list.append([paper_obj, exp, exp_state])
+
             context = {
 
-                "paper_box_list": models.PaperBox.objects.all().filter(box_status=False).filter(
-                    box_cold_house_exp=False),
+                "paper_box_list": paper_list,
                 'request': requests
 
             }
@@ -1920,7 +1959,8 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
                    prod,
                    lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
-                    lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name])
+                    lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name,
+                                       lwb.avicultureـname , lwb.avicultureـcity])
 
             context = {
 
@@ -2216,7 +2256,7 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
                     prod_category, lwb.slaughter_status,
                     time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
                     time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
-                    lwb.buy_price
+                    lwb.buy_price, lwb.avicultureـname, lwb.avicultureـcity
 
                 ])
 
@@ -2235,7 +2275,8 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def product_owner_list(requests, po_name='0', po_lastname='0', product_category='0', model_type='0', year='0', month='0', day='0'):
+def product_owner_list(requests, po_name='0', po_lastname='0', product_category='0', model_type='0', year='0',
+                       month='0', day='0', car_number ='0'):
 
     """
     show list of product owner with filter
@@ -2338,6 +2379,15 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     first_weight_lifting__Live_Weigh_Bridge__driver__car__product_owner__last_name=po_lastname
                 )
 
+            # car number filter
+            if car_number != '0':
+
+                dist_list = dist_list.filter(driver__car__car_number=car_number)
+                lwb_list = lwb_list.filter(driver__car__car_number=car_number)
+                pd_list = pd_list.filter(First_Weight_Lifting__Live_Weigh_Bridge__driver__car__car_number=car_number)
+                ft_list = ft_list.filter(first_weight_lifting__Live_Weigh_Bridge__driver__car__car_number=car_number)
+
+
             # we must add product category filter to return special product
             # if equal 1 we return only chicken objects
             # if equal 2 we return only turkey objects
@@ -2416,7 +2466,7 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     prod_category, lwb.slaughter_status,
                     time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
                     time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
-                    lwb.buy_price
+                    lwb.buy_price, lwb.avicultureـname, lwb.avicultureـcity
 
                 ])
 
@@ -2848,6 +2898,13 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
 
                     else:
                         '-'
+                    pack_time = pb.packing_time + (pb.expiration_time * 3600 * 24)
+                    exp = int((time.time() - pack_time) / (3600 * 24))
+
+                    if exp >= 0:
+                        exp_state = False
+                    else:
+                        exp_state = True
 
                     pb_final_list.append([
 
@@ -2858,7 +2915,10 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
                         time.ctime(pb.packing_time),
                         pb.box_id,
                         pb.cold_house.pallet_id,
-                        pb.cold_house.cold_house_id
+                        pb.cold_house.cold_house_id,
+                        pb.sub_product_category,
+                        exp,
+                        exp_state
 
                     ])
 
@@ -2947,6 +3007,7 @@ def po_filter(requests):
         requests.POST['po_lastname'],
         requests.POST['product_category'],
         requests.POST['model_type'],
+        requests.POST['car_number'],
 
     ]))
 

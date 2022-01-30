@@ -29,9 +29,9 @@
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>selection</th>
-                          <th>Title</th>
-                          <th>Description</th>
+                          <th>انتخاب کنید</th>
+                          <th>عنوان وظیفه</th>
+                          <th>توضیحات وظیفه</th>
                         </thead>
 
                         {% for ts in task_structure_list %}
@@ -43,8 +43,8 @@
                                          <label><input type="radio" id="{{ ts.task_structure_id }}" name="task_id" value="{{ ts.task_structure_id }}"></label>
                                     </div>
                                 </td>
-                                <td><input type="text" value="{{ ts.title }}" id="{{ ts.title }}" name="{{ ts.title }}" style="border-bottom:0px;" /></td>
-                                <td><input type="text" value="{{ ts.description }}" id="{{ ts.description }}" name="{{ ts.description }}" style="border-bottom:0px;" /></td>
+                                <td>{{ ts.title }}</td>
+                                <td>{{ ts.description }}</td>
 
                               </tr>
                             </tbody>
@@ -66,42 +66,42 @@
 
            <div class="col-6">
              <label for="start_time_year">
-                <span >Start time year</span>
+                <span >سال شروع وظیفه</span>
                 <input type="text" id="start_time_year" name="start_time_year"/>
              </label>
            </div>
            <div class="col-6">
              <label for="start_time_month">
-                <span >Start time month</span>
+                <span >ماه شروع وظیفه</span>
                 <input type="text" id="start_time_month" name="start_time_month"/>
              </label>
            </div>
            <div class="col-6">
              <label for="start_time_day">
-                <span >Start time day</span>
+                <span >روز شروع وظیفه</span>
                 <input type="text" id="start_time_day" name="start_time_day"/>
              </label>
            </div>
            <div class="col-6">
              <label for="deadline_year">
-                <span >Deadline year</span>
+                <span >سال مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_year" name="deadline_year"/>
              </label>
            </div>
            <div class="col-6">
              <label for="deadline_month">
-                <span >Deadline month</span>
+                <span >ماه مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_month" name="deadline_month"/>
              </label>
            </div>
            <div class="col-6">
              <label for="deadline_day">
-                <span >Deadline day</span>
+                <span >روز مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_day" name="deadline_day"/>
              </label>
            </div>
             </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>
     </div>

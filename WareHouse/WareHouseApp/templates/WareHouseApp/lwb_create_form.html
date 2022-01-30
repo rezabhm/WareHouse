@@ -3,7 +3,7 @@
  {% load static %}
 
  {% block title%}
- <h2>Live WeighBridge Create</h2>
+ <h2>باسکول</h2>
  {% endblock %}
 
 {% block content %}
@@ -26,19 +26,19 @@
       </div>
       <div class="col-6">
          <label for="driver_name">
-        <span >driver name</span>
+        <span >نام راننده</span>
         <input type="text" id="driver_name" name="driver_name" />
       </label>
       </div>
         <div class="col-6">
          <label for="driver_last_name">
-            <span >driver last name</span>
+            <span >نام خانوادگی راننده</span>
             <input type="text" id="driver_last_name" name="driver_last_name"/>
          </label>
       </div>
          <div class="col-6">
          <label for="driver_phone_number">
-            <span >driver phone number</span>
+            <span >شماره تلفن راننده</span>
             <input  type="text" id="driver_phone_number" name="driver_phone_number"/>
          </label>
       </div>
@@ -54,8 +54,8 @@
       </div>
         <div class="col-6">
          <label for="car_number">
-            <span >car number</span>
-            <input  type="text" id="car_number" name="car_number"/>
+            <span >شماره بلاک ماشین</span>
+            <input  type="text" id="car_number" name="car_number" dir="rtl"/>
          </label>
       </div>
          <div class="col-12 mt-5">
@@ -70,16 +70,31 @@
       </div>
         <div class="col-6">
          <label for="po_name">
-            <span >product owner name</span>
+            <span >نام صاحب محصول</span>
             <input  type="text" id="po_name" name="product_owner_name"/>
          </label>
       </div>
       <div class="col-6">
          <label for="po_lastname">
-            <span >product owner last name</span>
+            <span >نام خانوادگی صاحب محصول</span>
             <input type="text" id="po_lastname" name="product_owner_lastname"/>
          </label>
       </div>
+
+      <div class="col-6">
+         <label for="Aviculture_name">
+            <span >نام مرغداری</span>
+            <input type="text" id="Aviculture_name" name="Avicultureـname"/>
+         </label>
+      </div>
+
+      <div class="col-6">
+         <label for="Aviculture_city">
+            <span >استان مرغداری</span>
+            <input type="text" id="Aviculture_city" name="Avicultureـcity"/>
+         </label>
+      </div>
+
 
        <div class="col-12 mt-5">
          <p class="partition" style="background-color: lavender;
@@ -93,43 +108,43 @@
        </div>
        <div class="col-6">
          <label for="car_weight">
-            <span >weight of car with product</span>
+            <span >وزن ماشین با محصول</span>
             <input type="text" id="car_weight" name="car_weight"/>
          </label>
        </div>
        <div class="col-6">
          <label for="car_weight">
-            <span >weight of car</span>
+            <span > وزن ماشین بدون محصول</span>
             <input type="text" id="car_empty weight" name="car_empty_weight"/>
          </label>
        </div>
        <div class="col-12">
          <label for="buy_price">
-            <span >buying price</span>
+            <span >قیمت خرید محصول</span>
             <input  type="number" id="buy_price" name="buy_price"/>
          </label>
        </div>
        <div class="col-4 mt-3">
          <label for="chicken">
-            <span >chicken</span>
+            <span >مرغ</span>
             <input  type="radio" id="chicken" name="product_category" value="C"/>
          </label>
        </div>
         <div class="col-4 mt-3">
          <label for="turkey">
-            <span >turkey</span>
+            <span >بوقلمون</span>
             <input type="radio" id="turkey" name="product_category" value="T"/>
          </label>
        </div>
        <div class="col-4 mt-3">
          <label for="quail">
-            <span >quail</span>
+            <span >بلدرچین</span>
             <input  type="radio" id="quail" name="product_category" value="Q"/>
          </label>
        </div>
 
     </div>
-            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
 
     </div>
 
