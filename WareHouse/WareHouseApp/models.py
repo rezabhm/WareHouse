@@ -416,6 +416,7 @@ class LiveWeighbridge(models.Model):
 
     # slaughter status that if equal True slaughting has start
     slaughter_status = models.BooleanField(default=False)
+    finish = models.BooleanField(default=False)
 
     # aviculture information
     avicultureـcity = models.CharField(max_length=25, default='-')
@@ -598,7 +599,7 @@ class Distributed(models.Model):
     # relation
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
-    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True, default='admin')
+    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)

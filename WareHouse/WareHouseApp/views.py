@@ -641,6 +641,8 @@ def lwb_start_slaughter_form(requests):
             context = {
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=False).filter(
+                    finish = False
+                ).filter(
                     weighting_date__gte=time.time()-(60*60*6)
 
                 ),
@@ -729,7 +731,7 @@ def lwb_finish_slaughter_form(requests):
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True).filter(
                     weighting_date__gte=time.time() - (60 * 60 * 6)
-                ),
+                ).filter(finish = False),
 
                 'request': requests
 
@@ -773,6 +775,7 @@ def lwb_finish_slaughter(requests):
 
                 # change information
                 lwb_obj.slaughter_status = False
+                lwb_obj.finish = True
                 lwb_obj.slaughter_finish_date = time.time()
 
                 # save changes
@@ -1038,6 +1041,7 @@ def pre_cold_enter(requests):
             pc.pallet_id = pallet_id
             pc.box_num = int(box_num)
             pc.pre_cold_id = pc_id
+            pc.pc_id = str(uuid1().int)
 
             # relation
             fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
@@ -1232,6 +1236,8 @@ def distribute(requests):
 
             dist_obj.driver = driver_list[0]
 
+            print(len(driver_list))
+
             # get firstWeightLifting object list
             fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
             fwl_obj = fwl_list[0]
@@ -1239,6 +1245,7 @@ def distribute(requests):
             fwl_obj.save()
 
             dist_obj.first_weight_lifting = fwl_list[0]
+            print(len(fwl_list))
 
             if len(dist_manager_list) > 0:
                 dist_obj.sales_manager = dist_manager_list[0]
@@ -1663,6 +1670,7 @@ def cold_house_enter_form(requests):
                 else:
                     exp_state = True
 
+
                 paper_list.append([paper_obj, exp, exp_state])
 
             context = {
@@ -1724,9 +1732,12 @@ def cold_house_enter(requests):
             cold_house_obj.save()
 
             for key in requests.POST.keys():
+                print(key)
 
                 if key not in ['pallet_weight_with_product', 'pallet_weight_without_product', 'number_of_box'
                                , 'cold_house_id', 'pallet_id']:
+
+                    print(key)
 
                     value = requests.POST[key]
 
@@ -2105,7 +2116,7 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
                     prod_category, lwb.slaughter_status,
                     time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
                     time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
-                    lwb.buy_price
+                    lwb.buy_price, lwb.avicultureـname ,lwb.avicultureـcity
 
                 ])
 

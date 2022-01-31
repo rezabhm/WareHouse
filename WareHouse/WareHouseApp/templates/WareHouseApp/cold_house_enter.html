@@ -44,12 +44,12 @@
                         </thead>
 
                         {% for paper_box in paper_box_list %}
-                        <label for="{{ paper_box.box_id }}">
+                        <label for="{{ paper_box.0.box_id }}">
                             <tbody>
                               <tr>
                                 <td>
                                     <div class="checkbox">
-                                         <label style="margin:0px;"><input type="radio" value="{{ paper_box.box_id }}" name="{{ paper_box.box_id }}" id="{{ paper_box.box_id }}"></label>
+                                         <label style="margin:0px;"><input type="radio" value="{{ paper_box.0.box_id }}" name="{{ paper_box.0.box_id }}" id="{{ paper_box.0.box_id }}"></label>
                                     </div>
                                 </td>
 

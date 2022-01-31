@@ -28,7 +28,7 @@
                       <table id="fresh-table" class="table">
                         <thead>
                           <th>زمان خروج</th>
-                          <th>آیا پالت در سرد خانه است ؟</th>
+                          <th>آیا پالت از سرد خانه خارج شده است ؟</th>
                           <th>وزن پالت با محصول</th>
                           <th>وزن پالت بدون محصول </th>
                           <th>تعداد جعبه</th>
@@ -44,10 +44,10 @@
 
                                   {% if ch.2 == True %}
 
-                                  <td>بله</td>
+                                  <td>خیر</td>
 
                                   {% else %}
-                                    <td>خیر</td>
+                                    <td>بله</td>
 
                                   {% endif %}
 
@@ -146,8 +146,8 @@
                                 <td>{{ pb.3 }}</td>
                                 <td>{{ pb.4 }}</td>
                                 <td>{{ pb.5 }}</td>
-                                <td>{{ pb.6 }}</td>
                                 <td>{{ pb.7 }}</td>
+                                <td>{{ pb.6 }}</td>
                               </tr>
                             </tbody>
                         </label>
