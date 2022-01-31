@@ -3,29 +3,30 @@
 
 {% block title %}
 
-<h2> Task List </h2>
+<h2> اطلاعات وظایف </h2>
 
 {% endblock %}
 
 {% block content %}
 
-<div class=" cont">
+ <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
              <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Task</p>
+                  color: black;">وظایف</p>
              </div>
 
                     {% for data in data_list %}
 
-                      <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table  full-color-blue badge filter badge-blue{{ pc.pre_cold_id }}"  style="overflow-x: scroll;">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -45,9 +46,8 @@
                               </tr>
                             </tbody>
                         </label>
-
                       </table>
-                        <br><br>
+
                       <table id="fresh-table" class="table   shadow-lg p-3 mb-5 bg-white rounded  <!--border border-secondary -->">
                         <thead>
                           <th>وضعیت انجان زیر وظیفه</th>
@@ -87,8 +87,7 @@
                           {% endfor %}
             </div>
         </div>
-        </div>
-    </div>
+ </div>
 
 <!--=======================-->
 
@@ -102,35 +101,14 @@
        <div class="col-12 ">
          <p class="partition" style="background-color: lavender;
           border-radius: 2px;
-          border-left-style: solid;
-          border-left-color: #17a2b8;
-          border-left-width: 5px;
-          padding-left: 10px;
+           border-right-style: solid;
+           border-right-color: #17a2b8;
+           border-right-width: 5px;
+           text-align: right;
+           padding-right: 10px;
           padding: 5px;
-          color: black;">Filter</p>
+          color: black;">فیلتر</p>
        </div>
-          <div class="col-6">
-             <label for="task_status">
-            <span >وضعیت انجام وظیفه</span>
-              <select id="task_status" name="task_status">
-                <option value="0">همه ی وظایف</option>
-                <option value="1">انجام شده ها</option>
-                <option value="2">وظایفی که مشکل دارند</option>
-                <option value="3">وظایفی که انجام نشده اند</option>
-              </select>
-          </label>
-          </div>
-          <div class="col-6">
-             <label for="time_status">
-                <span >وضعیت زمانی وظایف</span>
-              <select id="time_status" name="time_status">
-                <option value="0">همه ی وضعیت</option>
-                <option value="1">قبل از شروع وظیفه</option>
-                <option value="2">وظایفی که باید حالا انجام شوند</option>
-                <option value="3">وظایفی که مهلت انها تمام شده است</option>
-              </select>
-             </label>
-          </div>
          <div class="col-4">
          <label for="start_year">
             <span >سال شروع وظیفه</span>
@@ -167,6 +145,36 @@
             <input  type="text" id="deadline_day" name="deadline_day" value="00"/>
          </label>
          </div>
+        <div class="col-6 mt-4">
+             <label for="task_status">
+            <span >وضعیت انجام وظیفه</span>
+              <select id="task_status" name="task_status" style="padding: 8px 150px;
+                display: inline-block;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                border: 1px solid #999999;">
+                <option value="0">همه ی وظایف</option>
+                <option value="1">انجام شده ها</option>
+                <option value="2">وظایفی که مشکل دارند</option>
+                <option value="3">وظایفی که انجام نشده اند</option>
+              </select>
+          </label>
+          </div>
+          <div class="col-6 mt-4">
+             <label for="time_status">
+                <span >وضعیت زمانی وظایف</span>
+              <select id="time_status" name="time_status" style="padding: 8px 111px;
+                display: inline-block;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                border: 1px solid #999999;">
+                <option value="0">همه ی وضعیت</option>
+                <option value="1">قبل از شروع وظیفه</option>
+                <option value="2">وظایفی که باید حالا انجام شوند</option>
+                <option value="3">وظایفی که مهلت انها تمام شده است</option>
+              </select>
+             </label>
+          </div>
 
     </div>
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>

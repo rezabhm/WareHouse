@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title%}
-<h2>Cold house enter</h2>
+<h2>ورود محصول به سردخانه</h2>
 {% endblock %}
 
 
@@ -20,12 +20,13 @@
              <div class="col-12 mt-5 mb-2">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                 border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Choose from blew object</p>
+                  color: black;">انتخاب و ورود اطلاعات</p>
              </div>
 
              <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
@@ -132,13 +133,13 @@
                 <input type="text" id="number_of_box" name="number_of_box"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-6 ">
              <label for="cold_house_id">
                 <span >تعداد جعبه</span>
                 <input type="text" id="cold_house_id" name="cold_house_id"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-6 offset-6">
              <label for="pallet_id">
                 <span >آیدی پالت</span>
                 <input type="text" id="pallet_id" name="pallet_id"/>

@@ -1,7 +1,7 @@
 {% extends 'WareHouseApp/main.html' %}
 
 {% block title %}
-<h2>Task list</h2>
+<h2>ساختار وظایف</h2>
 {% endblock %}
 
 {% block content %}
@@ -12,25 +12,26 @@
              <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Task</p>
+                  color: black;">وظایف</p>
              </div>
 
-                    {% for data in data_list %}
 
-                      <div class="fresh-table full-color-blue badge filter badge-blue">
+
+             <div class="fresh-table  full-color-blue badge filter badge-blue{{ pc.pre_cold_id }}"  style="overflow-x: scroll;">
 
                       <table id="fresh-table" class="table">
                         <thead>
                           <th>عنوان وظیفه</th>
                           <th>توضیحات وظیفه</th>
                           <th>دوره زمانی وظیفه</th>
-
                         </thead>
+                          {% for data in data_list %}
 
                         <label  ><h4 style="color: #0a0a0a">وظیفه</h4>
                             <tbody>
@@ -42,8 +43,8 @@
                               </tr>
                             </tbody>
                         </label>
-
                       </table>
+
                         <br><br>
                       <table id="fresh-table" class="table   shadow-lg p-3 mb-5 bg-white rounded  <!--border border-secondary -->">
                         <thead>

@@ -1,7 +1,7 @@
 {% extends 'WareHouseApp/main.html' %}
 
 {% block title %}
-<h2>Task Create</h2>
+<h2>ایجاد وظیفه</h2>
 {% endblock %}
 
 {% block content %}
@@ -17,12 +17,13 @@
              <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">choose one of the blew list</p>
+                  color: black;">انتخاب و ورود اطلاعات</p>
              </div>
 
               <div class="fresh-table full-color-blue badge filter badge-blue">
@@ -53,48 +54,39 @@
                       </table>
              </div>
 
-             <div class="col-12 mt-5 mb-5">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
-                  padding: 5px;
-                  color: black;">Information</p>
-             </div>
 
-           <div class="col-6">
+
+           <div class="col-4">
              <label for="start_time_year">
                 <span >سال شروع وظیفه</span>
                 <input type="text" id="start_time_year" name="start_time_year"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label for="start_time_month">
                 <span >ماه شروع وظیفه</span>
                 <input type="text" id="start_time_month" name="start_time_month"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label for="start_time_day">
                 <span >روز شروع وظیفه</span>
                 <input type="text" id="start_time_day" name="start_time_day"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label for="deadline_year">
                 <span >سال مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_year" name="deadline_year"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label for="deadline_month">
                 <span >ماه مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_month" name="deadline_month"/>
              </label>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label for="deadline_day">
                 <span >روز مهلت انجام وظیفه</span>
                 <input type="text" id="deadline_day" name="deadline_day"/>

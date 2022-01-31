@@ -15,12 +15,13 @@
              <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Distribute</p>
+                  color: black;">فروش گرم</p>
              </div>
              <div class="fresh-table  full-color-blue badge filter badge-blue{{ pc.pre_cold_id }}"  style="overflow-x: scroll;">
 
@@ -76,12 +77,13 @@
               <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Live WeighBridge </p>
+                  color: black;">باسکول زنده</p>
              </div>
              <div class="fresh-table  full-color-blue badge filter badge-blue {{ pc.pre_cold_id }}" style="overflow-x: scroll;" >
 
@@ -145,12 +147,13 @@
                <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Pre cold</p>
+                  color: black;">پیش سرد</p>
              </div>
              <div class="fresh-table  full-color-blue badge filter badge-blue {{ pc.pre_cold_id }}" style="overflow-x: scroll;" >
 
@@ -220,12 +223,13 @@
               <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
-                  border-left-style: solid;
-                  border-left-color: #17a2b8;
-                  border-left-width: 5px;
-                  padding-left: 10px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
                   padding: 5px;
-                  color: black;">Freez tunnel </p>
+                  color: black;">تونل انجماد </p>
              </div>
              <div class="fresh-table  full-color-blue badge filter badge-blue {{ pc.pre_cold_id }}" style="overflow-x: scroll;" >
 
@@ -296,12 +300,13 @@
        <div class="col-12 ">
          <p class="partition" style="background-color: lavender;
           border-radius: 2px;
-          border-left-style: solid;
-          border-left-color: #17a2b8;
-          border-left-width: 5px;
-          padding-left: 10px;
+          border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
           padding: 5px;
-          color: black;">Filter</p>
+          color: black;">فیلتر</p>
        </div>
           <div class="col-4">
              <label for="year">
@@ -333,16 +338,21 @@
             <input  type="text" id="po_lastname" name="po_lastname" value="0"/>
          </label>
          </div>
-         <div class="col-6">
+        <div class="col-12 ">
          <label for="car_number">
             <span >شماره پلاک ماشین</span>
             <input  type="text" id="car_number" name="car_number" value="0"/>
          </label>
          </div>
+
          <div class="col-6">
          <label for="product_category">
             <span >نوع محصول</span>
-              <select id="product_category" name="product_category">
+              <select id="product_category" name="product_category" style="padding: 8px 185px;
+                display: inline-block;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                border: 1px solid #999999;">
                 <option value="0">همه</option>
                 <option value="1">مرغ</option>
                 <option value="2">بوقلمون</option>
@@ -353,7 +363,11 @@
          <div class="col-6">
          <label for="model_type">
             <span >نوع اطلاعات</span>
-              <select id="model_type" name="model_type">
+              <select id="model_type" name="model_type" style="padding: 8px 170px;
+                display: inline-block;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                border: 1px solid #999999;">
                 <option value="0">همه</option>
                 <option value="1">باسکول زنده</option>
                 <option value="2">فروش گرم</option>
@@ -362,6 +376,7 @@
               </select>
          </label>
          </div>
+
 
 
     </div>
