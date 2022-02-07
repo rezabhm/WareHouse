@@ -366,8 +366,8 @@ def task_list(requests, task_status='0', time_status='0', start_year='0000', sta
                     string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
                     deadline_time = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
-                    sub_task_obj_list = sub_task_obj_list.filter(task__start_task_time__lte=start_time).filter(
-                        task__start_task_time_gte=deadline_time
+                    sub_task_obj_list = sub_task_obj_list.filter(task__start_task_time__gte=start_time).filter(
+                        task__start_task_time_lte=deadline_time
                     )
 
             # create final data list

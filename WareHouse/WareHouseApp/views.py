@@ -464,6 +464,256 @@ def change_password(request):
 ###############################
 
 
+def lwb_order_form(requests):
+
+    """
+    user create live weighbridge ordering
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            driver_temp = loader.get_template('WareHouseApp/lwb_order_form.html')
+
+            context = {
+
+                'request': requests,
+                'driver_list': models.Driver.objects.all(),
+                'car_list': models.Car.objects.all().filter(live_product=True),
+                'po_list': models.ProductOwner.objects.all(),
+                'avc_list': models.Aviculture.objects.all(),
+
+            }
+
+            return HttpResponse(driver_temp.render(context))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access this page <br> you should login"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access this page <br> you should login"]))
+
+
+@csrf_exempt
+def lwb_order(requests):
+
+    """
+    create driver object
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # get form data (POST)
+            driver_id = requests.POST['driver_id']
+            car_id = requests.POST['car_id']
+            product_owner_id = requests.POST['po_id']
+            buy_price = requests.POST['buy_price']
+            product_weight = requests.POST['product_weight']
+            product_category = requests.POST['product_category']
+            aviculture_id = requests.POST['avc_id']
+
+            # create product owner
+            pro_obj_list = models.ProductOwner.objects.all().filter(product_owner_id=product_owner_id)
+
+            # check Create product owner object or select it
+            po_obj = pro_obj_list[0]
+
+            # get car object list
+            car_obj = models.Car.objects.get(car_id=car_id)
+
+            # get driver object list
+            driver_obj_lis = models.Driver.objects.all().filter(driver_id=driver_id)
+            driver_obj = driver_obj_lis[0]
+
+            # get avliculture object
+            avc_obj = models.Aviculture.objects.get(aviculture_id=aviculture_id)
+
+            # create Live weighbridge object
+            lwb_obj = models.LiveWeighbridge()
+
+            # set param
+            lwb_obj.buy_price = buy_price
+            lwb_obj.live_weighbridge_id = str(uuid1().int)
+            lwb_obj.product_category = product_category
+            lwb_obj.order_weight = product_weight
+            lwb_obj.driver = driver_obj
+            lwb_obj.car = car_obj
+            lwb_obj.product_owner = po_obj
+            lwb_obj.avicultureـcity = avc_obj.source
+            lwb_obj.avicultureـname = avc_obj.name
+
+            if len(lwb_user_list) > 0:
+                lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
+
+            # save live weighbridge
+            lwb_obj.save()
+
+            return HttpResponseRedirect(reverse('live_WeighBridge'))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+@csrf_exempt
+def lwb_driver(requests):
+    """
+    create driver object
+    """
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            driver_name = requests.POST['driver_name']
+            driver_lastname = requests.POST['driver_last_name']
+            driver_phone_number = requests.POST['driver_phone_number']
+
+            # create model
+            driver_obj = models.Driver()
+
+            # set param
+            driver_obj.name = driver_name
+            driver_obj.last_name = driver_lastname
+            driver_obj.phone_number = driver_phone_number
+            driver_obj.driver_id = str(uuid1().int)
+
+            # save
+            driver_obj.save()
+
+            return HttpResponseRedirect(reverse('Live_WeighBridge_Order_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=['شما اجازه ی دسترسی به این صفحه را ندارید']))
+
+
+@csrf_exempt
+def lwb_car(requests):
+    """
+    create car object
+    """
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            car_number1 = requests.POST['car_number1']
+            car_number2 = requests.POST['car_number2']
+            car_number3 = requests.POST['car_number3']
+            car_number4 = requests.POST['car_number4']
+            car_type = requests.POST['car_type']
+
+            # create model
+            car_obj = models.Car()
+
+            # set param
+            car_obj.car_number1 = car_number1
+            car_obj.car_number2 = car_number2
+            car_obj.car_number3 = car_number3
+            car_obj.car_number4 = car_number4
+            car_obj.car_number = str(car_number1) + str(car_number2) + str(car_number3) + str(car_number4)
+            car_obj.car_id = str(uuid1().int)
+            car_obj.car_type = car_type
+
+            # save
+            car_obj.save()
+
+            return HttpResponseRedirect(reverse('Live_WeighBridge_Order_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=['شما اجازه ی دسترسی به این صفحه را ندارید']))
+
+
+@csrf_exempt
+def lwb_product_owner(requests):
+    """
+    create car object
+    """
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            po_name = requests.POST['product_owner_name']
+            po_lastname = requests.POST['product_owner_lastname']
+
+            # create model
+            po_obj = models.ProductOwner()
+
+            # set param
+            po_obj.name = po_name
+            po_obj.last_name = po_lastname
+            po_obj.product_owner_id = str(uuid1().int)
+
+            # save
+            po_obj.save()
+
+            return HttpResponseRedirect(reverse('Live_WeighBridge_Order_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=['شما اجازه ی دسترسی به این صفحه را ندارید']))
+
+
+@csrf_exempt
+def lwb_aviculture(requests):
+
+    """
+    create car object
+    """
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            avc_name = requests.POST['Avicultureـname']
+            avc_city = requests.POST['Avicultureـcity']
+
+            # create model
+            avc_obj = models.Aviculture()
+
+            # set param
+            avc_obj.name = avc_name
+            avc_obj.source = avc_city
+            avc_obj.aviculture_id = str(uuid1().int)
+
+            # save
+            avc_obj.save()
+
+            return HttpResponseRedirect(reverse('Live_WeighBridge_Order_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=['شما اجازه ی دسترسی به این صفحه را ندارید']))
+
+
 def lwb_create_form(requests):
 
     """
@@ -482,7 +732,8 @@ def lwb_create_form(requests):
 
             context = {
 
-                'request': requests
+                'request': requests,
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(lwb_category='O')
 
             }
 
@@ -515,94 +766,61 @@ def lwb_create(requests):
         if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
 
             # get form data (POST)
-            driver_name = requests.POST['driver_name']
-            driver_last_name = requests.POST['driver_last_name']
-            driver_phone_number = requests.POST['driver_phone_number']
-            car_number = requests.POST['car_number']
-            product_owner_name = requests.POST['product_owner_name']
-            product_owner_lastname = requests.POST['product_owner_lastname']
-            buy_price = requests.POST['buy_price']
             car_weight = requests.POST['car_weight']
-            car_empty_weight = requests.POST['car_empty_weight']
-            product_category = requests.POST['product_category']
-            avicultureـcity = requests.POST['Avicultureـcity']
-            avicultureـname = requests.POST['Avicultureـname']
+            cage_num = requests.POST['cage_num']
+            product_num_in_cage = requests.POST['product_num_in_cage']
+            lwb_id = requests.POST['lwb_id']
 
-            # create product owner
-            pro_obj_list = models.ProductOwner.objects.all().filter(name=product_owner_name).filter(
-                last_name=product_owner_lastname
-            )
+            # get data
+            lwb_obj = models.LiveWeighbridge.objects.get(live_weighbridge_id=lwb_id)
 
-            # check Create product owner object or select it
-            if len(pro_obj_list) > 0:
-
-                po_obj = pro_obj_list[0]
-
-            else:
-
-                po_obj = models.ProductOwner()
-                po_obj.name = product_owner_name
-                po_obj.last_name = product_owner_lastname
-                po_obj.product_owner_id = str(uuid1().int)
-
-                # save product owner object
-                po_obj.save()
-
-            # get car object list
-            car_obj_list = models.Car.objects.all().filter(car_number=car_number)
-
-            if len(car_obj_list) > 0:
-
-                car_obj = car_obj_list[0]
-
-            else:
-                # create car object
-                car_obj = models.Car()
-                car_obj.car_number = car_number
-                car_obj.car_id = str(uuid1().int)
-
-            # set car object product owner relation
-            car_obj.product_owner = po_obj
-
-            # save car object
-            car_obj.save()
-
-            # get driver object list
-            driver_obj_lis = models.Driver.objects.all().filter(name=driver_name).filter(last_name=driver_last_name).filter(
-                phone_number=driver_phone_number
-            )
-
-            if len(driver_obj_lis) > 0:
-
-                driver_obj = driver_obj_lis[0]
-
-            else:
-
-                # create driver
-                driver_obj = models.Driver()
-                driver_obj.name = driver_name
-                driver_obj.last_name = driver_last_name
-                driver_obj.phone_number = driver_phone_number
-                driver_obj.driver_id = str(uuid1().int)
-
-            driver_obj.car = car_obj
-
-            # save driver object
-            driver_obj.save()
-
-            # create Live weighbridge object
-            lwb_obj = models.LiveWeighbridge()
-            lwb_obj.buy_price = buy_price
-            lwb_obj.live_weighbridge_id = str(uuid1().int)
+            # set param
+            lwb_obj.cage_num = cage_num
+            lwb_obj.product_num_in_cage = product_num_in_cage
             lwb_obj.final_weight = car_weight
-            lwb_obj.car_weight = car_empty_weight
-            lwb_obj.product_category = product_category
-            lwb_obj.driver = driver_obj
-            lwb_obj.avicultureـcity = avicultureـcity
-            lwb_obj.avicultureـname = avicultureـname
+            lwb_obj.lwb_category = 'W'
 
             if len(lwb_user_list) > 0:
                 lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
+
+            # save live weighbridge
+            lwb_obj.save()
+
+            return HttpResponseRedirect(reverse('live_WeighBridge'))
+
+        else:
+
+            # raised error
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        # raised error
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+@csrf_exempt
+def lwb_reject(requests):
+
+    """
+    create driver object
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # get form data (POST)
+            lwb_id = requests.POST['lwb_id']
+
+            # get data
+            lwb_obj = models.LiveWeighbridge.objects.get(live_weighbridge_id=lwb_id)
+
+            lwb_obj.lwb_category = 'R'
 
             # save live weighbridge
             lwb_obj.save()
@@ -847,6 +1065,11 @@ def lwb_capability(requests):
 
             # get information
             lwb_id = requests.POST['lwb_id']
+            car_weight = requests.POST['car_weight']
+            losses_num = requests.POST['losses_num']
+            losses_weight = requests.POST['losses_weight']
+            victim_num = requests.POST['victim_num']
+            victim_weight = requests.POST['victim_weight']
 
             # get liveWeighBridge list
             lwb_obj_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
@@ -858,6 +1081,11 @@ def lwb_capability(requests):
 
                 # change information
                 lwb_obj.car_empty = True
+                lwb_obj.car_weight = float(car_weight)
+                lwb_obj.losses_num = int(losses_num)
+                lwb_obj.losses_weight = float(losses_weight)
+                lwb_obj.victim_num = int(victim_num)
+                lwb_obj.victim_weight = float(victim_weight)
 
                 # save changes
                 lwb_obj.save()

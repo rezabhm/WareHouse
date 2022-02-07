@@ -109,6 +109,7 @@ class SalesManager(models.Model):
         else:
             return 'admin/ceo'
 
+
 class WeightLiftingManager(models.Model):
 
     """
@@ -318,14 +319,23 @@ class Car(models.Model):
     # car number
     car_number = models.CharField(max_length=20)
 
+    # iran car number format
+    car_number1 = models.IntegerField(default=11)
+    car_number2 = models.CharField(max_length=1, default='ع')
+    car_number3 = models.IntegerField(default=111)
+    car_number4 = models.IntegerField(default=87)
+
     # live product status that define our product is a live or not
     live_product = models.BooleanField(default=True)
+
+    # car type
+    car_type = models.CharField(max_length=25, default='-')
 
     # Car id
     car_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
-    product_owner = models.ForeignKey(ProductOwner, models.PROTECT)
+    product_owner = models.ForeignKey(ProductOwner, models.PROTECT, null=True)
 
     def __str__(self):
         return self.car_number
@@ -361,10 +371,35 @@ class Driver(models.Model):
     driver_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.name) + ' ' + str(self.last_name)
+
+
+class Aviculture(models.Model):
+
+    """
+    store all avicultures data
+
+    aviculture column:
+
+        1. name
+        2. source
+        3. id
+
+    """
+
+    # aviculture name
+    name = models.CharField(max_length=50)
+
+    # aviculture source
+    source = models.CharField(max_length=50)
+
+    aviculture_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
+    def __str__(self):
+        return str(self.name) + str(self.source)
 
 
 class LiveWeighbridge(models.Model):
@@ -405,7 +440,14 @@ class LiveWeighbridge(models.Model):
     car_empty = models.BooleanField(default=False)
 
     # weighting date
-    weighting_date = models.FloatField(default=time.time())
+    weighting_date = models.FloatField(default=time.time(), null=True)
+
+    # product category
+    type_of_lwb = (('O', "Order"),
+                  ('W', "Weighting"),
+                  ('R', "Reject"))
+
+    lwb_category = models.CharField(max_length=1, choices=type_of_lwb, default='O')
 
     # product category
     type_of_gender = (('C', "chicken"),
@@ -429,11 +471,26 @@ class LiveWeighbridge(models.Model):
     slaughter_finish_date = models.FloatField(null=True)
 
     # buying price
-    buy_price = models.IntegerField()
+    buy_price = models.IntegerField(null=True)
+
+    # order weight
+    order_weight = models.FloatField(default=0.0, null=True)
+
+    # cage information
+    cage_num = models.IntegerField(default=1, null=True)
+    product_num_in_cage = models.IntegerField(default=1, null=True)
+
+    # losses (تلفات ) and victim (ضایعات )
+    losses_num = models.IntegerField(default=0, null=True)
+    losses_weight = models.FloatField(default=0.0, null=True)
+    victim_num = models.IntegerField(default=0, null=True)
+    victim_weight = models.FloatField(default=0.0, null=True)
 
     # relation
     Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, on_delete=models.PROTECT, null=True)
-    driver = models.ForeignKey(Driver, on_delete=models.PROTECT)
+    driver = models.ForeignKey(Driver, on_delete=models.PROTECT, null=True)
+    car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True)
+    product_owner = models.ForeignKey(ProductOwner, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return str(self.driver.name) + ' : ' + str(self.final_weight)

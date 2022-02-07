@@ -14,91 +14,6 @@
 
     <div class=" cont">
     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
-       <div class="col-12 mt-5">
-         <p class="partition" style="background-color: lavender;
-          border-radius: 2px;
-          border-right-style: solid;
-          border-right-color: #17a2b8;
-          border-right-width: 5px;
-          text-align: right;
-          padding-right: 10px;
-          padding: 5px;
-          color: black;">راننده</p>
-      </div>
-
-        <div class="col-6">
-         <label for="driver_last_name">
-            <span >نام خانوادگی راننده</span>
-            <input type="text" id="driver_last_name" name="driver_last_name"/>
-         </label>
-      </div>
-        <div class="col-6">
-         <label for="driver_name">
-        <span >نام راننده</span>
-        <input type="text" id="driver_name" name="driver_name" />
-      </label>
-      </div>
-         <div class="col-6 offset-6">
-         <label for="driver_phone_number">
-            <span >شماره تلفن راننده</span>
-            <input  type="text" id="driver_phone_number" name="driver_phone_number"/>
-         </label>
-      </div>
-        <div class="col-12 mt-5">
-         <p class="partition" style="background-color: lavender;
-          border-radius: 2px;
-          border-right-style: solid;
-          border-right-color: #17a2b8;
-          border-right-width: 5px;
-          text-align: right;
-          padding-right: 10px;
-          padding: 5px;
-          color: black;">ماشین</p>
-      </div>
-        <div class="col-6 offset-6">
-         <label for="car_number">
-            <span >شماره پلاک ماشین</span>
-            <input  type="text" id="car_number" name="car_number" dir="rtl"/>
-         </label>
-      </div>
-         <div class="col-12 mt-5">
-         <p class="partition" style="background-color: lavender;
-          border-radius: 2px;
-          border-right-style: solid;
-          border-right-color: #17a2b8;
-          border-right-width: 5px;
-          text-align: right;
-          padding-right: 10px;
-          padding: 5px;
-          color: black;">صاحب بار</p>
-      </div>
-      <div class="col-6">
-         <label for="po_lastname">
-            <span >نام خانوادگی صاحب محصول</span>
-            <input type="text" id="po_lastname" name="product_owner_lastname"/>
-         </label>
-      </div>
-         <div class="col-6">
-         <label for="po_name">
-            <span >نام صاحب محصول</span>
-            <input  type="text" id="po_name" name="product_owner_name"/>
-         </label>
-      </div>
-
-      <div class="col-6">
-         <label for="Aviculture_name">
-            <span >نام مرغداری</span>
-            <input type="text" id="Aviculture_name" name="Avicultureـname"/>
-         </label>
-      </div>
-
-      <div class="col-6">
-         <label for="Aviculture_city">
-            <span >استان مرغداری</span>
-            <input type="text" id="Aviculture_city" name="Avicultureـcity"/>
-         </label>
-      </div>
-
 
        <div class="col-12 mt-5">
          <p class="partition" style="background-color: lavender;
@@ -109,49 +24,116 @@
           text-align: right;
           padding-right: 10px;
           padding: 5px;
-          color: black;">باسکول زنده</p>
-       </div>
-       <div class="col-6">
+          color: black;">ماشین را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table2" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام و نام خانوادگی راننده</th>
+                          <th data-field="salary" data-sortable="true">شماره پلاک ماشین</th>
+                          <th data-field="country" data-sortable="true">نام و نام خانوادگی صاحب محصول</th>
+                          <th>وزن سفارش</th>
+                          <th>نوع محصول</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
+                          <th>مرجوع</th>
+
+                        </thead>
+
+                        {% for slaughter in lwb_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="lwb_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
+
+                                  <td style="border-bottom:0px; text-align: right; " dir="rtl">
+                                    <span style="border-bottom:0px; text-align: right; " dir="rtl">{{ slaughter.car.car_number4 }}</span>
+                                    <span style="border-bottom:0px; text-align: right; " dir="rtl">{{ slaughter.car.car_number3 }}</span>
+                                    <span style="border-bottom:0px; text-align: right; " dir="rtl">{{ slaughter.car.car_number2 }}</span>
+                                    <span style="border-bottom:0px; text-align: right; " dir="rtl">{{ slaughter.car.car_number1 }}</span>
+                                  </td>
+
+
+                                <td style="border-bottom:0px;" >{{ slaughter.product_owner.name }} {{ slaughter.product_owner.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.order_weight }}</td>
+
+                                  {% if slaughter.product_category == 'C' %}
+                                    <td style="border-bottom:0px;">مرغ</td>
+                                  {% elif slaughter.product_category == 'T' %}
+                                    <td style="border-bottom:0px;">بوقلمون</td>
+                                  {% elif slaughter.product_category == 'Q' %}
+                                    <td style="border-bottom:0px;">بلدرچین</td>
+                                  {% else %}
+                                    <td style="border-bottom:0px;">-</td>
+                                  {% endif %}
+
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـname }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـcity }}</td>
+
+                                <td>
+                                    <form action="{% url 'Reject' %}" method="post">
+                                        {% csrf_token %}
+                                    <input type="hidden" name="lwb_id" value="{{ slaughter.live_weighbridge_id }}">
+                                    <input type="submit" value="عدم ارجاع">
+                                    </form>
+                                </td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+
+    </div>
+
+
+
+
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">اطلاعات زیر را وارد کنید</p>
+      </div>
+
+        <div class="col-4">
          <label for="car_weight">
-            <span >وزن ماشین با محصول</span>
+            <span >وزن ماشین</span>
             <input type="text" id="car_weight" name="car_weight"/>
          </label>
-       </div>
-       <div class="col-6">
-         <label for="car_weight">
-            <span > وزن ماشین بدون محصول</span>
-            <input type="text" id="car_empty weight" name="car_empty_weight"/>
+      </div>
+
+        <div class="col-4">
+         <label for="cage_num">
+            <span >تعداد قفس</span>
+            <input type="text" id="cage_num" name="cage_num"/>
          </label>
-       </div>
-       <div class="col-12">
-         <label for="buy_price">
-            <span >قیمت خرید محصول</span>
-            <input  type="number" id="buy_price" name="buy_price"/>
+      </div>
+
+        <div class="col-4">
+         <label for="product_num_in_cage">
+            <span >تعداد در قفس </span>
+            <input type="text" id="product_num_in_cage" name="product_num_in_cage"/>
          </label>
-       </div>
-       <div class="col-4 mt-3">
-         <label for="chicken">
-            <span >مرغ</span>
-            <input  type="radio" id="chicken" name="product_category" value="C"/>
-         </label>
-       </div>
-        <div class="col-4 mt-3">
-         <label for="turkey">
-            <span >بوقلمون</span>
-            <input type="radio" id="turkey" name="product_category" value="T"/>
-         </label>
-       </div>
-       <div class="col-4 mt-3">
-         <label for="quail">
-            <span >بلدرچین</span>
-            <input  type="radio" id="quail" name="product_category" value="Q"/>
-         </label>
-       </div>
+      </div>
 
     </div>
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+ </div>
 
-    </div>
 
 </form>
 {% endblock %}

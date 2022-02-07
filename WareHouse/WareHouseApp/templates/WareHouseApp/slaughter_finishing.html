@@ -27,6 +27,9 @@
           color: black;">انتخاب کنید</p>
       </div>
 
+
+
+
         <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
 
                       <table id="fresh-table" class="table">
@@ -36,8 +39,6 @@
                           <th data-field="salary" data-sortable="true">شماره پلاک ماشین</th>
                           <th data-field="country" data-sortable="true">نام و نام خانوادگی صاحب محصول</th>
                           <th>وزن ماشین با محصول ( کیلوگرم)</th>
-                          <th>وزن ماشین (کیلوگرم)</th>
-                          <th>قیمت خرید</th>
                           <th>نوع محصول</th>
                           <th>نام مرغداری</th>
                           <th>استان مرغداری</th>
@@ -53,11 +54,16 @@
                                     </div>
                                 </td>
                                 <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
-                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.car_number }}</td>
-                                <td style="border-bottom:0px;" >{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}</td>
+                                <td style="text-align: right; " dir="rtl" >
+
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number4 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number3 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number2 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number1 }}</span>
+
+                                </td>
+                                <td style="border-bottom:0px;" >{{ slaughter.product_owner.name }} {{ slaughter.product_owner.last_name }}</td>
                                 <td style="border-bottom:0px;" >{{ slaughter.final_weight }}</td>
-                                <td style="border-bottom:0px;" >{{ slaughter.car_weight }}</td>
-                                <td style="border-bottom:0px;" >{{ slaughter.buy_price }} </td>
 
                                   {% if slaughter.product_category == 'C' %}
                                     <td style="border-bottom:0px;">مرغ</td>

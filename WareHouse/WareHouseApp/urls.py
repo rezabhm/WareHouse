@@ -115,6 +115,13 @@ urlpatterns = [
     re_path(r'^user/(?P<username>[\w]+)/$', views.user_profile, name='User_Profile'),
 
     # live WeighBridge
+    re_path(r'^live_WeighBridge/ordering/form/$', views.lwb_order_form, name='Live_WeighBridge_Order_Form'),
+    re_path(r'^live_WeighBridge/ordering/$', views.lwb_order, name='Live_WeighBridge_Order'),
+    re_path(r'^live_WeighBridge/reject/$', views.lwb_reject, name='Reject'),
+    re_path(r'^live_WeighBridge/driver/create/lwb/$', views.lwb_driver, name='Driver_Create_LWB'),
+    re_path(r'^live_WeighBridge/Car/create/lwb/$', views.lwb_car, name='Car_Create_LWB'),
+    re_path(r'^live_WeighBridge/PO/create/lwb/$', views.lwb_product_owner, name='Product_Owner_Create_LWB'),
+    re_path(r'^live_WeighBridge/Aviculture/create/lwb/$', views.lwb_aviculture, name='Aviculture_Create_LWB'),
     re_path(r'^live_WeighBridge/create/form/$', views.lwb_create_form, name='Live_WeighBridge_Create_Form'),
     re_path(r'^live_WeighBridge/create/$', views.lwb_create, name='Live_WeighBridge_Create'),
     re_path(r'^slaughter/start/form/$', views.lwb_start_slaughter_form, name='Start_Slaughter_Form'),

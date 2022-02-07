@@ -1,0 +1,409 @@
+ {% extends 'WareHouseApp/main.html' %}
+
+ {% load static %}
+
+ {% block title%}
+ <h2>ثبت سفارش</h2>
+ {% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Live_WeighBridge_Order' %}" method="post" >
+
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+
+
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">راننده را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام راننده</th>
+                          <th data-field="salary" data-sortable="true">نام خانوادگی راننده</th>
+                          <th data-field="country" data-sortable="true">شماره تلفن راننده</th>
+                        </thead>
+
+                        {% for driver in driver_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="driver_id" value="{{ driver.driver_id}}" id="{{ driver.driver_id }}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ driver.name }}</td>
+                                <td style="border-bottom:0px;" >{{ driver.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ driver.phone_number }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+        </div>
+
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">ماشین را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table2" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">شماره پلاک ماشین</th>
+                          <th data-field="salary" data-sortable="true">نوع ماشین</th>
+                        </thead>
+
+                        {% for car in car_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="car_id" value="{{ car.car_id}}" id="{{ car.car_id }}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >
+                                    <span style="text-align: right; " dir="rtl">{{ car.car_number1 }}</span>
+                                    <span style="text-align: right; " dir="rtl">-{{ car.car_number2 }}-</span>
+                                    <span style="text-align: right; " dir="rtl">{{ car.car_number3 }}-</span>
+                                    <span style="text-align: right; " dir="rtl">{{ car.car_number4 }}</span>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ car.car_type }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">صاحب محصول را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table3" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام صاحب محصول</th>
+                          <th data-field="salary" data-sortable="true">نام خانوادگی صاحب محصول</th>
+                        </thead>
+
+                        {% for po in po_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="po_id" value="{{ po.product_owner_id}}" id="{{ po.product_owner_id }}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ po.name }}</td>
+                                <td style="border-bottom:0px;" >{{ po.last_name }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">مرغداری را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table4" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام مرغداری</th>
+                          <th data-field="salary" data-sortable="true">استان مرغداری</th>
+                        </thead>
+
+                        {% for avc in avc_list %}
+                        <label>
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="avc_id" value="{{ avc.aviculture_id }}" id="{{ avc.aviculture_id }}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ avc.name }}</td>
+                                <td style="border-bottom:0px;" >{{ avc.source }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+
+       <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">باسکول زنده</p>
+       </div>
+       <div class="col-6">
+         <label for="car_weight">
+            <span >وزن سفارش</span>
+            <input type="text" id="car_weight" name="product_weight"/>
+         </label>
+       </div>
+
+       <div class="col-6">
+         <label for="buy_price">
+            <span >قیمت خرید محصول</span>
+            <input  type="number" id="buy_price" name="buy_price"/>
+         </label>
+       </div>
+       <div class="col-4 mt-3">
+         <label for="chicken">
+            <span >مرغ</span>
+            <input  type="radio" id="chicken" name="product_category" value="C"/>
+         </label>
+       </div>
+        <div class="col-4 mt-3">
+         <label for="turkey">
+            <span >بوقلمون</span>
+            <input type="radio" id="turkey" name="product_category" value="T"/>
+         </label>
+       </div>
+       <div class="col-4 mt-3">
+         <label for="quail">
+            <span >بلدرچین</span>
+            <input  type="radio" id="quail" name="product_category" value="Q"/>
+         </label>
+       </div>
+
+    </div>
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+
+    </div>
+
+</form>
+
+<form action="{% url 'Driver_Create_LWB' %}" method="post" >
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+
+      <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">راننده</p>
+      </div>
+
+        <div class="col-6">
+         <label for="driver_last_name">
+            <span >نام خانوادگی راننده</span>
+            <input type="text" id="driver_last_name" name="driver_last_name"/>
+         </label>
+      </div>
+        <div class="col-6">
+         <label for="driver_name">
+        <span >نام راننده</span>
+        <input type="text" id="driver_name" name="driver_name" />
+      </label>
+      </div>
+         <div class="col-6 offset-6">
+         <label for="driver_phone_number">
+            <span >شماره تلفن راننده</span>
+            <input  type="text" id="driver_phone_number" name="driver_phone_number"/>
+         </label>
+      </div>
+
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+
+
+    </div>
+    </div>
+</form>
+
+<form action="{% url 'Car_Create_LWB' %}" method="post" >
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+
+        <div class="col-12 mt-5" >
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">شماره پلاک ماشین</p>
+      </div>
+        <div class="col-2 offset-3">
+         <label for="car_number1">
+            <input  type="number" id="car_number1" name="car_number1" dir="rtl"/>
+         </label>
+      </div>
+
+        <div class="col-1 offset-0">
+         <label for="car_number2">
+            <input  type="text" id="car_number2" name="car_number2" dir="rtl"/>
+         </label>
+      </div>
+
+        <div class="col-3 offset-0">
+         <label for="car_number3">
+            <input  type="number" id="car_number3" name="car_number3" dir="rtl"/>
+         </label>
+      </div>
+
+        <div class="col-2 offset-0">
+         <label for="car_number4">
+            <input  type="number" id="car_number4" name="car_number4" dir="rtl"/>
+         </label>
+      </div>
+
+        <div class="col-12">
+         <label for="car_weight">
+            <span >نوع ماشین</span>
+            <input type="text" id="car_type" name="car_type"/>
+         </label>
+       </div>
+
+
+
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+    </div>
+    </div>
+
+</form>
+
+<form action="{% url 'Product_Owner_Create_LWB' %}" method="post" >
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+
+         <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">صاحب بار</p>
+      </div>
+      <div class="col-6">
+         <label for="po_lastname">
+            <span >نام خانوادگی صاحب محصول</span>
+            <input type="text" id="po_lastname" name="product_owner_lastname"/>
+         </label>
+      </div>
+         <div class="col-6">
+         <label for="po_name">
+            <span >نام صاحب محصول</span>
+            <input  type="text" id="po_name" name="product_owner_name"/>
+         </label>
+      </div>
+
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+    </div>
+    </div>
+
+</form>
+
+
+<form action="{% url 'Aviculture_Create_LWB' %}" method="post" >
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+         <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">مرغداری</p>
+      </div>
+      <div class="col-6">
+         <label for="Aviculture_name">
+            <span >نام مرغداری</span>
+            <input type="text" id="Aviculture_name" name="Avicultureـname"/>
+         </label>
+      </div>
+
+      <div class="col-6">
+         <label for="Aviculture_city">
+            <span >استان مرغداری</span>
+            <input type="text" id="Aviculture_city" name="Avicultureـcity"/>
+         </label>
+      </div>
+
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+    </div>
+    </div>
+</form>
+{% endblock %}
