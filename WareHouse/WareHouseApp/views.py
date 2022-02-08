@@ -1163,13 +1163,11 @@ def first_weightlifting(requests):
             # get data
             lwb_id = requests.POST['lwb_id']
             weight = requests.POST['weight']
-            product_category = requests.POST['product_category']
             sales_category = requests.POST['sales_category']
 
             # create first_weightlifting objects
             fwl = models.FirstWeightLifting()
             fwl.weight = weight
-            fwl.product_category = product_category
             fwl.sales_category = sales_category
             fwl.weight_lifting_id = str(uuid1().int)
 
@@ -1179,6 +1177,8 @@ def first_weightlifting(requests):
 
             if len(first_weightlifting_user_list) > 0:
                 fwl.Weight_Lifting_Manager = first_weightlifting_user_list[0]
+
+            fwl.product_category = lwb_list.product_category
 
             # save objects
             fwl.save()

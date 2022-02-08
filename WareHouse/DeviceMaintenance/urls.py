@@ -1,5 +1,7 @@
 from django.urls import re_path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 My_app = 'DeviceMaintenance'
 
@@ -24,4 +26,4 @@ urlpatterns = [
 
     re_path(r'filter/', views.task_filter, name='Filter'),
 
-]
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

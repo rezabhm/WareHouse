@@ -1,6 +1,8 @@
 from django.urls import re_path
 from . import views
 from django.contrib.auth.views import LogoutView
+from django.conf.urls.static import static
+from django.conf import settings
 
 My_app = 'WareHouseApp'
 
@@ -185,4 +187,4 @@ urlpatterns = [
 
     re_path(r'ch/filter/$', views.ch_filter, name='CH_Filter'),
 
-]
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
