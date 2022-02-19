@@ -34,7 +34,6 @@
                         <thead>
                           <th>انتخاب کنید</th>
                           <th data-field="name" data-sortable="true">وزن محصول</th>
-                          <th data-field="salary" data-sortable="true">آیدی پالت </th>
                           <th data-field="country" data-sortable="true">آیدی تونل انجماد</th>
                           <th data-field="country" data-sortable="true">تعداد جعبه</th>
                           <th data-field="country" data-sortable="true">نوع محصول</th>
@@ -51,19 +50,43 @@
                                 </td>
 
                                 <td>{{ ft.weight }}</td>
-                                <td>{{ ft.pallet_id }}</td>
                                 <td>{{ ft.tunnel_id }}</td>
                                 <td>{{ ft.box_num }}</td>
 
-                              {% if ft.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >مرغ</td>
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if ft.product_category == 'C' %}
+                                مرغ
                               {% elif ft.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >بوقلمون</td>
+                                بوقلمون
                               {% elif ft.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >بلدرچین</td>
+                                بلدرچین
                               {% else %}
-                                <td style="border-bottom:0px;" >-</td>
+                                -
                               {% endif %}
+
+                                {% if ft.sub_product_category == 'W' %}
+                                    بال
+                                {% elif ft.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif ft.sub_product_category == 'E' %}
+                                    پا
+                                {% elif ft.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif ft.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif ft.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif ft.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif ft.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif ft.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+                                  </td>
 
                               </tr>
                             </tbody>
@@ -71,8 +94,40 @@
                           {% endfor %}
                       </table>
              </div>
+
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;"> انتخاب کنید</p>
+             </div>
+
+            <div class="col-6 mt-3">
+             <label for="dist">
+                <span >فروش گرم</span>
+                <input type="radio" name="exit_category" id="dist" value="D"/>
+             </label>
             </div>
+
+             <div class="col-6 mt-3">
+             <label for="ft">
+                <span >نگهداری</span>
+                <input type="radio" name="exit_category" id="ft" value="C"/>
+             </label>
+            </div>
+            </div>
+
+
+
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+            </div>
+
         </div>
         </div>
     </div>

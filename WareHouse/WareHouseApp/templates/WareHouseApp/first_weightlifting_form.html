@@ -35,12 +35,7 @@
                           <th>نام و نام خانوادگی راننده</th>
                           <th>شماره پلاک ماشین</th>
                           <th>نام و نام خانوادگی صاحب محصول</th>
-                          <th>وزن ماشین با محصول (کیلوگرم)</th>
-                          <th>وزن ماشین بدون محصول ( کیلوگرم)</th>
-                          <th>قیمت خرید</th>
                           <th>نوع محصول</th>
-                          <th>نام مرغداری</th>
-                          <th>استان مرغداری</th>
 
                         </thead>
 
@@ -54,11 +49,18 @@
                                     </div>
                                 </td>
                                 <td style="border-bottom:0px;" >{{ lwb.driver.name }} {{ lwb.driver.last_name }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.driver.car.car_number }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.final_weight }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.car_weight }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.buy_price }}</td>
+
+                                  <td style="text-align: center; " dir="rtl" >
+
+                                    <span style="text-align: center; " dir="rtl">{{ lwb.car.car_number4 }}--</span>
+                                    <span style="text-align: center; " dir="rtl">{{ lwb.car.car_number3 }}-</span>
+                                    <span style="text-align: center; " dir="rtl">{{ lwb.car.car_number2 }}-</span>
+                                    <span style="text-align: center; " dir="rtl">{{ lwb.car.car_number1 }}</span>
+
+                                </td>
+
+
+                                <td style="border-bottom:0px;" >{{ lwb.product_owner.name }} {{ lwb.product_owner.last_name }}</td>
 
                                 {% if lwb.product_category == 'C' %}
                                 <td style="border-bottom:0px;" >مرغ</td>
@@ -69,9 +71,6 @@
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
-
-                                <td style="border-bottom:0px;" >{{ lwb.avicultureـname }}</td>
-                                <td style="border-bottom:0px;" >{{ lwb.avicultureـcity }}</td>
 
                               </tr>
                             </tbody>
@@ -130,7 +129,6 @@
              </div>
             </label>
             {% endfor %}-->
-
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
@@ -140,13 +138,13 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">وزن</p>
+                  color: black;">کد جعبه</p>
              </div>
 
-           <div class="col-6 offset-6">
-             <label for="weight">
-                <span >وزن محصول</span>
-                <input type="text" id="weight" name="weight"/>
+           <div class="col-1 offset-10">
+             <label for="code">
+                <span >کد جعبه : {{code}}</span>
+                <input type="hidden" id="code" name="code" value="{{code}}"/>
              </label>
            </div>
 
@@ -159,26 +157,38 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">انتخاب کنید</p>
+                  color: black;">اطلاعات را وارد کنید</p>
              </div>
-                 <div class="col-4 mt-3">
-             <label for="chicken">
-                    <span >مرغ</span>
-                    <input  type="radio" id="chicken" name="product_category" value="C"/>
-                 </label>
-             </div>
-             <div class="col-4 mt-3">
-             <label for="turkey">
-                    <span >بوقلمون</span>
-                    <input type="radio" id="turkey" name="product_category" value="T"/>
-                 </label>
-            </div>
-            <div class="col-4 mt-3">
-             <label for="quail">
-                <span >بلدرچین</span>
-                <input  type="radio" id="quail" name="product_category" value="Q"/>
+
+           <div class="col-4 offset-1">
+             <label for="class">
+                <span >آیا محصول درجه دو است ؟</span>
+                <input type="checkbox" id="class" name="product_class"/>
              </label>
-            </div>
+           </div>
+
+
+           <div class="col-4 offset-3">
+             <label for="box_num">
+                <span >تعداد جعبه</span>
+                <input type="number" id="box_num" name="box_num"/>
+             </label>
+           </div>
+
+           <div class="col-4 offset-1">
+             <label for="bike_id">
+                <span >وزن چرخ</span>
+                <input type="text" id="bike_id" name="bike_weight"/>
+             </label>
+           </div>
+
+           <div class="col-4 offset-3">
+             <label for="weight">
+                <span >وزن محصول</span>
+                <input type="text" id="weight" name="weight"/>
+             </label>
+           </div>
+
 
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
@@ -191,20 +201,25 @@
                   padding: 5px;
                   color: black;"> انتخاب کنید</p>
              </div>
-
-             <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
+             <label for="gate">
+                <span > قطعه بندی</span>
+                <input type="radio" name="sales_category" id="gate" value="G"/>
+             </label>
+            </div>
+             <div class="col-3 mt-3">
              <label for="precold">
                 <span >پیش سرد</span>
                 <input type="radio" name="sales_category" id="precold" value="P"/>
              </label>
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
              <label for="dist">
                 <span >فروش گرم</span>
                 <input type="radio" name="sales_category" id="dist" value="D"/>
              </label>
             </div>
-             <div class="col-4 mt-3">
+             <div class="col-3 mt-3">
              <label for="ft">
                 <span >تونل انجماد</span>
                 <input type="radio" name="sales_category" id="ft" value="F"/>

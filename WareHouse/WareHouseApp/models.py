@@ -441,6 +441,7 @@ class LiveWeighbridge(models.Model):
 
     # weighting date
     weighting_date = models.FloatField(default=time.time(), null=True)
+    weighting_date_format = models.CharField(default=time.ctime(time.time()), max_length=30, null=True)
 
     # product category
     type_of_lwb = (('O', "Order"),
@@ -466,9 +467,11 @@ class LiveWeighbridge(models.Model):
 
     # slaughting start time
     slaughter_start_date = models.FloatField(null=True)
+    slaughter_start_date_format = models.CharField(max_length=30, null=True)
 
     # slaughting finish time
     slaughter_finish_date = models.FloatField(null=True)
+    slaughter_finish_date_format = models.CharField(null=True, max_length=30)
 
     # buying price
     buy_price = models.IntegerField(null=True)
@@ -515,13 +518,21 @@ class FirstWeightLifting(models.Model):
         2. WeightLiftingManager ==> Foreign Key
     """
 
-    choise_status = models.BooleanField(default=False)
+    choice_status = models.BooleanField(default=False)
 
     # weighting time
     weighting_time = models.FloatField(default=time.time())
+    weighting_time_format = models.CharField(default=time.ctime(time.time()), max_length=30)
 
     # weight
     weight = models.FloatField()
+
+    # class 1 or 2
+    # if is class 1 it must equal True
+    class_product = models.BooleanField(default=True)
+
+    # determine code
+    code = models.CharField(max_length=5, default='1')
 
     # product category
     type_of_gender = (('C', "chicken"),
@@ -538,6 +549,7 @@ class FirstWeightLifting(models.Model):
         ('P', 'pre-cold'),
         ('D', 'distribute'),
         ('F', 'freezing tunnel'),
+        ('G', 'gate_bandi'),
     )
     sales_category = models.CharField(max_length=1, choices=sale_cat)
 
@@ -577,37 +589,63 @@ class PreCold(models.Model):
 
     # entry time
     entry_time = models.FloatField(default=time.time())
+    entry_time_format = models.CharField(default=time.ctime(time.time()), max_length=30)
 
     # exit time
     exit_time = models.FloatField(null=True)
-
-    # number of box
-    box_num = models.IntegerField(default=1)
-
-    # weight
-    weight = models.FloatField()
-
-    # product category
-    type_of_gender = (('C', "chicken"),
-                      ('T', "turkey"),
-                      ('Q', "quail"))
-    product_category = models.CharField(max_length=1, choices=type_of_gender)
+    exit_time_format = models.CharField(null=True, max_length=30)
 
     # pre-cold id
-    pre_cold_id = models.IntegerField()
-
-    # pallet id
-    pallet_id = models.CharField(max_length=25, null=True)
+    pre_cold_id = models.CharField(max_length=20)
 
     # product in pre-cold status
     product_pre_cold_status = models.BooleanField(default=True)
+
+    # box number
+    box_num = models.IntegerField(default=1)
+
+    out_category_list = (
+
+        ('D', 'distribute'),
+        ('F', 'freezing_tunnel'),
+        ('G', 'gate_bandi'),
+
+    )
+    out_category = models.CharField(max_length=1, default='G', choices=out_category_list)
+
+    # verify exit
+    # this param determine exit format
+    out_status = models.BooleanField(default=False)
 
     # relation
     First_Weight_Lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
     PreCold_Manager = models.ForeignKey(PreColdManager, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return str(self.weight) + ' ' + str(self.entry_time)
+        return str(self.pc_id) + ' ' + str(self.entry_time_format)
+
+
+class DistributedRoot(models.Model):
+
+    # object id
+    dist_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
+    # car weight with product and without product
+    empty_weight = models.FloatField(null=True)
+    full_weight = models.FloatField(null=True)
+
+    # destination
+    destination = models.CharField(max_length=150, null=True)
+
+    # determine product loading finish or not
+    finish_loading = models.BooleanField(default=False)
+
+    # relation
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.dist_id)
 
 
 class Distributed(models.Model):
@@ -634,18 +672,13 @@ class Distributed(models.Model):
 
     # date of weighting
     date = models.FloatField(default=time.time())
+    date_format = models.CharField(default=time.ctime(time.time()), max_length=30)
 
     # weight of product
     weight = models.FloatField()
 
     # product price
-    sale_price = models.IntegerField()
-
-    # product category
-    type_of_gender = (('C', "chicken"),
-                      ('T', "turkey"),
-                      ('Q', "quail"))
-    product_category = models.CharField(choices=type_of_gender, max_length=1)
+    sale_price = models.FloatField()
 
     # bill of lading
     bill_of_lading = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
@@ -653,10 +686,26 @@ class Distributed(models.Model):
     # number of box
     number_of_box = models.IntegerField(null=True)
 
+    # for determine input product
+    sales_input_category_list = (
+
+        ('G', 'Gate-bandi'),
+        ('F', 'First-weight-lifting'),
+        ('T', 'Freeze-tunnel'),
+        ('C', 'Cold-House'),
+
+    )
+    sales_input_category = models.CharField(max_length=1, choices=sales_input_category_list, default='F')
+    sales_input_id = models.CharField(max_length=200, default=str(uuid1().int))
+
     # relation
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
+    # first_weight_lifting = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
+    # freeze_tunnel = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
+    # cold_house = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
+    # first_weight_lifting = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
+
     sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True)
+    distribute_root = models.ForeignKey(DistributedRoot, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)
@@ -690,13 +739,33 @@ class FreezingTunnel(models.Model):
 
     # exit and entry date
     entry_date = models.FloatField(default=time.time())
+    entry_date_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
     exit_date = models.FloatField(null=True)
+    exit_date_format = models.CharField(default=time.ctime(time.time()), max_length=50, null=True)
 
     # product category
     type_of_gender = (('C', "chicken"),
                       ('T', "turkey"),
                       ('Q', "quail"))
     product_category = models.CharField(choices=type_of_gender, max_length=1)
+
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
 
     # weight of product
     weight = models.FloatField()
@@ -705,16 +774,37 @@ class FreezingTunnel(models.Model):
     box_num = models.IntegerField(default=1)
 
     # tunnel id that product freeze in it
-    tunnel_id = models.IntegerField()
+    tunnel_id = models.CharField(max_length=10)
 
-    # pallet id that include product
-    pallet_id = models.CharField(max_length=15, null=True)
+    # out category
+    output_cat = (
+
+        ('D', 'distribute'),
+        ('C', 'cold-house'),
+
+    )
+
+    output_category = models.CharField(max_length=1, choices=output_cat, default='C', null=True)
+
+    # determine object selected for output or not
+    choice_status = models.BooleanField(default=False)
 
     # this param determine that product is in the tunnel or not if equal True it means still in the tunnel
     status = models.BooleanField(default=True, verbose_name="آیا خارج شده یا نه")
 
+    # input category
+    input_cat = (
+
+        ('F', 'First Weight-Lifting'),
+        ('G', 'Gate Bandi'),
+
+    )
+    input_type = models.CharField(max_length=1, choices=input_cat, default='F')
+
+    # this param save input object id for find that object
+    input_id = models.CharField(max_length=200, default=str(uuid1().int))
+
     # relation
-    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.CASCADE)
     freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
@@ -744,16 +834,56 @@ class ColdHouse(models.Model):
 
     """
 
+    # id for cold house object (primary_key)
+    cold_house_primary_key = models.CharField(default=str(uuid1().int), max_length=150)
+
     # entry and exit time
     entry_date = models.FloatField(default=time.time())
+    entry_date_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
     exit_date = models.FloatField(null=True)
+    exit_date_format = models.CharField(default=time.ctime(time.time()), null=True, max_length=50)
 
     # determine pallet is in coldHouse or not
     pallet_status = models.BooleanField(default=True)
 
     # pallet weight
-    total_pallet_weight = models.FloatField()
-    pallet_weight_without_product = models.FloatField(null=True)
+    weight = models.FloatField()
+
+    # out category
+    output_cat = (
+
+        ('D', 'distribute'),
+        ('T', 'trash'),
+
+    )
+
+    output_category = models.CharField(max_length=1, choices=output_cat, default='D')
+
+    choice_status = models.BooleanField(default=False)
+
+    # product category
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
+    product_category = models.CharField(choices=type_of_gender, max_length=1, default='C')
+
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
 
     # number of paper box that exist in pallet
     number_of_box = models.IntegerField()
@@ -763,6 +893,7 @@ class ColdHouse(models.Model):
     cold_house_id = models.IntegerField()
 
     # relation
+    freeze_tunnel = models.OneToOneField(FreezingTunnel, on_delete=models.PROTECT, null=True)
     freezing_tunnel_manager = models.ForeignKey(FreezingTunnelManager, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
@@ -820,11 +951,12 @@ class PaperBox(models.Model):
 
     box_cold_house_exp = models.BooleanField(default=False)
 
-    # number of product in box
-    number_of_product = models.IntegerField()
-
     # packing time
     packing_time = models.FloatField(default=time.time())
+    packing_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
+    exit_time = models.FloatField(default=time.time(), null=True)
+    exit_time_format = models.CharField(max_length=50, null=True)
 
     # Expiration time
     expiration_time = models.IntegerField(default=30)

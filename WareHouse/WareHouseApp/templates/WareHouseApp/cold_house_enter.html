@@ -34,79 +34,61 @@
                       <table id="fresh-table" class="table" >
                         <thead>
                           <th>انتخاب کنید</th>
-                            <th>وزن محصول</th>
-                            <th>تعداد روز باقی مانده تا انقضا</th>
-                            <th>آیا تاریخ انقضای محصول گذشته است ؟</th>
-                            <th>تعداد محصول</th>
-                            <th>آیدی جعبه</th>
+                            <th>وزن خالص</th>
+                            <th>آیدی تونل انجاد</th>
                             <th>نوع محصول</th>
-                            <th>نوع محصول بسته بندی شده</th>
 
                         </thead>
 
-                        {% for paper_box in paper_box_list %}
-                        <label for="{{ paper_box.0.box_id }}">
+                        {% for ft in ft_list %}
+                        <label for="{{ ft.freeze_tunnel_id }}">
                             <tbody>
                               <tr>
                                 <td>
                                     <div class="checkbox">
-                                         <label style="margin:0px;"><input type="radio" value="{{ paper_box.0.box_id }}" name="{{ paper_box.0.box_id }}" id="{{ paper_box.0.box_id }}"></label>
+                                         <label style="margin:0px;"><input type="radio" value="{{ ft.freeze_tunnel_id }}" name="ft_id" id="{{ ft.freeze_tunnel_id }}"></label>
                                     </div>
                                 </td>
 
-                                  <td>{{ paper_box.0.paper_box_weight  }}</td>
-                                  <td> {{ paper_box.1 }}</td>
-
-                                  {% if paper_box.2 == True %}
-                                  <td>خیر</td>
-                                  {% else %}
-                                  <td>بله</td>
-                                  {% endif %}
-
-                                  <td>{{ paper_box.0.number_of_product  }}</td>
-                                  <td>{{ paper_box.0.box_id }}</td>
+                                  <td>{{ ft.weight  }}</td>
+                                  <td> {{ ft.tunnel_id }}</td>
 
 
-                            {% if paper_box.0.product_category == 'C' %}
-                                <td style="border-bottom:0px;" >مرغ</td>
-                              {% elif paper_box.0.product_category == 'T' %}
-                                <td style="border-bottom:0px;" >بوقلمون</td>
-                              {% elif paper_box.0.product_category == 'Q' %}
-                                <td style="border-bottom:0px;" >بلدرچین</td>
+
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if ft.product_category == 'C' %}
+                                مرغ
+                              {% elif ft.product_category == 'T' %}
+                                بوقلمون
+                              {% elif ft.product_category == 'Q' %}
+                                بلدرچین
                               {% else %}
-                                <td style="border-bottom:0px;" >-</td>
+                                -
                               {% endif %}
 
+                                {% if ft.sub_product_category == 'W' %}
+                                    بال
+                                {% elif ft.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif ft.sub_product_category == 'E' %}
+                                    پا
+                                {% elif ft.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif ft.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif ft.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif ft.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif ft.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif ft.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
 
-
-                            {% if paper_box.0.sub_product_category == 'W' %}
-                                <td style="border-bottom:0px;" >بال</td>
-
-                            {% elif paper_box.0.sub_product_category == 'N' %}
-                                <td style="border-bottom:0px;" >گردن</td>
-
-                            {% elif paper_box.0.sub_product_category == 'E' %}
-                                <td style="border-bottom:0px;" >پا</td>
-
-                            {% elif paper_box.0.sub_product_category == 'H' %}
-                                <td style="border-bottom:0px;" >قلب</td>
-
-                            {% elif paper_box.0.sub_product_category == 'L' %}
-                                <td style="border-bottom:0px;" >جگر</td>
-
-                            {% elif paper_box.0.sub_product_category == 'K' %}
-                                <td style="border-bottom:0px;" >قلوه</td>
-
-                            {% elif paper_box.0.sub_product_category == 'S' %}
-                                <td style="border-bottom:0px;" >سنگدان</td>
-
-                            {% elif paper_box.0.sub_product_category == 'B' %}
-                                <td style="border-bottom:0px;" >درسته</td>
-
-                            {% else %}
-                                <td style="border-bottom:0px;" >بقیه</td>
-
-                            {% endif %}
+                                  </td>
 
                               </tr>
                             </tbody>
@@ -117,34 +99,41 @@
 
            <div class="col-6">
              <label for="pallet_weight_with_product">
-                <span >وزن پالت با محصول</span>
+                <span >وزن پر چرخ</span>
                 <input type="text" id="pallet_weight_with_product" name="pallet_weight_with_product"/>
              </label>
            </div>
            <div class="col-6">
              <label for="pallet_weight_without_product">
-                <span >وزن پالت بدون محصول </span>
+                <span >وزن خالی چرخ </span>
                 <input type="text" id="pallet_weight_without_product" name="pallet_weight_without_product"/>
              </label>
            </div>
            <div class="col-6">
              <label for="number_of_box">
-                <span >آیدی سردخانه</span>
-                <input type="text" id="number_of_box" name="number_of_box"/>
+                <span >آیدی نگهداری</span>
+                <input type="text" id="number_of_box" name="cold_house_id"/>
              </label>
            </div>
            <div class="col-6 ">
              <label for="cold_house_id">
-                <span >تعداد جعبه</span>
-                <input type="text" id="cold_house_id" name="cold_house_id"/>
+                <span >تعداد کارتن</span>
+                <input type="number" id="cold_house_id" name="number_of_box"/>
              </label>
            </div>
-           <div class="col-6 offset-6">
+           <div class="col-6 ">
              <label for="pallet_id">
                 <span >آیدی پالت</span>
                 <input type="text" id="pallet_id" name="pallet_id"/>
              </label>
            </div>
+           <div class="col-6 ">
+             <label for="expiration_time">
+                <span >تاریخ انقضا</span>
+                <input type="text" id="expiration_time" name="expiration_time"/>
+             </label>
+           </div>
+
             </div>
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>

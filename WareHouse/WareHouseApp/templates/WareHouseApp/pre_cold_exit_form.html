@@ -28,11 +28,11 @@
              </div>
              <div class="fresh-table full-color-blue badge filter badge-blue" >
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table" class="table" style="    overflow: scroll;">
                         <thead>
                           <th style="text-align: center;">انتخاب کنید</th>
-                          <th>وزن محصول</th>
-                          <th>آیدی پالت</th>
+                          <th>کد محصول</th>
+                          <th>وزن خالص</th>
                           <th>آیدی پیش سرد</th>
                           <th>نوع محصول</th>
                           <th>تعداد جعبه</th>
@@ -48,15 +48,16 @@
                                          <label style="margin:0px"><input type="radio" name="pc_id" value="{{ pc.pc_id }}" id="{{ pc.pc_id }}"></label>
                                     </div>
                                 </td>
-                                <td>{{ pc.weight }}</td>
-                                <td>{{ pc.pre_cold_id }}</td>
-                                <td>{{ pc.pallet_id }}</td>
+                                <td>{{ pc.First_Weight_Lifting.code }}</td>
 
-                                {% if pc.product_category == 'C' %}
+                                <td>{{ pc.First_Weight_Lifting.weight }}</td>
+                                <td>{{ pc.pre_cold_id }}</td>
+
+                                {% if pc.First_Weight_Lifting.product_category == 'C' %}
                                 <td style="border-bottom:0px;" >مرغ</td>
-                              {% elif pc.product_category == 'T' %}
+                              {% elif pc.First_Weight_Lifting.product_category == 'T' %}
                                 <td style="border-bottom:0px;" >بوقلمون</td>
-                              {% elif pc.product_category == 'Q' %}
+                              {% elif pc.First_Weight_Lifting.product_category == 'Q' %}
                                 <td style="border-bottom:0px;" >بلدرچین</td>
                               {% else %}
                                 <td style="border-bottom:0px;" >-</td>
@@ -109,6 +110,42 @@
              </div>
             </label>
             {% endfor %}-->
+
+
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;"> انتخاب کنید</p>
+             </div>
+            <div class="col-4 mt-3">
+             <label for="gate">
+                <span > قطعه بندی</span>
+                <input type="radio" name="exit_category" id="gate" value="G"/>
+             </label>
+            </div>
+
+            <div class="col-4 mt-3">
+             <label for="dist">
+                <span >فروش گرم</span>
+                <input type="radio" name="exit_category" id="dist" value="D"/>
+             </label>
+            </div>
+             <div class="col-4 mt-3">
+             <label for="ft">
+                <span >تونل انجماد</span>
+                <input type="radio" name="exit_category" id="ft" value="F"/>
+             </label>
+            </div>
+            </div>
+
+
              <div><button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button></div>
          </div>
     </div>

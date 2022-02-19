@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.template import loader, Context
 from django.views.decorators.csrf import csrf_exempt
@@ -9,6 +11,7 @@ from . import models
 import time
 from uuid import uuid1
 import datetime
+from .Data import information
 
 # Create your views here.
 
@@ -778,6 +781,8 @@ def lwb_create(requests):
             lwb_obj.cage_num = cage_num
             lwb_obj.product_num_in_cage = product_num_in_cage
             lwb_obj.final_weight = car_weight
+            lwb_obj.weighting_date = time.time() + information.time_dif
+            lwb_obj.weighting_date_format = time.ctime(time.time() + information.time_dif)
             lwb_obj.lwb_category = 'W'
 
             if len(lwb_user_list) > 0:
@@ -908,7 +913,8 @@ def lwb_start_slaughter(requests):
 
                 # change information
                 lwb_obj.slaughter_status = True
-                lwb_obj.slaughter_start_date = time.time()
+                lwb_obj.slaughter_start_date = time.time() + information.time_dif
+                lwb_obj.slaughter_start_date_format = time.ctime(time.time() + information.time_dif)
 
                 # save changes
                 lwb_obj.save()
@@ -949,7 +955,7 @@ def lwb_finish_slaughter_form(requests):
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True).filter(
                     weighting_date__gte=time.time() - (60 * 60 * 6)
-                ).filter(finish = False),
+                ).filter(finish=False),
 
                 'request': requests
 
@@ -994,7 +1000,8 @@ def lwb_finish_slaughter(requests):
                 # change information
                 lwb_obj.slaughter_status = False
                 lwb_obj.finish = True
-                lwb_obj.slaughter_finish_date = time.time()
+                lwb_obj.slaughter_finish_date = time.time() + information.time_dif
+                lwb_obj.slaughter_finish_date_format = time.ctime(time.time() + information.time_dif)
 
                 # save changes
                 lwb_obj.save()
@@ -1127,7 +1134,8 @@ def first_weightlifting_form(requests):
             context = {
 
                 'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True),
-                'request': requests
+                'request': requests,
+                'code': random.randint(1000, 9999)
 
             }
 
@@ -1162,14 +1170,34 @@ def first_weightlifting(requests):
 
             # get data
             lwb_id = requests.POST['lwb_id']
-            weight = requests.POST['weight']
+            weight = float(requests.POST['weight'])
             sales_category = requests.POST['sales_category']
+            bike_weight = float(requests.POST['bike_weight'])
+            box_num = float(requests.POST['box_num'])
+            code = str(requests.POST['code'])
+
+            try:
+                product_class = requests.POST['product_class']
+                product_class = False
+
+            except:
+                product_class = True
 
             # create first_weightlifting objects
             fwl = models.FirstWeightLifting()
-            fwl.weight = weight
+
+            # calculate box
+            box_weight = information.box_weight * box_num
+
+            weight = weight - (bike_weight + box_weight)
+
+            fwl.weight = str(weight)
             fwl.sales_category = sales_category
             fwl.weight_lifting_id = str(uuid1().int)
+            fwl.weighting_time = time.time() + information.time_dif
+            fwl.weighting_time_format = time.ctime(time.time() + information.time_dif)
+            fwl.code = str(code)
+            fwl.class_product = product_class
 
             # get lwb list
             lwb_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
@@ -1178,7 +1206,7 @@ def first_weightlifting(requests):
             if len(first_weightlifting_user_list) > 0:
                 fwl.Weight_Lifting_Manager = first_weightlifting_user_list[0]
 
-            fwl.product_category = lwb_list.product_category
+            fwl.product_category = lwb_list[0].product_category
 
             # save objects
             fwl.save()
@@ -1217,8 +1245,8 @@ def pre_cold_enter_form(requests):
             context = {
 
                 "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='P').filter(
-                    weighting_time__gte=time.time() - (60*60*5)
-                ).filter(choise_status=False),
+                    weighting_time__gte=time.time() - (60*60*10)
+                ).filter(choice_status=False),
                 'request': requests
 
             }
@@ -1253,29 +1281,25 @@ def pre_cold_enter(requests):
         if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
 
             # get data
-            weight = requests.POST['weight']
             fwl_id = requests.POST['fwl_id']
-            pc_id = int(requests.POST['pc_id'])
-            pallet_id = requests.POST['pallet_id']
-            box_num = requests.POST['box_num']
-            product_category = requests.POST['product_category']
+            pc_id = requests.POST['pc_id']
+            box_num = int(requests.POST['box_num'])
 
             # create pre-cold object
             pc = models.PreCold()
 
             # set param
-            pc.weight = weight
-            pc.product_category = product_category
-            pc.pallet_id = pallet_id
             pc.box_num = int(box_num)
             pc.pre_cold_id = pc_id
             pc.pc_id = str(uuid1().int)
+            pc.entry_time = time.time() + information.time_dif
+            pc.entry_time_format = time.ctime(time.time() + information.time_dif)
 
             # relation
             fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
             pc.First_Weight_Lifting = fwl_list[0]
             fwl_obj = fwl_list[0]
-            fwl_obj.choise_status = True
+            fwl_obj.choice_status = True
             fwl_obj.save()
 
             if len(first_pre_cold_user_list) > 0:
@@ -1353,6 +1377,7 @@ def pre_cold_exit(requests):
 
             # get request data
             pc_id = requests.POST['pc_id']
+            exit_category = requests.POST['exit_category']
 
             # get object list
             pc_list = models.PreCold.objects.all().filter(pc_id=pc_id)
@@ -1364,10 +1389,18 @@ def pre_cold_exit(requests):
 
                 # set param
                 pc_obj.product_pre_cold_status = False
-                pc_obj.exit_time = time.time()
+                pc_obj.exit_time = time.time() + information.time_dif
+                pc_obj.exit_time_format = time.ctime(time.time() + information.time_dif)
+                pc_obj.out_category = exit_category
+                pc_obj.First_Weight_Lifting.sales_category = exit_category
+                pc_obj.First_Weight_Lifting.choice_status = False
+
+                if exit_category == 'G':
+                    pc_obj.out_status = True
 
                 # save param
                 pc_obj.save()
+                pc_obj.First_Weight_Lifting.save()
 
                 return HttpResponseRedirect(reverse('first_WeightLifting'))
 
@@ -1407,11 +1440,20 @@ def distribute_form(requests):
 
             context = {
 
-                "driver_list": models.Driver.objects.all().filter(car__live_product=False),
+                "dist_root_list": models.DistributedRoot.objects.all().filter(finish_loading=False),
+
+
                 "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='D').filter(
-                    weighting_time__gte=time.time() - (60*60*5)
-                ).filter(choise_status=False),
-                'request': requests
+                    weighting_time__gte=time.time() - (60*60*12)
+                ).filter(choice_status=False),
+
+                'ft_list': models.FreezingTunnel.objects.all().filter(output_category='D').filter(choice_status=False),
+                'ch_list': models.ColdHouse.objects.all().filter(output_category='D').filter(choice_status=False),
+
+                'driver_list': models.Driver.objects.all(),
+                'car_list': models.Car.objects.all().filter(live_product=False),
+
+                'request': requests,
 
             }
 
@@ -1442,41 +1484,49 @@ def distribute(requests):
         if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
 
             # get data
-            driver_id = requests.POST['driver_id']
+            dist_id = requests.POST['dist_id']
             fwl_id = requests.POST['fwl_id']
-            weight = requests.POST['weight']
+            weight = float(requests.POST['weight'])
             sale_price = requests.POST['sale_price']
-            product_category = requests.POST['product_category']
+            box_weight = float(requests.POST['box_weight'])
             number_of_box = requests.POST['number_of_box']
 
             # create distribute object
             dist_obj = models.Distributed()
 
             # set param
-            dist_obj.weight = weight
+            dist_obj.date = time.time() - information.time_dif
+            dist_obj.date_format = time.ctime(time.time() - information.time_dif)
+            dist_obj.weight = weight - box_weight - (int(number_of_box) * information.box_weight)
             dist_obj.sale_price = sale_price
-            dist_obj.product_category = product_category
-            dist_obj.number_of_box = number_of_box
             dist_obj.bill_of_lading = str(uuid1().int)
+            dist_obj.number_of_box = number_of_box
+            dist_obj.sales_input_category = fwl_id[0]
+            dist_obj.sales_input_id = fwl_id[1:]
 
-            # get driver list
-            driver_list = models.Driver.objects.all().filter(driver_id=driver_id)
+            if fwl_id[0] == 'F':
 
-            dist_obj.driver = driver_list[0]
+                x = models.FirstWeightLifting.objects.get(weight_lifting_id=fwl_id[1:])
+                x.choice_status = True
+                x.save()
 
-            print(len(driver_list))
+            elif fwl_id[0] == 'T':
 
-            # get firstWeightLifting object list
-            fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
-            fwl_obj = fwl_list[0]
-            fwl_obj.choise_status = True
-            fwl_obj.save()
+                x = models.FreezingTunnel.objects.get(freeze_tunnel_id=fwl_id[1:])
+                x.choice_status = True
+                x.save()
 
-            dist_obj.first_weight_lifting = fwl_list[0]
-            print(len(fwl_list))
+            elif fwl_id[0] == 'C':
+
+                x = models.ColdHouse.objects.get(cold_house_primary_key=fwl_id[1:])
+                x.choice_status = True
+                x.save()
 
             if len(dist_manager_list) > 0:
                 dist_obj.sales_manager = dist_manager_list[0]
+
+            dist_object_list = models.DistributedRoot.objects.get(dist_id=dist_id)
+            dist_obj.distribute_root = dist_object_list
 
             # save model
             dist_obj.save()
@@ -1508,84 +1558,47 @@ def distribute_driver_create(requests):
 
         if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
 
-            # get product owner object list with filter
-            po_list = models.ProductOwner.objects.all().filter(name=requests.POST['po_name']).filter(
-                last_name=requests.POST['po_last_name']
-            )
-
-            if len(po_list) > 0:
-                po_obj = po_list[0]
-            else:
-
-                po_obj = models.ProductOwner()
-                po_obj.name = requests.POST['po_name']
-                po_obj.last_name = requests.POST['po_last_name']
-                po_obj.product_owner_id = str(uuid1().int)
-
-                po_obj.save()
-
             # get car object list with filter
-            car_list = models.Car.objects.all().filter(car_number=requests.POST['car_number'])
+            car_list_obj = models.Car.objects.all().filter(car_number1=requests.POST['car_number1']).filter(
+                car_number2=requests.POST['car_number2']
+            ).filter(car_number3=requests.POST['car_number3']).filter(car_number4=requests.POST['car_number4'])
 
-            if len(car_list) > 0 :
+            car_number1 = requests.POST['car_number1']
+            car_number2 = requests.POST['car_number2']
+            car_number3 = requests.POST['car_number3']
+            car_number4 = requests.POST['car_number4']
 
-                if car_list[0].product_owner == po_obj:
-
-                    car_obj = car_list[0]
-
-                else:
-
-                    # create object
-                    car_obj = models.Car()
-
-                    # set param
-                    car_obj.car_number = requests.POST['car_number']
-                    car_obj.car_id = str(uuid1().int)
-                    car_obj.product_owner = po_obj
-                    car_obj.live_product = False
-
-                    # save model
-                    car_obj.save()
-
-            else:
+            if len(car_list_obj) == 0 and str(car_number4) != '0' and str(car_number3) != '0' and str(car_number2) != '0' \
+                    and str(car_number1) != '0':
 
                 # create object
                 car_obj = models.Car()
 
                 # set param
-                car_obj.car_number = requests.POST['car_number']
                 car_obj.car_id = str(uuid1().int)
+
+                car_obj.car_number4 = int(car_number4)
+                car_obj.car_number3 = int(car_number3)
+                car_obj.car_number2 = str(car_number2)
+                car_obj.car_number1 = int(car_number1)
+
+                car_obj.car_type = requests.POST['car_type']
+
+                car_obj.car_number = str(car_number4) + str(car_number3) + str(car_number2) + str(car_number1)
                 car_obj.live_product = False
-                car_obj.product_owner = po_obj
 
                 # save model
                 car_obj.save()
 
             # get driver list
-            driver_obj_list = models.Driver.objects.all().filter(name=requests.POST['driver_name'])
+            driver_obj_list = models.Driver.objects.all().filter(name=requests.POST['driver_name']).filter(
+                last_name=requests.POST['driver_last_name']
+            )
 
-            if len(driver_obj_list) > 0:
-
-                if driver_obj_list[0].car == car_obj:
-
-                    driver_obj = driver_obj_list[0]
-
-                else:
-
-                    # create object
-                    driver_obj = models.Driver()
-
-                    # set param
-                    driver_obj.name = requests.POST['driver_name']
-                    driver_obj.last_name = requests.POST['driver_last_name']
-                    driver_obj.phone_number = requests.POST['driver_phone_number']
-                    driver_obj.driver_id = str(uuid1().int)
-                    driver_obj.car = car_obj
-
-                    # save
-                    driver_obj.save()
-
-            else:
+            if len(driver_obj_list) == 0 \
+                    and str(requests.POST['driver_name']) != '0' \
+                    and str(requests.POST['driver_last_name']) != '0' \
+                    and str(requests.POST['driver_phone_number']) != '0':
 
                 # create object
                 driver_obj = models.Driver()
@@ -1595,7 +1608,6 @@ def distribute_driver_create(requests):
                 driver_obj.last_name = requests.POST['driver_last_name']
                 driver_obj.phone_number = requests.POST['driver_phone_number']
                 driver_obj.driver_id = str(uuid1().int)
-                driver_obj.car = car_obj
 
                 # save
                 driver_obj.save()
@@ -1605,7 +1617,88 @@ def distribute_driver_create(requests):
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def freeze_tunnel_enter_form(requests):
+@csrf_exempt
+def distribute_root_empty(requests):
+
+    """
+    create distribute root models object with empty weight
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            # get request param
+            driver_id = requests.POST['driver_id']
+            car_id = requests.POST['car_id']
+            empty_weight = requests.POST['empty_weight']
+
+            # get driver object
+            driver_obj = models.Driver.objects.get(driver_id=driver_id)
+
+            # car object
+            car_obj = models.Car.objects.get(car_id=car_id)
+
+            # create distribute root models
+            dist_root_obj = models.DistributedRoot()
+
+            # set param
+            dist_root_obj.dist_id = str(uuid1().int)
+            dist_root_obj.car = car_obj
+            dist_root_obj.driver = driver_obj
+            dist_root_obj.empty_weight = float(empty_weight)
+            dist_root_obj.finish_loading = False
+
+            # save object
+            dist_root_obj.save()
+
+            return HttpResponseRedirect(reverse('Distribute_Form'))
+
+    # raised error
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def distribute_root_full(requests):
+
+    """
+    create distribute root models object with empty weight
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            # get request param
+            dist_id = requests.POST['dist_id']
+            full_weight = requests.POST['full_weight']
+            dest = requests.POST['dest']
+
+            # car object
+            dist_root_obj = models.DistributedRoot.objects.get(dist_id=dist_id)
+
+            # set param
+            dist_root_obj.full_weight = float(full_weight)
+            dist_root_obj.dest = dest
+            dist_root_obj.finish_loading = True
+
+            # save object
+            dist_root_obj.save()
+            return HttpResponseRedirect(reverse('Distribute_Form'))
+
+    # raised error
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def freeze_tunnel_enter_form(requests,):
 
     """
     render create tunnel freeze object form
@@ -1625,8 +1718,9 @@ def freeze_tunnel_enter_form(requests):
             context = {
 
                 'fwl_list': models.FirstWeightLifting.objects.all().filter(sales_category='F').filter(
-                    weighting_time__gte=time.time() - (60 * 60 *5)
-                ).filter(choise_status=False),
+                    weighting_time__gte=(time.time() + information.time_dif )- (60 * 60 * 5)
+                ).filter(choice_status=False),
+                'gate_list': [],
                 'request': requests
 
             }
@@ -1658,29 +1752,33 @@ def freeze_tunnel_enter(requests):
 
         # user have access to this page
         # get param
-        weight = float(requests.POST['weight'])
         tunnel_id = requests.POST['tunnel_id']
-        pallet_id = requests.POST['pallet_id']
         box_num = requests.POST['box_num']
-        prod_category = requests.POST['product_category']
         fwl_id = requests.POST['fwl_id']
 
         # create object
         ft_obj = models.FreezingTunnel()
 
         # set param
-        ft_obj.weight = weight
         ft_obj.tunnel_id = tunnel_id
-        ft_obj.pallet_id = pallet_id
         ft_obj.box_num = int(box_num)
-        ft_obj.product_category = prod_category
-        ft_obj.first_weight_lifting = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)[0]
         ft_obj.freeze_tunnel_id = str(uuid1().int)
+        ft_obj.entry_date = time.time() + information.time_dif
+        ft_obj.entry_date_format = time.ctime(time.time() + information.time_dif)
 
-        fwl_obj = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)[0]
-        fwl_obj.choise_status = True
-        fwl_obj.save()
+        if fwl_id[0] == 'F':
 
+            fwl_obj = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id[1:])[0]
+            fwl_obj.choice_status = True
+            fwl_obj.save()
+
+            ft_obj.product_category = fwl_obj.product_category
+            ft_obj.sub_product_category = 'B'
+            ft_obj.input_type = 'F'
+            ft_obj.input_id = fwl_id[1:]
+            ft_obj.weight = fwl_obj.weight
+
+        # set object user
         if len(freeze_tunnel_manager_list) > 0:
 
             ft_obj.freezing_tunnel_manager = freeze_tunnel_manager_list[0]
@@ -1749,13 +1847,16 @@ def freeze_tunnel_exit(requests):
 
             # user have access to this page
             ft_id = requests.POST['ft_id']
+            out_type = requests.POST['exit_category']
 
             # get model
             ft_obj = models.FreezingTunnel.objects.all().filter(freeze_tunnel_id=ft_id)[0]
 
             # set param
-            ft_obj.exit_date = time.time()
+            ft_obj.exit_date = time.time() - information.time_dif
+            ft_obj.exit_date_format = time.ctime(time.time() - information.time_dif)
             ft_obj.status = False
+            ft_obj.output_category = out_type
 
             # save
             ft_obj.save()
@@ -1792,6 +1893,7 @@ def paper_box_create_form(requests):
 
             context = {
 
+                'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True),
                 'request': requests
 
             }
@@ -1825,22 +1927,35 @@ def paper_box_create(requests):
 
             # user have access to this page
             # get param
+            cold_house_id = requests.POST['cold_house_id']
             weight = float(requests.POST['weight'])
-            product_category = requests.POST['product_category']
-            expiration_time = requests.POST['expiration_time']
-            sub_prod_cat = requests.POST['sub_prod_cat']
-            product_number = requests.POST['product_number']
 
             # create model
             paper_box_obj = models.PaperBox()
 
             # set param
             paper_box_obj.paper_box_weight = weight
-            paper_box_obj.number_of_product = product_number
-            paper_box_obj.product_category = product_category
-            paper_box_obj.sub_product_category = sub_prod_cat
-            paper_box_obj.expiration_time = int(expiration_time)
             paper_box_obj.box_id = str(uuid1().int)
+            paper_box_obj.packing_time = time.time() + information.time_dif
+            paper_box_obj.packing_time_format = time.ctime(time.time() + information.time_dif)
+            paper_box_obj.box_cold_house_exp = True
+
+            # get cold house object
+            cold_house_obj = models.ColdHouse.objects.get(cold_house_primary_key=cold_house_id)
+            paper_box_obj_exam = models.PaperBox.objects.all().filter(cold_house__cold_house_primary_key=cold_house_id)[0]
+
+            paper_box_obj.product_category = paper_box_obj_exam.product_category
+            paper_box_obj.sub_product_category = paper_box_obj_exam.sub_product_category
+            paper_box_obj.expiration_time = paper_box_obj_exam.expiration_time
+
+
+
+            cold_house_obj.weight += weight
+            cold_house_obj.number_of_box += 1
+
+            cold_house_obj.save()
+
+            paper_box_obj.cold_house = cold_house_obj
 
             # save model
             paper_box_obj.save()
@@ -1884,26 +1999,12 @@ def cold_house_enter_form(requests):
             # load template
             cold_house_enter_temp = loader.get_template('WareHouseApp/cold_house_enter.html')
 
-            paper_box_obj_list = models.PaperBox.objects.all().filter(box_status=False).filter(
-                    box_cold_house_exp=False)
-
-            paper_list = []
-            for paper_obj in paper_box_obj_list:
-
-                pack_time = paper_obj.packing_time + (paper_obj.expiration_time * 3600 * 24)
-                exp = int((time.time() - pack_time) / (3600 * 24))
-
-                if exp >= 0:
-                    exp_state = False
-                else:
-                    exp_state = True
-
-
-                paper_list.append([paper_obj, exp, exp_state])
-
             context = {
 
-                "paper_box_list": paper_list,
+                "ft_list": models.FreezingTunnel.objects.all(
+                ).filter(status=False).filter(
+                    choice_status=False).filter(output_category='C'),
+
                 'request': requests
 
             }
@@ -1937,11 +2038,13 @@ def cold_house_enter(requests):
 
             # user have access to this page
             # get param
-            pallet_weight = requests.POST['pallet_weight_with_product']
-            pallet_weight_empty = requests.POST['pallet_weight_with_product']
-            number_of_box = requests.POST['number_of_box']
+            ft_id = requests.POST['ft_id']
+            pallet_weight = float(requests.POST['pallet_weight_with_product'])
+            pallet_weight_empty = float(requests.POST['pallet_weight_without_product'])
+            number_of_box = int(requests.POST['number_of_box'])
             cold_house_id = requests.POST['cold_house_id']
             pallet_id = requests.POST['pallet_id']
+            expiration_time = int(requests.POST['expiration_time'])
 
             # create cold_house obj
             cold_house_obj = models.ColdHouse()
@@ -1951,31 +2054,41 @@ def cold_house_enter(requests):
 
             # set param
             cold_house_obj.number_of_box = number_of_box
-            cold_house_obj.total_pallet_weight = pallet_weight
-            cold_house_obj.pallet_weight_without_product = pallet_weight_empty
+            cold_house_obj.weight = pallet_weight - pallet_weight_empty - (number_of_box * information.freeze_box_weight)
             cold_house_obj.cold_house_id = cold_house_id
+            cold_house_obj.cold_house_primary_key = str(uuid1().int)
+            cold_house_obj.entry_date = time.time() + information.time_dif
+            cold_house_obj.entry_date_format = time.ctime(time.time() + information.time_dif)
             cold_house_obj.pallet_id = pallet_id
+
+            # get freeze tunnel object
+            ft_obj = models.FreezingTunnel.objects.get(freeze_tunnel_id=ft_id)
+            ft_obj.choice_status = True
+            ft_obj.save()
+
+            cold_house_obj.freeze_tunnel = ft_obj
+            cold_house_obj.product_category = ft_obj.product_category
+            cold_house_obj.sub_product_category = ft_obj.sub_product_category
 
             # save object
             cold_house_obj.save()
 
-            for key in requests.POST.keys():
-                print(key)
+            for k in range(number_of_box):
 
-                if key not in ['pallet_weight_with_product', 'pallet_weight_without_product', 'number_of_box'
-                               , 'cold_house_id', 'pallet_id']:
+                paper_box_obj = models.PaperBox()
 
-                    print(key)
+                paper_box_obj.cold_house = cold_house_obj
+                paper_box_obj.box_status = True
+                paper_box_obj.box_cold_house_exp = True
+                paper_box_obj.paper_box_weight = cold_house_obj.weight / number_of_box
+                paper_box_obj.product_category = ft_obj.product_category
+                paper_box_obj.sub_product_category = ft_obj.sub_product_category
+                paper_box_obj.expiration_time = int(expiration_time)
+                paper_box_obj.box_id = str(uuid1().int)
+                paper_box_obj.packing_time = time.time() + information.time_dif
+                paper_box_obj.packing_time_format = time.ctime(time.time() + information.time_dif)
 
-                    value = requests.POST[key]
-
-                    paper_box_obj = models.PaperBox.objects.all().filter(box_id=value)[0]
-
-                    paper_box_obj.cold_house = cold_house_obj
-                    paper_box_obj.box_status = True
-                    paper_box_obj.box_cold_house_exp = True
-
-                    paper_box_obj.save()
+                paper_box_obj.save()
 
             return HttpResponseRedirect(reverse("first_WeightLifting"))
 

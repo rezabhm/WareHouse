@@ -24,4 +24,4 @@ urlpatterns = [
     path('', include('WareHouseApp.urls')),
     path('task/', include('DeviceMaintenance.urls')),
 
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

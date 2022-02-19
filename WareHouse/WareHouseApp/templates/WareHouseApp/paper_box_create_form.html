@@ -17,6 +17,95 @@
     <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">انتخاب کنید</p>
+             </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue" >
+
+                      <table id="fresh-table" class="table" style="    overflow: scroll;">
+                        <thead>
+                          <th style="text-align: center;">انتخاب کنید</th>
+                          <th>وزن خالص</th>
+                          <th>آیدی نگهداری</th>
+                          <th>آیدی پالت</th>
+                          <th>نوع محصول</th>
+                          <th>تعداد جعبه</th>
+
+                        </thead>
+
+                        {% for ch in cold_house_list %}
+                        <label for="{{ ch.cold_house_primary_key }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="checkbox">
+                                         <label style="margin:0px"><input type="radio" name="cold_house_id" value="{{ ch.cold_house_primary_key }}" id="{{ ch.cold_house_primary_key }}"></label>
+                                    </div>
+                                </td>
+                                <td>{{ ch.weight }}</td>
+
+                                <td>{{ ch.cold_house_id }}</td>
+                                <td>{{ ch.pallet_id }}</td>
+
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if ch.product_category == 'C' %}
+                                مرغ
+                              {% elif ch.product_category == 'T' %}
+                                بوقلمون
+                              {% elif ch.product_category == 'Q' %}
+                                بلدرچین
+                              {% else %}
+                                -
+                              {% endif %}
+
+                                {% if ch.sub_product_category == 'W' %}
+                                    بال
+                                {% elif ch.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif ch.sub_product_category == 'E' %}
+                                    پا
+                                {% elif ch.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif ch.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif ch.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif ch.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif ch.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif ch.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+                                  </td>
+
+                                <td>{{ ch.number_of_box }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+
+
+
+
+
+
              <div class="col-12 mt-5 mb-2">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
@@ -29,80 +118,12 @@
                   color: black;">ورود اطلاعات</p>
              </div>
 
-           <div class="col-6">
+           <div class="col-12">
              <label for="weight">
                 <span >وزن محصول</span>
                 <input type="text" id="weight" name="weight"/>
              </label>
            </div>
-           <div class="col-6">
-             <label for="product_number">
-                <span >تعداد محصول در جعبه</span>
-                <input type="text" id="product_number" name="product_number"/>
-             </label>
-           </div>
-
-           <div class="col-6">
-             <label for="expiration_time">
-                <span >مدت زمان نگهداری در سرد خانه (روز)</span>
-                <input type="number" id="expiration_time" name="expiration_time"/>
-             </label>
-           </div>
-
-      <div class="col-6">
-         <label for="sub_prod_cat">
-            <span >نوع محصول بسته بندی شده</span>
-             <br>
-              <select id="sub_prod_cat" name="sub_prod_cat" class="rounded" style="
-                padding: 8px 185px;
-                display: inline-block;
-                margin: 4px 2px;
-                transition-duration: 0.4s;
-                border: 1px solid #999999;">
-                <option value="W">بال</option>
-                <option value="N">گردن</option>
-                <option value="E">پا</option>
-                <option value="H">قلب</option>
-                <option value="L">جگر</option>
-                <option value="K">قلوه</option>
-                <option value="S">سنگدان</option>
-                <option value="B">درسته</option>
-                <option value="O">بقیه</option>
-              </select>
-         </label>
-         </div>
-
-
-             <div class="col-12 mt-5 mb-5">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                  border-right-style: solid;
-                  border-right-color: #17a2b8;
-                  border-right-width: 5px;
-                  text-align: right;
-                  padding-right: 10px;
-                  padding: 5px;
-                  color: black;"> انتخاب کنید</p>
-             </div>
-                 <div class="col-4 mt-3">
-             <label for="chicken">
-                    <span >مرغ</span>
-                    <input  type="radio" id="chicken" name="product_category" value="C"/>
-                 </label>
-             </div>
-             <div class="col-4 mt-3">
-             <label for="turkey">
-                    <span >بوقلمون</span>
-                    <input type="radio" id="turkey" name="product_category" value="T"/>
-                 </label>
-            </div>
-            <div class="col-4 mt-3">
-             <label for="quail">
-                <span >بلدرچین</span>
-                <input  type="radio" id="quail" name="product_category" value="Q"/>
-             </label>
-            </div>
-            </div>
 
 
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>

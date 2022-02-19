@@ -29,11 +29,12 @@
 
              <div class="fresh-table full-color-blue badge filter badge-blue" >
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table" class="table" style="    overflow: scroll;" >
                         <thead>
                           <th style="text-align: center;">انتخاب کنید</th>
                           <th>وزن محصول</th>
                           <th>نوع محصول</th>
+                          <th>کد محصول</th>
 
 
                         </thead>
@@ -58,6 +59,8 @@
                                   {% else %}
                                     <td style="border-bottom:0px;">-</td>
                                   {% endif %}
+
+                                <td>{{ fwl.code }}</td>
 
                               </tr>
                             </tbody>
@@ -95,21 +98,9 @@
            {% endfor %}-->
 
              <div class="col-6 mt-3">
-                 <label for="weight">
-                    <span >وزن محصول</span>
-                    <input type="text" name="weight" id="weight"/>
-                 </label>
-             </div>
-             <div class="col-6 mt-3">
                  <label for="pc_id">
                     <span >آیدی پیش سرد</span>
-                    <input type="number" name="pc_id" id="pc_id"/>
-                 </label>
-             </div>
-             <div class="col-6 mt-3">
-                 <label for="pallet_id">
-                    <span >آیدی پالت</span>
-                    <input type="text" name="pallet_id" id="pallet_id" value="00000"/>
+                    <input type="text" name="pc_id" id="pc_id"/>
                  </label>
              </div>
              <div class="col-6 mt-3">
@@ -118,36 +109,6 @@
                     <input type="number" name="box_num" id="box_num" value="1"/>
                  </label>
              </div>
-              <div class="col-12 mt-5 mb-5">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                  border-right-style: solid;
-                  border-right-color: #17a2b8;
-                  border-right-width: 5px;
-                  text-align: right;
-                  padding-right: 10px;
-                  padding: 5px;
-                  color: black;">انتخاب کنید</p>
-             </div>
-
-              <div class="col-4 mt-3">
-             <label for="chicken">
-                    <span >مرغ</span>
-                    <input  type="radio" id="chicken" name="product_category" value="C"/>
-                 </label>
-             </div>
-             <div class="col-4 mt-3">
-             <label for="turkey">
-                    <span >بوقلمون</span>
-                    <input type="radio" id="turkey" name="product_category" value="T"/>
-                 </label>
-            </div>
-            <div class="col-4 mt-3">
-             <label for="quail">
-                <span >بلدرچین</span>
-                <input  type="radio" id="quail" name="product_category" value="Q"/>
-             </label>
-            </div>
 
              <div>
                  <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>

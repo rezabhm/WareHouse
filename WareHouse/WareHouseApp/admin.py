@@ -177,7 +177,7 @@ class FirstWeightLiftingAdmin(admin.ModelAdmin):
 
     list_filter = ["product_category", ]
 
-
+"""
 @admin.register(models.PreCold)
 class PreColdAdmin(admin.ModelAdmin):
     list_display = ["entry_time", "exit_time", "weight", "product_category", "pre_cold_id",
@@ -255,3 +255,4 @@ class PaperBoxAdmin(admin.ModelAdmin):
 
     list_filter = ["product_category", ]
 
+"""
