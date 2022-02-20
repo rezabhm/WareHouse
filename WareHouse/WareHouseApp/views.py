@@ -679,7 +679,7 @@ def lwb_product_owner(requests):
             # save
             po_obj.save()
 
-            return HttpResponseRedirect(reverse('Live_WeighBridge_Order_Form'))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
     return HttpResponseRedirect(reverse('Error', args=['شما اجازه ی دسترسی به این صفحه را ندارید']))
 
@@ -1894,6 +1894,7 @@ def paper_box_create_form(requests):
             context = {
 
                 'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True),
+                'po_list': models.ProductOwner.objects.all(),
                 'request': requests
 
             }
@@ -1929,6 +1930,7 @@ def paper_box_create(requests):
             # get param
             cold_house_id = requests.POST['cold_house_id']
             weight = float(requests.POST['weight'])
+            po_id = requests.POST['po_id']
 
             # create model
             paper_box_obj = models.PaperBox()
@@ -1947,8 +1949,7 @@ def paper_box_create(requests):
             paper_box_obj.product_category = paper_box_obj_exam.product_category
             paper_box_obj.sub_product_category = paper_box_obj_exam.sub_product_category
             paper_box_obj.expiration_time = paper_box_obj_exam.expiration_time
-
-
+            paper_box_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
             cold_house_obj.weight += weight
             cold_house_obj.number_of_box += 1
@@ -2004,7 +2005,7 @@ def cold_house_enter_form(requests):
                 "ft_list": models.FreezingTunnel.objects.all(
                 ).filter(status=False).filter(
                     choice_status=False).filter(output_category='C'),
-
+                'po_list': models.ProductOwner.objects.all(),
                 'request': requests
 
             }
@@ -2045,6 +2046,7 @@ def cold_house_enter(requests):
             cold_house_id = requests.POST['cold_house_id']
             pallet_id = requests.POST['pallet_id']
             expiration_time = int(requests.POST['expiration_time'])
+            po_id = requests.POST['po_id']
 
             # create cold_house obj
             cold_house_obj = models.ColdHouse()
@@ -2087,6 +2089,7 @@ def cold_house_enter(requests):
                 paper_box_obj.box_id = str(uuid1().int)
                 paper_box_obj.packing_time = time.time() + information.time_dif
                 paper_box_obj.packing_time_format = time.ctime(time.time() + information.time_dif)
+                paper_box_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
                 paper_box_obj.save()
 
@@ -2242,7 +2245,7 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
             # user have access to see data
             if year == '0' and month == '0' and day == '0':
 
-                # get all of objects without time filter
+                # get all objects without time filter
                 lwb_list = models.LiveWeighbridge.objects.all()
 
             else:
@@ -2353,7 +2356,7 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
             elif model_type == '1':
 
                 dist_list = models.Distributed.objects.all()
-                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight= -5248.0)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
 
             elif model_type == '2':
 
@@ -2457,7 +2460,7 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
                     prod_category, lwb.slaughter_status,
                     time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
                     time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
-                    lwb.buy_price, lwb.avicultureـname ,lwb.avicultureـcity
+                    lwb.buy_price, lwb.avicultureـname,lwb.avicultureـcity
 
                 ])
 
@@ -2628,7 +2631,7 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
 
 
 def product_owner_list(requests, po_name='0', po_lastname='0', product_category='0', model_type='0', year='0',
-                       month='0', day='0', car_number ='0'):
+                       month='0', day='0', car_number='0'):
 
     """
     show list of product owner with filter
@@ -2738,7 +2741,6 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                 lwb_list = lwb_list.filter(driver__car__car_number=car_number)
                 pd_list = pd_list.filter(First_Weight_Lifting__Live_Weigh_Bridge__driver__car__car_number=car_number)
                 ft_list = ft_list.filter(first_weight_lifting__Live_Weigh_Bridge__driver__car__car_number=car_number)
-
 
             # we must add product category filter to return special product
             # if equal 1 we return only chicken objects
@@ -2972,7 +2974,6 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                 # add time filter
                 string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
                 time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
-
 
                 dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60 * 60 * 24))
 

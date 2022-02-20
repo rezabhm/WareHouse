@@ -16,7 +16,7 @@ main's url:
     2. contact us url
     3. about us url
     4. error page url
-
+    
 User's url :
     
     1.  sign-up form url for register all kind of user
@@ -189,4 +189,4 @@ urlpatterns = [
 
     re_path(r'ch/filter/$', views.ch_filter, name='CH_Filter'),
 
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

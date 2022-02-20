@@ -966,6 +966,7 @@ class PaperBox(models.Model):
 
     # relation
     cold_house = models.ForeignKey(ColdHouse, models.CASCADE, null=True)
+    product_owner = models.ForeignKey(ProductOwner, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return str(self.box_id)

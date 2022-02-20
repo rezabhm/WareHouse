@@ -17,6 +17,45 @@
     <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">صاحب محصول را انتخاب کنید</p>
+      </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table3" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام صاحب محصول</th>
+                          <th data-field="salary" data-sortable="true">نام خانوادگی صاحب محصول</th>
+                        </thead>
+
+                        {% for po in po_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="po_id" value="{{ po.product_owner_id}}" id="{{ po.product_owner_id }}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ po.name }}</td>
+                                <td style="border-bottom:0px;" >{{ po.last_name }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
 
              <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
@@ -131,6 +170,53 @@
         </div>
     </div>
 </form>
+
+
+
+
+
+<form action="{% url 'Product_Owner_Create_LWB' %}" method="post" >
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+      {% csrf_token %}
+
+         <div class="col-12 mt-5">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">صاحب بار</p>
+      </div>
+      <div class="col-6">
+         <label for="po_lastname">
+            <span >نام خانوادگی صاحب محصول</span>
+            <input type="text" id="po_lastname" name="product_owner_lastname"/>
+         </label>
+      </div>
+         <div class="col-6">
+         <label for="po_name">
+            <span >نام صاحب محصول</span>
+            <input  type="text" id="po_name" name="product_owner_name"/>
+         </label>
+      </div>
+
+    <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+    </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+
 
 <!--
 <form action="{% url 'PaperBox_Create' %}" method="post">
