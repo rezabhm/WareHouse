@@ -947,7 +947,7 @@ class PaperBox(models.Model):
 
     # if it equals True it means paper is in the cold House and or exit from it and if equal False it mean
     # it didn't enter to coldHouse
-    box_status = models.BooleanField(default=False)
+    box_status = models.BooleanField(default=True)
 
     box_cold_house_exp = models.BooleanField(default=False)
 
@@ -970,3 +970,87 @@ class PaperBox(models.Model):
 
     def __str__(self):
         return str(self.box_id)
+
+
+class Segmentation(models.Model):
+
+    """
+    segmentation product
+
+    table's column:
+
+        1. id
+        2. segmentation time
+        3. weight
+        4. product category
+        5. sub product category
+        6. output type
+        7. code
+        8. choice status
+        9. box num
+
+    relation :
+
+        1. Foreign Key  --> first weightlifting
+        2. OneToOne     --> pre-cold manager
+
+    """
+
+    # unique id for identify object
+    segment_id = models.CharField(max_length=150)
+
+    # segmenting time
+    segment_time = models.FloatField()
+    segment_time_format = models.CharField(max_length=25)
+
+    # weight
+    weight = models.FloatField(null=True)
+
+    # product category
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
+    product_category = models.CharField(choices=type_of_gender, max_length=1)
+
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
+
+    # out category
+    output_cat = (
+
+        ('D', 'distribute'),
+        ('F', 'freeze-tunnel'),
+
+    )
+
+    output_category = models.CharField(max_length=1, choices=output_cat, default='D')
+
+    # random code
+    code = models.CharField(max_length=5)
+
+    # this param determine that did product enter to freeze tunnel or did distribute unit accept it or not
+    choice_status = models.BooleanField(default=False)
+
+    # number of box
+    box_num = models.IntegerField()
+
+    # relation
+    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
+    pre_cold_manager = models.OneToOneField(PreColdManager, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return str(self.segment_id)

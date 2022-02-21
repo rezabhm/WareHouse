@@ -40,7 +40,7 @@
                   color: black;">انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table" class="table" style="    overflow: scroll;">
                         <thead>
@@ -129,12 +129,11 @@
                   color: black;">انتخاب و ورود اطلاعات</p>
              </div>
 
-              <div class="fresh-table full-color-blue badge filter badge-blue">
+              <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table2" class="table">
                         <thead>
                           <th>انتخاب کنید</th>
-                          <th data-field="name" data-sortable="true">وزن محصول</th>
                           <th data-field="salary" data-sortable="true">نوع محصول</th>
                           <th data-field="salary" data-sortable="true">مرحله قبل</th>
                           <th data-field="salary" data-sortable="true">شماره نگهداری/تونل</th>
@@ -151,7 +150,6 @@
                                     </div>
                                 </td>
 
-                                <td>{{ fwl.weight }}</td>
 
                                 {% if fwl.product_category == 'C' %}
                                 <td style="border-bottom:0px;" >مرغ</td>
@@ -181,7 +179,6 @@
                                     </div>
                                 </td>
 
-                                <td>{{ ft.weight }}</td>
 
                                   <td style="border-bottom:0px;" dir="rtl" >
                                 {% if ft.product_category == 'C' %}
@@ -238,7 +235,6 @@
                                     </div>
                                 </td>
 
-                                <td>{{ ch.total_pallet_weight }}</td>
 
                                   <td style="border-bottom:0px;" dir="rtl" >
                                 {% if ch.product_category == 'C' %}
@@ -282,6 +278,64 @@
                             </tbody>
                         </label>
                           {% endfor %}
+
+
+                        {% for seg in seg_list %}
+                        <label for="{{ seg.segment_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" value="G{{ seg.segment_id }}" name="fwl_id" id="{{ seg.segment_id }}" style="border-bottom:0px;"></label>
+                                    </div>
+                                </td>
+
+
+                                  <td style="border-bottom:0px;" dir="rtl" >
+                                {% if seg.product_category == 'C' %}
+                                مرغ
+                              {% elif seg.product_category == 'T' %}
+                                بوقلمون
+                              {% elif seg.product_category == 'Q' %}
+                                بلدرچین
+                              {% else %}
+                                -
+                              {% endif %}
+
+                                {% if seg.sub_product_category == 'W' %}
+                                    بال
+                                {% elif seg.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif seg.sub_product_category == 'E' %}
+                                    پا
+                                {% elif seg.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif seg.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif seg.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif seg.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif seg.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif seg.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+                                  </td>
+
+                                <td>قطعه بندی</td>
+                                <td dir="rtl">کد محصول : {{ seg.code }}</td>
+                                <td>{{ seg.box_num }}</td>
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+
+
+
 
                       </table>
              </div>
@@ -444,7 +498,7 @@
                   color: black;">راننده را انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table3" class="table" style="    overflow: scroll;">
                         <thead>
@@ -489,7 +543,7 @@
                   color: black;">ماشین را انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table4" class="table" style="    overflow: scroll;">
                         <thead>
@@ -576,7 +630,7 @@
                   color: black;">انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table5" class="table" style="    overflow: scroll;">
                         <thead>
@@ -654,7 +708,7 @@
      </div>
 
     <div class=" cont">
-         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch" style="overflow:scroll;">
 
              <div class="col-12 mt-5 mb-2">
                  <p class="partition" style="background-color: lavender;

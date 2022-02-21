@@ -155,6 +155,9 @@ urlpatterns = [
     re_path(r'^coldHouse/enter/$', views.cold_house_enter, name='ColdHouse_Enter'),
     re_path(r'^coldHouse/exit/form/$', views.cold_house_exit_form, name='ColdHouse_Exit_Form'),
     re_path(r'^coldHouse/exit/$', views.cold_house_exit, name='ColdHouse_Exit'),
+    re_path(r'^segmentation/form/$', views.segmentation_form, name='Segmentation_Form'),
+    re_path(r'^segmentation/$', views.segmentation, name='Segmentation'),
+    re_path(r'^fwl/finish/(?P<fwl_id>[\w]+)/$', views.fwl_finish, name='Fwl_finish'),
 
     # monitor data
     re_path(r'^company/list/$', views.company_list, name='Company_List'),

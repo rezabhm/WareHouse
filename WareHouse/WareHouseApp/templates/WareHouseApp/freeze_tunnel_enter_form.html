@@ -29,7 +29,7 @@
                   color: black;">انتخاب و ورود اطلاعات</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
                       <table id="fresh-table" class="table">
                         <thead>
@@ -37,7 +37,6 @@
                           <th data-field="name" data-sortable="true">وزن محصول</th>
                           <th data-field="salary" data-sortable="true">نوع محصول</th>
                           <th data-field="salary" data-sortable="true">مرحله قبل</th>
-                          <th data-field="salary" data-sortable="true">تعداد جعبه</th>
                         </thead>
 
                         {% for fwl in fwl_list %}
@@ -62,12 +61,64 @@
                                 <td style="border-bottom:0px;" >-</td>
                               {% endif %}
                                 <td>وزن کشی مرحله اول / پیش سرد</td>
-                                <td>-</td>
                               </tr>
+
                             </tbody>
                         </label>
                           {% endfor %}
 
+                        {% for seg in seg_list %}
+                        <label for="{{ fwl.weight_lifting_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" value="G{{ seg.segment_id }}" name="fwl_id" id="{{ seg.segment_id }}" style="border-bottom:0px;"></label>
+                                    </div>
+                                </td>
+
+                                <td>{{ seg.weight }}</td>
+
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if seg.product_category == 'C' %}
+                                مرغ
+                              {% elif seg.product_category == 'T' %}
+                                بوقلمون
+                              {% elif seg.product_category == 'Q' %}
+                                بلدرچین
+                              {% else %}
+                                -
+                              {% endif %}
+
+                                {% if seg.sub_product_category == 'W' %}
+                                    بال
+                                {% elif seg.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif seg.sub_product_category == 'E' %}
+                                    پا
+                                {% elif seg.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif seg.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif seg.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif seg.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif seg.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif seg.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+
+                                <td>قظعه بندی</td>
+                              </tr>
+
+                            </tbody>
+                        </label>
+                          {% endfor %}
 
                       </table>
              </div>

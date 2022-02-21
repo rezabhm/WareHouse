@@ -4,11 +4,11 @@
 
 {% block title%}
 <h2>خروج محصول از سردخانه</h2>
+
 {% endblock %}
 
 
 {% block content %}
-
 
 <form action="{% url 'ColdHouse_Exit' %}" method="post">
 
@@ -29,16 +29,17 @@
                   color: black;">انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue">
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll; height: 250px;" >
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table2" class="table" >
                         <thead>
                           <th style=" text-align: center;">انتخاب کنید</th>
                           <th>آیدی پالت</th>
-                          <th>آیدی سردخانه</th>
-                          <th>آیدی پالت با محصول</th>
-                          <th>آیدی پالت بدون محصول</th>
+                          <th>آیدی نگهداری</th>
+                          <th>وزن محصولات پالت</th>
                           <th>تعداد جعبه</th>
+                          <th>زمان ورود</th>
+                          <th>نوع محصول</th>
 
                         </thead>
 
@@ -48,22 +49,180 @@
                               <tr>
                                 <td>
                                     <div class="checkbox mr-10">
-                                         <label style="margin:0px;"><input type="radio" id="{{ cold_house.pallet_id }}" name="pallet_id" value="{{ cold_house.pallet_id }}"></label>
+                                         <label style="margin:0px;"><input type="radio" id="{{ cold_house.pallet_id }}" name="cold_house_primary_key" value="{{ cold_house.cold_house_primary_key }}"></label>
                                     </div>
                                 </td>
+
                                 <td>{{ cold_house.pallet_id }}</td>
                                 <td>{{ cold_house.cold_house_id }}</td>
-                                <td>{{ cold_house.total_pallet_weight }}</td>
-                                <td>{{ cold_house.pallet_weight_without_product }}</td>
+                                <td>{{ cold_house.weight }}</td>
                                 <td>{{ cold_house.number_of_box }}</td>
+                                <td>{{ cold_house.entry_date_format }}</td>
+
+
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if cold_house.product_category == 'C' %}
+                                مرغ
+                              {% elif cold_house.product_category == 'T' %}
+                                بوقلمون
+                              {% elif cold_house.product_category == 'Q' %}
+                                بلدرچین
+                              {% else %}
+                                -
+                              {% endif %}
+
+                                {% if cold_house.sub_product_category == 'W' %}
+                                    بال
+                                {% elif cold_house.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif cold_house.sub_product_category == 'E' %}
+                                    پا
+                                {% elif cold_house.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif cold_house.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif cold_house.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif cold_house.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif cold_house.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif cold_house.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+
+
 
                               </tr>
                             </tbody>
                         </label>
                           {% endfor %}
                       </table>
+
              </div>
+
+
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">کارتن انتخاب کنید</p>
+             </div>
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll; height: 250px;" >
+
+                      <table id="fresh-table" class="table" >
+                        <thead>
+                          <th style=" text-align: center;"> انتخاب کنید</th>
+                          <th>آیدی پالت</th>
+                          <th>آیدی نگهداری</th>
+                          <th>نوع محصول</th>
+                          <th>وزن محصول</th>
+                          <th>صاحب بار</th>
+                          <th>زمان ورود</th>
+
+                        </thead>
+
+                         {% for pr in paper_list %}
+                        <label for="{{ pr.box_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="checkbox mr-10">
+                                         <label style="margin:0px;"><input type="checkbox" id="{{ pr.box_id }}" name="P{{ pr.box_id }}" value="{{ pr.box_id }}"></label>
+                                    </div>
+                                </td>
+
+                                <td>{{ pr.cold_house.pallet_id }}</td>
+                                <td>{{ pr.cold_house.cold_house_id }}</td>
+
+                                  <td style="border-bottom:0px; text-align:center;" dir="rtl" >
+                                {% if pr.product_category == 'C' %}
+                                مرغ
+                              {% elif pr.product_category == 'T' %}
+                                بوقلمون
+                              {% elif pr.product_category == 'Q' %}
+                                بلدرچین
+                              {% else %}
+                                -
+                              {% endif %}
+
+                                {% if pr.sub_product_category == 'W' %}
+                                    بال
+                                {% elif pr.sub_product_category == 'N' %}
+                                    گردن
+                                {% elif pr.sub_product_category == 'E' %}
+                                    پا
+                                {% elif pr.sub_product_category == 'H' %}
+                                    قلب
+                                {% elif pr.sub_product_category == 'L' %}
+                                    کبد
+                                {% elif pr.sub_product_category == 'K' %}
+                                    کلیه
+                                {% elif pr.sub_product_category == 'S' %}
+                                    سنگدان
+                                {% elif pr.sub_product_category == 'B' %}
+                                    درسته
+                                {% elif pr.sub_product_category == 'O' %}
+                                    بقیه
+                                {% else %}
+                                  -
+                                {% endif %}
+
+
+                                <td>{{ pr.paper_box_weight }}</td>
+                                <td style="text-align:center;" dir="rtl">{{ pr.product_owner.name }} {{ pr.product_owner.last_name }}</td>
+                                <td>{{ pr.packing_time_format }}</td>
+
+
+
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+
+             </div>
+
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;"> انتخاب کنید</p>
+             </div>
+            <div class="col-6 mt-3">
+             <label for="gate">
+                <span >ضایعات</span>
+                <input type="radio" name="exit_category" id="gate" value="T"/>
+             </label>
             </div>
+
+            <div class="col-6 mt-3">
+             <label for="dist">
+                <span >فروش گرم</span>
+                <input type="radio" name="exit_category" id="dist" value="D"/>
+             </label>
+            </div>
+
+            </div>
+
+
             <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
         </div>
         </div>

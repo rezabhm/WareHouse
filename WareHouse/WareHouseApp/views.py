@@ -1449,6 +1449,7 @@ def distribute_form(requests):
 
                 'ft_list': models.FreezingTunnel.objects.all().filter(output_category='D').filter(choice_status=False),
                 'ch_list': models.ColdHouse.objects.all().filter(output_category='D').filter(choice_status=False),
+                'seg_list': models.Segmentation.objects.all().filter(choice_status=False).filter(output_category="D"),
 
                 'driver_list': models.Driver.objects.all(),
                 'car_list': models.Car.objects.all().filter(live_product=False),
@@ -1519,6 +1520,12 @@ def distribute(requests):
             elif fwl_id[0] == 'C':
 
                 x = models.ColdHouse.objects.get(cold_house_primary_key=fwl_id[1:])
+                x.choice_status = True
+                x.save()
+
+            elif fwl_id[0] == 'G':
+
+                x = models.Segmentation.objects.get(segment_id=fwl_id[1:])
                 x.choice_status = True
                 x.save()
 
@@ -1718,9 +1725,9 @@ def freeze_tunnel_enter_form(requests,):
             context = {
 
                 'fwl_list': models.FirstWeightLifting.objects.all().filter(sales_category='F').filter(
-                    weighting_time__gte=(time.time() + information.time_dif )- (60 * 60 * 5)
+                    weighting_time__gte=(time.time() + information.time_dif) - (60 * 60 * 5)
                 ).filter(choice_status=False),
-                'gate_list': [],
+                'seg_list': models.Segmentation.objects.all().filter(choice_status=False).filter(output_category='F'),
                 'request': requests
 
             }
@@ -1777,6 +1784,18 @@ def freeze_tunnel_enter(requests):
             ft_obj.input_type = 'F'
             ft_obj.input_id = fwl_id[1:]
             ft_obj.weight = fwl_obj.weight
+
+        elif fwl_id[0] == 'G':
+
+            seg_obj = models.Segmentation.objects.get(segment_id=fwl_id[1:])
+            seg_obj.choice_status = True
+            seg_obj.save()
+
+            ft_obj.product_category = seg_obj.product_category
+            ft_obj.sub_product_category = seg_obj.sub_product_category
+            ft_obj.input_type = 'G'
+            ft_obj.input_id = fwl_id[1:]
+            ft_obj.weight = seg_obj.weight
 
         # set object user
         if len(freeze_tunnel_manager_list) > 0:
@@ -2123,9 +2142,11 @@ def cold_house_exit_form(requests):
             # load template
             cold_house_exit_temp = loader.get_template('WareHouseApp/cold_house_exit_form.html')
 
+
             context = {
 
                 'cold_house_list': models.ColdHouse.objects.all().filter(pallet_status=True),
+                'paper_list': models.PaperBox.objects.all().filter(box_status=True),
                 'request': requests
 
             }
@@ -2158,14 +2179,56 @@ def cold_house_exit(requests):
         if len(coldHouse_manager) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
 
             # user have access to this page
-            pallet_id = requests.POST['pallet_id']
+            cold_house_primary_key = requests.POST['cold_house_primary_key']
+            exit_category = requests.POST['exit_category']
 
             # get object
-            cold_house_obj = models.ColdHouse.objects.all().filter(pallet_id=pallet_id)[0]
+            cold_house_obj = models.ColdHouse.objects.all().filter(cold_house_primary_key=cold_house_primary_key)[0]
+
+            # move paper box from current cold house object to selected cold-house object
+            for paper_key in requests.POST.keys():
+
+                if paper_key[0] == 'P':
+
+                    # get paper box object
+                    paper = models.PaperBox.objects.get(box_id=paper_key[1:])
+
+                    # change previous cold house object
+                    pre_cold_house = paper.cold_house
+
+                    # set new param
+                    pre_cold_house.number_of_box -= 1
+                    pre_cold_house.weight -= paper.paper_box_weight
+
+                    # save previous cold house object
+                    pre_cold_house.save()
+
+                    # change paper box cold house object
+                    paper.cold_house = cold_house_obj
+
+                    # save changes on paper box object
+                    paper.save()
+
+                    # set new cold house object param
+                    cold_house_obj.number_of_box += 1
+                    cold_house_obj.weight += paper.paper_box_weight
 
             # change param
-            cold_house_obj.exit_time = time.time()
+            cold_house_obj.exit_time = time.time() + information.time_dif
+            cold_house_obj.exit_time_format = time.ctime(time.time() + information.time_dif)
+            cold_house_obj.output_category = exit_category
             cold_house_obj.pallet_status = False
+
+            for paper in models.PaperBox.objects.all().filter(cold_house__cold_house_primary_key=cold_house_primary_key):
+
+                # change paper box param
+                paper.box_status = False
+                paper.box_cold_house_exp = True
+                paper.exit_time = time.time() + information.time_dif
+                paper.exit_time_format = time.ctime(time.time() + information.time_dif)
+
+                # save paper-box object
+                paper.save()
 
             # save object
             cold_house_obj.save()
@@ -2183,23 +2246,135 @@ def cold_house_exit(requests):
         return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
+def segmentation_form(requests):
+
+    """
+    segmentation unit form
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            segment_temp = loader.get_template('WareHouseApp/segmentation.html')
+
+            context = {
+
+                'request': requests,
+                'fwl_list': models.FirstWeightLifting.objects.all().filter(choice_status=False).filter(
+                    sales_category='G'
+                ),
+                'code': random.randint(1000, 9999),
+
+            }
+
+            return HttpResponse(segment_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def segmentation(requests):
+
+    """
+    segmentation unit
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            fwl_id = requests.POST['fwl_id']
+            code = requests.POST['code']
+            weight = float(requests.POST['weight'])
+            bike_weight = float(requests.POST['bike_weight'])
+            box_num = requests.POST['box_num']
+            sub_prod = requests.POST['sub_prod']
+            sales_category = requests.POST['sales_category']
+
+            # get first weightlifting and update it
+            fwl_obj = models.FirstWeightLifting.objects.get(weight_lifting_id=fwl_id)
+
+            # create segmentation model
+            segmentation_model = models.Segmentation()
+
+            segmentation_model.code = str(code)
+            segmentation_model.weight = weight - bike_weight
+            segmentation_model.box_num = box_num
+            segmentation_model.sub_product_category = sub_prod
+            segmentation_model.product_category = fwl_obj.product_category
+            segmentation_model.output_category = sales_category
+            segmentation_model.first_weight_lifting = fwl_obj
+            segmentation_model.segment_id = str(uuid1().int)
+            segmentation_model.segment_time = time.time() - information.time_dif
+            segmentation_model.segment_time_format = time.ctime(time.time() - information.time_dif)
+
+            if len(first_pre_cold_user_list) > 0:
+                segmentation_model.pre_cold_manager = first_pre_cold_user_list[0]
+
+            segmentation_model.save()
+
+            return HttpResponseRedirect(reverse('Segmentation_Form'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def fwl_finish(requests, fwl_id):
+
+    """
+    segmentation unit
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user's list
+        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+            username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+
+            # get first weightlifting and update it
+            fwl_obj = models.FirstWeightLifting.objects.get(weight_lifting_id=fwl_id)
+            fwl_obj.choice_status = True
+            fwl_obj.save()
+
+            return HttpResponseRedirect(reverse('Segmentation_Form'))
+
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
 def company_list(requests):
 
     """
     user can see company list
     """
 
-    # load template
-    company_list_temp = loader.get_template('WareHouseApp/company_list.html')
+    if requests.user.is_superuser:
 
-    context = {
+        # load template
+        company_list_temp = loader.get_template('WareHouseApp/company_list.html')
 
-        'company_list': models.Company.objects.all(),
-        'request': requests
+        context = {
 
-    }
+            'company_list': models.Company.objects.all(),
+            'request': requests
 
-    return HttpResponse(company_list_temp.render(context))
+        }
+
+        return HttpResponse(company_list_temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
 @csrf_exempt
