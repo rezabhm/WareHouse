@@ -6,12 +6,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
-
+from DeviceMaintenance import models as dm_models
 from . import models
 import time
 from uuid import uuid1
 import datetime
 from .Data import information
+from .LIB import utils
+import mimetypes
 
 # Create your views here.
 
@@ -70,6 +72,25 @@ def task(request):
     context = {
 
         'request': request
+
+    }
+
+    return HttpResponse(main_template.render(context))
+
+
+def automation(requests):
+
+    """
+    automation
+    """
+
+    # load main.html for render
+    main_template = loader.get_template('WareHouseApp/automation.html')
+
+    context = {
+
+        'request': requests,
+        'recv_len': len(models.UserAutomation.objects.all().filter(view_status=False))
 
     }
 
@@ -285,6 +306,14 @@ def signup(requests):
 
                 user_model = models.PreColdManager()
 
+            elif user_type == 'task_manager':
+
+                user_model = dm_models.TaskUser()
+
+            elif user_type == 'warehouse_manager':
+
+                user_model = models.SlaughterEmployee()
+
             else:
 
                 # raised error and redirect to error page
@@ -409,7 +438,7 @@ def change_password_form(request, error_text='fill blank'):
         context = {
 
             'error_text': error_text,
-            'request': request
+            'request': request,
         }
 
         return HttpResponse(change_password_form_page.render(context))
@@ -2404,7 +2433,8 @@ def company_user_list(requests):
     return HttpResponse(user_list_temp.render(context))
 
 
-def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_empty='0', product_category='0', slaughter_status='0'):
+def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_empty='0', product_category='0',
+                                  slaughter_status='0'):
 
     """
     show company live WeighBridge data with it filter
@@ -3560,6 +3590,7 @@ def wl_filter(requests):
 
 @csrf_exempt
 def ch_filter(requests):
+
     """
     filter view for cold house list
     """
@@ -3574,3 +3605,460 @@ def ch_filter(requests):
         requests.POST['exist'],
 
     ]))
+
+
+######################################
+######################################
+"""       Automation               """
+######################################
+######################################
+
+
+def automation_file_create_form(requests):
+
+    """
+    create automation
+    """
+
+    if requests.user.is_authenticated:
+
+        html_load = loader.get_template('WareHouseApp/automation_file.html')
+
+        context = {
+
+            'request': requests,
+            'user_list' : User.objects.all(),
+            'code' : random.randint(1000,9999)
+
+        }
+
+        return HttpResponse(html_load.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def automation_file_create(requests):
+
+    """
+    automation file create
+    """
+
+    if requests.user.is_authenticated:
+
+        # get param
+        subject = requests.POST['subject']
+        code = requests.POST['code']
+        file_obj = requests.FILES.get('file')
+
+        print('file object :\n', file_obj)
+
+
+        # create automation
+        automation_obj = models.Automation()
+
+        # set param
+        automation_obj.automation_id = str(uuid1().int)
+        automation_obj.automation_create_time = time.time()
+        automation_obj.automation_create_time_format = time.ctime(time.time())
+        automation_obj.code = str(code)
+        automation_obj.automation_type = 'F'
+        automation_obj.automation_create_user = requests.user
+
+        # save
+        automation_obj.save()
+
+        # automation file
+        automation_file = models.FileAutomation()
+
+        # set param
+        automation_file.file = file_obj
+        automation_file.subject = subject
+        automation_file.file_automation_id = str(uuid1().int)
+        automation_file.automation = automation_obj
+
+        # save
+        automation_file.save()
+
+        for key in requests.POST.keys():
+
+            if key[0] == '@':
+
+                # create user automation
+                user_automation = models.UserAutomation()
+
+                # set param
+                user_automation.user = User.objects.get_by_natural_key(requests.POST[key])
+                user_automation.automation_input_type = 'F'
+                user_automation.automation_input_id = automation_file.file_automation_id
+
+                # save
+                user_automation.save()
+
+        return HttpResponseRedirect(reverse('automation'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def automation_message_create_form(requests):
+
+    """
+    automation message create form
+    """
+    if requests.user.is_authenticated:
+
+        html_load = loader.get_template('WareHouseApp/automation_message.html')
+
+        context = {
+
+            'request': requests,
+            'user_list': User.objects.all(),
+            'code': random.randint(1000, 9999)
+
+        }
+
+        return HttpResponse(html_load.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def automation_message_create(requests):
+
+    """
+    automation file create
+    """
+
+    if requests.user.is_authenticated:
+
+        # get param
+        subject = requests.POST['subject']
+        code = requests.POST['code']
+        content = requests.POST['content']
+
+        # create automation
+        automation_obj = models.Automation()
+
+        # set param
+        automation_obj.automation_id = str(uuid1().int)
+        automation_obj.automation_create_time = time.time()
+        automation_obj.automation_create_time_format = time.ctime(time.time())
+        automation_obj.code = str(code)
+        automation_obj.automation_type = 'M'
+        automation_obj.automation_create_user = User.objects.get(username=requests.user.username)
+
+        # save
+        automation_obj.save()
+
+        # automation message
+        automation_msg = models.MessageAutomation()
+
+        # set param
+        automation_msg.content = content
+        automation_msg.subject = subject
+        automation_msg.message_id = str(uuid1().int)
+        automation_msg.automation = automation_obj
+
+        # save
+        automation_msg.save()
+
+        for key in requests.POST.keys():
+
+            if key[0] == '@':
+
+                # create user automation
+                user_automation = models.UserAutomation()
+
+                # set param
+                user_automation.user = User.objects.get_by_natural_key(requests.POST[key])
+                user_automation.automation_input_type = 'M'
+                user_automation.automation_input_id = automation_msg.message_id
+
+                # save
+                user_automation.save()
+
+        return HttpResponseRedirect(reverse('automation'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def automation_view(requests, id):
+
+    """
+    view automation
+    """
+
+    if requests.user.is_authenticated:
+
+        # get object
+        automation_obj = models.Automation.objects.get(automation_id=id)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if automation_obj.automation_create_user.username == requests.user.username or requests.user.is_superuser or len(ceo_list) > 0:
+
+            if automation_obj.automation_type == 'M':
+
+                sub_automation = models.MessageAutomation.objects.get(automation__automation_id=id)
+
+                if requests.user.is_superuser or len(ceo_list) > 0 :
+                    user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
+
+                else:
+                    user_view = models.UserAutomation.objects.all().filter(
+                        user__username=requests.user.username).filter(automation_input_id=sub_automation.message_id)
+
+                user_viewx = user_view[0]
+
+                if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0:
+
+                    user_viewx.view_status = True
+                    user_viewx.save()
+
+                    temp = loader.get_template('WareHouseApp/automation_view.html')
+
+                    context = {
+
+                        'request': requests,
+                        'automation': automation_obj,
+                        'sub_automation': sub_automation,
+                        'user_automation': models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
+
+                    }
+
+                    return HttpResponse(temp.render(context))
+
+            elif automation_obj.automation_type == 'F':
+
+                sub_automation = models.FileAutomation.objects.get(automation__automation_id=id)
+
+                if requests.user.is_superuser or len(ceo_list) > 0 :
+                    user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.file_automation_id)
+
+                else:
+                    user_view = models.UserAutomation.objects.all().filter(
+                        user__username=requests.user.username).filter(automation_input_id=sub_automation.file_automation_id)
+
+                user_viewx = user_view[0]
+
+                if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0:
+
+                    user_viewx.view_status = True
+                    user_viewx.save()
+
+                    # read data
+                    print(sub_automation.file)
+                    print('file\n\n\n\n')
+                    data = open(sub_automation.file.path, 'rb' )
+                    mime_type, _ = mimetypes.guess_type(sub_automation.file.path)
+                    response = HttpResponse(data, content_type=mime_type)
+                    response['Content-Disposition'] = "attachment; filename=%s" % str(sub_automation.subject)
+
+                    if requests.user.is_superuser or len(ceo_list) > 0:
+                        user_view = models.UserAutomation.objects.all().filter(
+                            automation_input_id=sub_automation.file_automation_id)[0]
+
+                    else:
+                        user_view = models.UserAutomation.objects.all().filter(
+                            user__username=requests.user.username).filter(
+                            automation_input_id=sub_automation.file_automation_id)[0]
+
+                    user_view.view_status = True
+
+                    user_view.save()
+                    return response
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def automation_delete(requests, id):
+
+    """
+    delete automation
+    """
+
+    if requests.user.is_authenticated:
+
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(ceo_list) > 0 or requests.user.is_superuser:
+
+            automation_obj = models.Automation.objects.get(automation_id=id)
+
+            if automation_obj.automation_type == 'M':
+
+                sub_automation = models.MessageAutomation.objects.get(automation__automation_id=id)
+
+                user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
+
+                for user in user_view:
+
+                    user.delete()
+
+                sub_automation.delete()
+                automation_obj.delete()
+
+                return HttpResponseRedirect(reverse('automation'))
+
+            elif automation_obj.automation_type == 'F':
+
+                sub_automation = models.FileAutomation.objects.get(automation__automation_id=id)
+
+                user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.file_automation_id)
+
+                for user in user_view:
+                    user.delete()
+
+                sub_automation.delete()
+
+                automation_obj.delete()
+
+                return HttpResponseRedirect(reverse('automation'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def automation_send_list(requests, status):
+
+    """
+    show automation send list
+    """
+
+    if requests.user.is_authenticated:
+
+        temp = loader.get_template('WareHouseApp/automation_send.html')
+
+        if status == '1':
+
+            file_list = []
+            for file in models.FileAutomation.objects.all().filter(automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id=file.file_automation_id)
+                if usr.view_status == True:
+                    file_list.append([usr, file])
+
+            msg_list = []
+            for msg in models.MessageAutomation.objects.all().filter(
+                    automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id= msg.message_id)
+                if usr.view_status == True:
+                    msg_list.append([usr, msg])
+
+        elif status == '2':
+
+            file_list = []
+            for file in models.FileAutomation.objects.all().filter(
+                    automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id=file.file_automation_id)
+                if usr.view_status == False :
+                    file_list.append([usr, file])
+
+            msg_list = []
+            for msg in models.MessageAutomation.objects.all().filter(
+                    automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id=msg.message_id)
+                if usr.view_status == False :
+                    msg_list.append([usr, msg])
+        else:
+
+            file_list = []
+            for file in models.FileAutomation.objects.all().filter(
+                    automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id=file.file_automation_id)
+                file_list.append([usr, file])
+
+            msg_list = []
+            for msg in models.MessageAutomation.objects.all().filter(
+                    automation__automation_create_user__username=requests.user.username):
+
+                usr = models.UserAutomation.objects.get(automation_input_id=msg.message_id)
+                msg_list.append([usr, msg])
+
+        context = {
+
+            'file_list': file_list,
+            'msg_list': msg_list,
+            'request': requests,
+
+        }
+        print('file: \n',file_list)
+        print()
+        print()
+        print('msg: \n',msg_list)
+        print()
+        print()
+
+        return HttpResponse(temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def automation_recv_list(requests, status):
+
+    """
+    show automation receive list
+    """
+
+    if requests.user.is_authenticated:
+
+        temp = loader.get_template('WareHouseApp/automation_recv.html')
+
+        if status == '1':
+
+            file_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='F').filter(
+                user__username=requests.user.username
+            ).filter(view_status=True)
+
+            msg_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='M').filter(
+                user__username=requests.user.username
+            ).filter(view_status=True)
+
+        elif status == '2':
+
+            file_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='F').filter(
+                user__username=requests.user.username
+            ).filter(view_status=False)
+
+            msg_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='M').filter(
+                user__username=requests.user.username
+            ).filter(view_status=False)
+
+        else:
+
+            file_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='F').filter(
+                user__username=requests.user.username
+            )
+
+            msg_automation_list = models.UserAutomation.objects.all().filter(automation_input_type='M').filter(
+                user__username=requests.user.username
+            )
+
+        file_list = []
+        for usr in file_automation_list:
+
+            # load file object
+            file = models.FileAutomation.objects.get(file_automation_id=usr.automation_input_id)
+            file_list.append([usr, file])
+
+        msg_list = []
+        for usr in msg_automation_list:
+
+            # load file object
+            msg = models.MessageAutomation.objects.get(message_id=usr.automation_input_id)
+            msg_list.append([usr, msg])
+
+        context = {
+
+            'file_list': file_list,
+            'msg_list': msg_list,
+            'request': requests,
+
+        }
+
+        return HttpResponse(temp.render(context))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+

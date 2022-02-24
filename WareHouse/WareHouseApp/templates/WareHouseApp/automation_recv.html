@@ -1,0 +1,163 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% load static %}
+
+ {% block title%}
+
+ <h2>اتوماسیون های دریافتی</h2>
+
+ {% endblock %}
+
+{% block content %}
+
+<div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+        <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+           <div class="col-12 ">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-right-style: solid;
+              border-right-color: #17a2b8;
+              border-right-width: 5px;
+              text-align: right;
+              padding-right: 10px;
+              padding: 5px;
+              color: black;">پیغام های ارسال شده</p>
+           </div>
+
+
+            <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                          <table id="fresh-table" class="table">
+                            <thead>
+                              <th>نام کاربری دریافت کننده</th>
+                              <th>آیا مشاهده کرده است ؟</th>
+                              <th>موضوع پیغام</th>
+                              <th>نام کاربری ارسال کننده</th>
+                              <th>کد اتوماسیون</th>
+                              <th>زمان ارسال</th>
+                              <th>-</th>
+                            {% if request.user.is_superuser %}
+                              <th>-</th>
+                            {% endif %}
+
+                            </thead>
+
+                            {% for data in msg_list %}
+                            <label >
+                                <tbody>
+                                  <tr>
+
+                                    <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
+
+                                    {% if data.0.user.view_status == True %}
+                                    <td style="border-bottom:0px;" >بله</td>
+                                      {% else %}
+                                  <td style="border-bottom:0px;" >خیر</td>
+                                    {% endif %}
+
+                                    <td style="border-bottom:0px;" >{{ data.1.subject }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.automation_create_user.username }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.code }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.automation_create_time_format }}</td>
+                                    <td style="border-bottom:0px;" ><a href="{% url 'Automation_view' id=data.1.automation.automation_id %}">مشاهده</a></td>
+
+                                    {% if request.user.is_superuser %}
+                                      <td style="border-bottom:0px;" ><a href="{% url 'Automation_delete' id=data.1.automation.automation_id %}">حذف</a></td>
+                                    {% endif %}
+
+                                  </tr>
+                                </tbody>
+                            </label>
+                              {% endfor %}
+
+
+
+                          </table>
+
+            </div>
+
+           <div class="col-12 ">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-right-style: solid;
+              border-right-color: #17a2b8;
+              border-right-width: 5px;
+              text-align: right;
+              padding-right: 10px;
+              padding: 5px;
+              color: black;">فایل های ارسال شده</p>
+           </div>
+
+
+
+
+            <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                          <table id="fresh-table2" class="table">
+                            <thead>
+                              <th>نام کاربری دریافت کننده</th>
+                              <th>آیا مشاهده کرده است ؟</th>
+                              <th>موضوع پیغام</th>
+                              <th>نام کاربری ارسال کننده</th>
+                              <th>کد اتوماسیون</th>
+                              <th>زمان ارسال</th>
+                              <th>-</th>
+                                {% if request.user.is_superuser %}
+                                  <th>-</th>
+                                {% endif %}
+
+                            </thead>
+
+                            {% for data in file_list %}
+                            <label >
+                                <tbody>
+                                  <tr>
+
+                                    <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
+
+                                    {% if data.0.user.view_status == True %}
+                                    <td style="border-bottom:0px;" >بله</td>
+                                      {% else %}
+                                  <td style="border-bottom:0px;" >خیر</td>
+                                    {% endif %}
+
+                                    <td style="border-bottom:0px;" >{{ data.1.subject }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.automation_create_user.username }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.code }}</td>
+                                    <td style="border-bottom:0px;" >{{ data.1.automation.automation_create_time_format }}</td>
+                                    <td style="border-bottom:0px;" ><a href="{% url 'Automation_view' id=data.1.automation.automation_id %}">دانلود</a></td>
+
+                                    {% if request.user.is_superuser %}
+                                      <td style="border-bottom:0px;" ><a href="{% url 'Automation_delete' id=data.1.automation.automation_id %}">حذف</a></td>
+                                    {% endif %}
+
+                                  </tr>
+                                </tbody>
+                            </label>
+                              {% endfor %}
+
+
+
+                          </table>
+
+            </div>
+
+
+
+                    <a href="{% url 'Automation_Recv_List' status='0' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">همه</button>
+
+
+                    <a href="{% url 'Automation_Recv_List' status='1' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده شده</button>
+                    <a href="{% url 'Automation_Recv_List' status='2' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده نشده</button>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

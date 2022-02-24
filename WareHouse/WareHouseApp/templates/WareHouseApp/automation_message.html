@@ -1,0 +1,159 @@
+{% extends 'WareHouseApp/main.html' %}
+
+{% load static %}
+
+ {% block title%}
+ <h2>اتوماسیون ارسال فایل</h2>
+ {% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Automation_Message_Create' %}" method="post" id="auto">
+
+    {% csrf_token %}
+    <div class=" cont">
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+    <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 ">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">انتخاب کنید</p>
+      </div>
+
+
+
+
+        <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                          <th>نام کاربری</th>
+                          <th>نام خانوادگی</th>
+                          <th>نام</th>
+                        </thead>
+
+                        {% for user in user_list %}
+                        <label >
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="checkbox" name="@{{ user.username }}" value="{{ user.username }}" id="{{ user.username }}"/></label>
+                                    </div>
+                                </td>
+
+                                <td style="border-bottom:0px;" >{{ user.username }}</td>
+                                <td style="border-bottom:0px;" >{{ user.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ user.name }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+
+   <!-- {% for slaughter in slaughter_list %}
+
+    <label for="{{ slaughter.live_weighbridge_id}}">
+
+        <div class="mt-5 col-6" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-1">
+                   <div class="col-12">
+                     <label for="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}">
+                        <span >Driver</span>
+                        <input type="text" value="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" id="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" name="{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ slaughter.driver.car.car_number }}">
+                        <span >Car</span>
+                        <input type="text" value="{{ slaughter.driver.car.car_number }}" id="{{ slaughter.driver.car.car_number }}" name="{{ slaughter.driver.car.car_number }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}">
+                        <span >Product Owner</span>
+                        <input type="text"  value="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" id="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" name="{{ slaughter.driver.car.product_owner.name }} {{ slaughter.driver.car.product_owner.last_name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ slaughter.final_weight }}">
+                        <span >Car Weight</span>
+                        <input type="text" value="{{ slaughter.final_weight }}" id="{{ slaughter.final_weight }}" name="{{ slaughter.final_weight }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ slaughter.buying_price }}">
+                        <span >Buy Price</span>
+                        <input type="text"  value="{{ slaughter.buying_price }}" id="{{ slaughter.buying_price }}" name="{{ slaughter.buying_price }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                    <label for="{{ slaughter.live_weighbridge_id}}">
+                    <input type="radio" name="slaughter_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/>
+                    </label>
+                   </div>
+
+
+                </div>
+              </div>
+
+         </div>
+&ndash;&gt;
+
+    </label>
+    {% endfor %}-->
+
+
+     <div class="col-12 mt-5 mb-2">
+         <p class="partition" style="background-color: lavender;
+          border-radius: 2px;
+          border-right-style: solid;
+          border-right-color: #17a2b8;
+          border-right-width: 5px;
+          text-align: right;
+          padding-right: 10px;
+          padding: 5px;
+          color: black;">فرم زیر را پر کنید</p>
+     </div>
+
+     <div class="col-6">
+         <label for="code">
+            <span >کد اتوماسیون :</span>
+            <span >{{ code }}</span>
+            <input type="hidden" id="code" name="code" value="{{ code }}" />
+         </label>
+     </div>
+
+     <div class="col-6">
+         <label for="subject">
+            <span >موضوع ارسال اتوماسیون :</span>
+            <input type="text" id="subject" name="subject" />
+         </label>
+     </div>
+
+     <div class="col-12">
+         <label for="content">
+            <span >متن پیغام را وارد کنید : </span>
+            <textarea rows="10" cols="50" name="content" id='content' form="auto">پیغام ...</textarea>
+         </label>
+     </div>
+
+    </div>
+        <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+    </div>
+    </div>
+
+</form>
+
+{% endblock %}

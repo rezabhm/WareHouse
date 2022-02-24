@@ -104,6 +104,7 @@ urlpatterns = [
     re_path(r'^first_WeightLifting/$', views.first_weightlifting_main, name='first_WeightLifting'),
     re_path(r'^monitor_data/$', views.monitor_data, name='monitor_data'),
     re_path(r'^task/$', views.task, name='task'),
+    re_path(r'^automation/$', views.automation, name='automation'),
     re_path(r'^error/(?P<error_text>.*)', views.error, name='Error'),
 
     # user url
@@ -191,5 +192,17 @@ urlpatterns = [
             views.cold_house_list, name='Cold_House_List'),
 
     re_path(r'ch/filter/$', views.ch_filter, name='CH_Filter'),
+
+    # automations
+    re_path(r'^automation/file/create/form/$', views.automation_file_create_form, name='Automation_File_Create_Form'),
+    re_path(r'^automation/file/create/$', views.automation_file_create, name='Automation_File_Create'),
+    re_path(r'^automation/message/create/form/$', views.automation_message_create_form,
+            name='Automation_Message_Create_Form'),
+
+    re_path(r'^automation/message/create/$', views.automation_message_create, name='Automation_Message_Create'),
+    re_path(r'^automation/view/(?P<id>[\w]+)/$', views.automation_view, name='Automation_view'),
+    re_path(r'^automation/send/list/(?P<status>[\d]{1})/$', views.automation_send_list, name='Automation_Send_List'),
+    re_path(r'^automation/recv/list/(?P<status>[\d]{1})/$', views.automation_recv_list, name='Automation_Recv_List'),
+    re_path(r'^automation/delete/(?P<id>[\w]+)/$', views.automation_delete, name='Automation_delete'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

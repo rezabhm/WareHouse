@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 from django.contrib.auth.models import User
 from uuid import uuid1
@@ -265,6 +267,33 @@ class PreColdManager(models.Model):
 
     # Pre Cold Manager uuid
     Pre_Cold_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
+
+    # relation
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.username)
+
+
+class SlaughterEmployee(models.Model):
+
+    """
+    slaughter employee for automation
+    """
+
+    # username for Pre Cold Manager
+    username = models.CharField(max_length=25)
+
+    # Pre Cold Manager name and lastname
+    name = models.CharField(max_length=25)
+    lastname = models.CharField(max_length=25)
+
+    # Pre Cold Manager phone number
+    phone_number = models.CharField(max_length=12)
+
+    # Pre Cold Manager uuid
+    Slaughter_Employee_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # relation
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
@@ -1054,3 +1083,151 @@ class Segmentation(models.Model):
 
     def __str__(self):
         return str(self.segment_id)
+
+
+class Automation(models.Model):
+
+    """
+    automation table for store all automation file and data
+
+    column's table:
+
+        1. id
+        2. automation create time
+        3. automation create time format
+        4. automation create username
+        5. automation type
+        6. code
+
+    """
+
+    # automation id for find automation
+    automation_id = models.CharField(max_length=150)
+
+    # create time
+    automation_create_time = models.FloatField()
+    automation_create_time_format = models.CharField(max_length=50)
+
+    # code
+    code = models.CharField(max_length=10, default=random.randint(1000,9999))
+
+    # automation type
+    auto_type = (
+
+        ('M', 'message'),
+        ('F', 'file'),
+
+    )
+    automation_type = models.CharField(max_length=1, choices=auto_type, default='F')
+
+    # save create username
+    automation_create_user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.automation_create_user
+
+
+class FileAutomation(models.Model):
+
+    """
+    sub automation table
+
+    tables column :
+
+        1. id
+        2. file
+        3. subject
+
+    relation :
+
+        1. ForeignKey --> Automation
+
+    """
+
+    # file automation id
+    file_automation_id = models.CharField(max_length=150)
+
+    # file
+    file = models.FileField(upload_to='WareHouseApp/file/')
+
+    # subject
+    subject = models.CharField(max_length=100, default='')
+
+    # relation
+    automation = models.OneToOneField(Automation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.file)
+
+
+class MessageAutomation(models.Model):
+
+    """
+    message automation for send message to another user
+
+    columns name :
+
+        1. id
+        2. subject
+        3. content
+
+    relation :
+
+        1. Automation
+
+    """
+
+    # id
+    message_id = models.CharField(max_length=150)
+
+    # subject
+    subject = models.CharField(max_length=100, default='')
+
+    # content
+    content = models.TextField()
+
+    # relation
+    automation = models.OneToOneField(Automation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.subject)
+
+
+class UserAutomation(models.Model):
+
+    """
+    user automation
+
+    tables name :
+
+        1. automation input type
+        2. automation input id
+        3. view status
+
+    relation :
+
+        1. ForeignKey --> user
+
+    """
+
+    # automation input type
+    input_type = (
+
+        ('F', 'File'),
+        ('M', 'Message'),
+
+    )
+    automation_input_type = models.CharField(max_length=1, choices=input_type)
+
+    # automation input id
+    automation_input_id = models.CharField(max_length=150)
+
+    # view status to determine target user see this or not
+    # if equal True it means user see it
+    view_status = models.BooleanField(default=False)
+
+    # relation
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.automation_input_id)
