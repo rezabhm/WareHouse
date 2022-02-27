@@ -314,6 +314,10 @@ def signup(requests):
 
                 user_model = models.SlaughterEmployee()
 
+            elif user_type == 'seg_manager':
+
+                user_model = models.Segmentation()
+
             else:
 
                 # raised error and redirect to error page
@@ -811,7 +815,10 @@ def lwb_create(requests):
             lwb_obj.product_num_in_cage = product_num_in_cage
             lwb_obj.final_weight = car_weight
             lwb_obj.weighting_date = time.time() + information.time_dif
-            lwb_obj.weighting_date_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+            lwb_obj.weighting_date_format = t
             lwb_obj.lwb_category = 'W'
 
             if len(lwb_user_list) > 0:
@@ -893,7 +900,7 @@ def lwb_start_slaughter_form(requests):
             context = {
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=False).filter(
-                    finish = False
+                    finish=False
                 ).filter(
                     weighting_date__gte=time.time()-(60*60*6)
 
@@ -943,7 +950,10 @@ def lwb_start_slaughter(requests):
                 # change information
                 lwb_obj.slaughter_status = True
                 lwb_obj.slaughter_start_date = time.time() + information.time_dif
-                lwb_obj.slaughter_start_date_format = time.ctime(time.time() + information.time_dif)
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+                lwb_obj.slaughter_start_date_format = t
 
                 # save changes
                 lwb_obj.save()
@@ -1030,7 +1040,11 @@ def lwb_finish_slaughter(requests):
                 lwb_obj.slaughter_status = False
                 lwb_obj.finish = True
                 lwb_obj.slaughter_finish_date = time.time() + information.time_dif
-                lwb_obj.slaughter_finish_date_format = time.ctime(time.time() + information.time_dif)
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                lwb_obj.slaughter_finish_date_format = t
 
                 # save changes
                 lwb_obj.save()
@@ -1224,7 +1238,10 @@ def first_weightlifting(requests):
             fwl.sales_category = sales_category
             fwl.weight_lifting_id = str(uuid1().int)
             fwl.weighting_time = time.time() + information.time_dif
-            fwl.weighting_time_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+            fwl.weighting_time_format = t
             fwl.code = str(code)
             fwl.class_product = product_class
 
@@ -1322,7 +1339,11 @@ def pre_cold_enter(requests):
             pc.pre_cold_id = pc_id
             pc.pc_id = str(uuid1().int)
             pc.entry_time = time.time() + information.time_dif
-            pc.entry_time_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            pc.entry_time_format = t
 
             # relation
             fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
@@ -1419,7 +1440,11 @@ def pre_cold_exit(requests):
                 # set param
                 pc_obj.product_pre_cold_status = False
                 pc_obj.exit_time = time.time() + information.time_dif
-                pc_obj.exit_time_format = time.ctime(time.time() + information.time_dif)
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                pc_obj.exit_time_format = t
                 pc_obj.out_category = exit_category
                 pc_obj.First_Weight_Lifting.sales_category = exit_category
                 pc_obj.First_Weight_Lifting.choice_status = False
@@ -1525,8 +1550,12 @@ def distribute(requests):
             dist_obj = models.Distributed()
 
             # set param
-            dist_obj.date = time.time() - information.time_dif
-            dist_obj.date_format = time.ctime(time.time() - information.time_dif)
+            dist_obj.date = time.time() + information.time_dif
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            dist_obj.date_format = t
             dist_obj.weight = weight - box_weight - (int(number_of_box) * information.box_weight)
             dist_obj.sale_price = sale_price
             dist_obj.bill_of_lading = str(uuid1().int)
@@ -1800,7 +1829,11 @@ def freeze_tunnel_enter(requests):
         ft_obj.box_num = int(box_num)
         ft_obj.freeze_tunnel_id = str(uuid1().int)
         ft_obj.entry_date = time.time() + information.time_dif
-        ft_obj.entry_date_format = time.ctime(time.time() + information.time_dif)
+        t = time.ctime(time.time() + information.time_dif).split()
+        year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+        t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+        ft_obj.entry_date_format = t
 
         if fwl_id[0] == 'F':
 
@@ -1901,8 +1934,12 @@ def freeze_tunnel_exit(requests):
             ft_obj = models.FreezingTunnel.objects.all().filter(freeze_tunnel_id=ft_id)[0]
 
             # set param
-            ft_obj.exit_date = time.time() - information.time_dif
-            ft_obj.exit_date_format = time.ctime(time.time() - information.time_dif)
+            ft_obj.exit_date = time.time() + information.time_dif
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            ft_obj.exit_date_format = t
             ft_obj.status = False
             ft_obj.output_category = out_type
 
@@ -1987,7 +2024,10 @@ def paper_box_create(requests):
             paper_box_obj.paper_box_weight = weight
             paper_box_obj.box_id = str(uuid1().int)
             paper_box_obj.packing_time = time.time() + information.time_dif
-            paper_box_obj.packing_time_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+            paper_box_obj.packing_time_format = t
             paper_box_obj.box_cold_house_exp = True
 
             # get cold house object
@@ -2108,7 +2148,11 @@ def cold_house_enter(requests):
             cold_house_obj.cold_house_id = cold_house_id
             cold_house_obj.cold_house_primary_key = str(uuid1().int)
             cold_house_obj.entry_date = time.time() + information.time_dif
-            cold_house_obj.entry_date_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            cold_house_obj.entry_date_format = t
             cold_house_obj.pallet_id = pallet_id
 
             # get freeze tunnel object
@@ -2136,7 +2180,11 @@ def cold_house_enter(requests):
                 paper_box_obj.expiration_time = int(expiration_time)
                 paper_box_obj.box_id = str(uuid1().int)
                 paper_box_obj.packing_time = time.time() + information.time_dif
-                paper_box_obj.packing_time_format = time.ctime(time.time() + information.time_dif)
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                paper_box_obj.packing_time_format = t
                 paper_box_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
                 paper_box_obj.save()
@@ -2244,7 +2292,11 @@ def cold_house_exit(requests):
 
             # change param
             cold_house_obj.exit_time = time.time() + information.time_dif
-            cold_house_obj.exit_time_format = time.ctime(time.time() + information.time_dif)
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            cold_house_obj.exit_time_format = t
             cold_house_obj.output_category = exit_category
             cold_house_obj.pallet_status = False
 
@@ -2254,7 +2306,11 @@ def cold_house_exit(requests):
                 paper.box_status = False
                 paper.box_cold_house_exp = True
                 paper.exit_time = time.time() + information.time_dif
-                paper.exit_time_format = time.ctime(time.time() + information.time_dif)
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                paper.exit_time_format = t
 
                 # save paper-box object
                 paper.save()
@@ -2345,8 +2401,12 @@ def segmentation(requests):
             segmentation_model.output_category = sales_category
             segmentation_model.first_weight_lifting = fwl_obj
             segmentation_model.segment_id = str(uuid1().int)
-            segmentation_model.segment_time = time.time() - information.time_dif
-            segmentation_model.segment_time_format = time.ctime(time.time() - information.time_dif)
+            segmentation_model.segment_time = time.time() + information.time_dif
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            segmentation_model.segment_time_format = t
 
             if len(first_pre_cold_user_list) > 0:
                 segmentation_model.pre_cold_manager = first_pre_cold_user_list[0]
@@ -2513,14 +2573,14 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
                 else:
                     prod = 'Nothing'
 
-                lwb_list_final.append([time.ctime(lwb.weighting_date), lwb.car_weight,
+                lwb_list_final.append([lwb.weighting_date_format, lwb.car_weight,
                     lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
-                   time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
-                   time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
+                   lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
+                   lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
                    prod,
                    lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name,
-                                       lwb.avicultureـname , lwb.avicultureـcity])
+                                       lwb.avicultureـname, lwb.avicultureـcity])
 
             context = {
 
@@ -2637,7 +2697,7 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
                     dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
                     dist.driver.car.car_number,
                     dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.weight, dist.date_format, dist.sale_price, prod_category,
                     dist.bill_of_lading, dist.number_of_box
 
                 ])
@@ -2661,10 +2721,10 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
                     lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
-                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, lwb.weighting_date_format,
                     prod_category, lwb.slaughter_status,
-                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
-                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
+                    lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
+                    lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
                     lwb.buy_price, lwb.avicultureـname,lwb.avicultureـcity
 
                 ])
@@ -2788,7 +2848,7 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
                     dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
                     dist.driver.car.car_number,
                     dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.weight, dist.date_format, dist.sale_price, prod_category,
                     dist.bill_of_lading, dist.number_of_box
 
                 ])
@@ -2812,10 +2872,10 @@ def car_list(requests, car_number='0', product_category='0', model_type='0', yea
                     lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
-                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, lwb.weighting_date_format,
                     prod_category, lwb.slaughter_status,
-                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
-                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
+                    lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
+                    lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
                     lwb.buy_price, lwb.avicultureـname, lwb.avicultureـcity
 
                 ])
@@ -2997,7 +3057,7 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
                     dist.driver.car.car_number,
                     dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.weight, dist.date_format, dist.sale_price, prod_category,
                     dist.bill_of_lading, dist.number_of_box
 
                 ])
@@ -3021,10 +3081,10 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     lwb.driver.name, lwb.driver.last_name, lwb.driver.phone_number,
                     lwb.driver.car.car_number,
                     lwb.driver.car.product_owner.name, lwb.driver.car.product_owner.last_name,
-                    lwb.final_weight, lwb.car_weight, lwb.car_empty, time.ctime(lwb.weighting_date),
+                    lwb.final_weight, lwb.car_weight, lwb.car_empty, lwb.weighting_date_format,
                     prod_category, lwb.slaughter_status,
-                    time.ctime(lwb.slaughter_start_date) if lwb.slaughter_start_date else '-',
-                    time.ctime(lwb.slaughter_finish_date) if lwb.slaughter_finish_date else '-',
+                    lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
+                    lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
                     lwb.buy_price, lwb.avicultureـname, lwb.avicultureـcity
 
                 ])
@@ -3051,7 +3111,7 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.last_name,
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.phone_number,
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    time.ctime(pd.First_Weight_Lifting.weighting_time),
+                    pd.First_Weight_Lifting.weighting_time_format,
                     pd.First_Weight_Lifting.weight,
                     'pre-cold',
                     pd.pre_cold_id,
@@ -3059,8 +3119,8 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     pd.product_pre_cold_status,
                     prod_category,
                     pd.weight,
-                    time.ctime(pd.entry_time),
-                    '-' if pd.product_pre_cold_status else time.ctime(pd.exit_time),
+                    pd.entry_time_format,
+                    '-' if pd.product_pre_cold_status else pd.exit_time_format,
 
                 ])
 
@@ -3086,11 +3146,11 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.last_name,
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.phone_number,
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    time.ctime(ft.first_weight_lifting.weighting_time),
+                    ft.first_weight_lifting.weighting_time_format,
                     ft.first_weight_lifting.weight,
                     'freeze tunnel',
-                    time.ctime(ft.entry_date),
-                    '-' if ft.status else time.ctime(ft.exit_date),
+                    ft.entry_date_format,
+                    '-' if ft.status else ft.exit_date_format,
                     ft.weight,
                     ft.tunnel_id,
                     ft.pallet_id,
@@ -3247,7 +3307,7 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                     dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
                     dist.driver.car.car_number,
                     dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, time.ctime(dist.date), dist.sale_price, prod_category,
+                    dist.weight, dist.date_format, dist.sale_price, prod_category,
                     dist.bill_of_lading, dist.number_of_box
 
                 ])
@@ -3274,7 +3334,7 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.last_name,
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.phone_number,
                     pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    time.ctime(pd.First_Weight_Lifting.weighting_time),
+                    pd.First_Weight_Lifting.weighting_time_format,
                     pd.First_Weight_Lifting.weight,
                     'pre-cold',
                     pd.pre_cold_id,
@@ -3282,8 +3342,8 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                     pd.product_pre_cold_status,
                     prod_category,
                     pd.weight,
-                    time.ctime(pd.entry_time),
-                    '-' if pd.product_pre_cold_status else time.ctime(pd.exit_time),
+                    pd.entry_time_format,
+                    '-' if pd.product_pre_cold_status else pd.exit_time_format,
 
                 ])
 
@@ -3309,11 +3369,11 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.last_name,
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.phone_number,
                     ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    time.ctime(ft.first_weight_lifting.weighting_time),
+                    ft.first_weight_lifting.weighting_time_format,
                     ft.first_weight_lifting.weight,
                     'freeze tunnel',
-                    time.ctime(ft.entry_date),
-                    '-' if ft.status else time.ctime(ft.exit_date),
+                    ft.entry_date_format,
+                    '-' if ft.status else ft.exit_date_format,
                     ft.weight,
                     ft.tunnel_id,
                     ft.pallet_id,
@@ -3429,8 +3489,8 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
 
                 ch_final_list.append([
 
-                    time.ctime(ch.entry_date),
-                    '-' if ch.pallet_status else time.ctime(ch.exit_date),
+                    ch.entry_date_format,
+                    '-' if ch.pallet_status else ch.exit_date_format,
                     ch.pallet_status,
                     ch.total_pallet_weight,
                     ch.pallet_weight_without_product,
@@ -3470,7 +3530,7 @@ def cold_house_list(requests, product_category='0', model_type='0', year='0', mo
                         pb.paper_box_weight,
                         pb.box_status,
                         pb.number_of_product,
-                        time.ctime(pb.packing_time),
+                        pb.packing_time_format,
                         pb.box_id,
                         pb.cold_house.pallet_id,
                         pb.cold_house.cold_house_id,
@@ -3659,8 +3719,12 @@ def automation_file_create(requests):
 
         # set param
         automation_obj.automation_id = str(uuid1().int)
-        automation_obj.automation_create_time = time.time()
-        automation_obj.automation_create_time_format = time.ctime(time.time())
+        automation_obj.automation_create_time = time.time() + information.time_dif
+        t = time.ctime(time.time() + information.time_dif).split()
+        year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+        t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+        automation_obj.automation_create_time_format = t
         automation_obj.code = str(code)
         automation_obj.automation_type = 'F'
         automation_obj.automation_create_user = requests.user
@@ -3741,8 +3805,12 @@ def automation_message_create(requests):
 
         # set param
         automation_obj.automation_id = str(uuid1().int)
-        automation_obj.automation_create_time = time.time()
-        automation_obj.automation_create_time_format = time.ctime(time.time())
+        automation_obj.automation_create_time = time.time() + information.time_dif
+        t = time.ctime(time.time() + information.time_dif).split()
+        year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+        t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+        automation_obj.automation_create_time_format = t
         automation_obj.code = str(code)
         automation_obj.automation_type = 'M'
         automation_obj.automation_create_user = User.objects.get(username=requests.user.username)
@@ -3794,78 +3862,76 @@ def automation_view(requests, id):
         automation_obj = models.Automation.objects.get(automation_id=id)
         ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
 
-        if automation_obj.automation_create_user.username == requests.user.username or requests.user.is_superuser or len(ceo_list) > 0:
+        if automation_obj.automation_type == 'M':
 
-            if automation_obj.automation_type == 'M':
+            sub_automation = models.MessageAutomation.objects.get(automation__automation_id=id)
 
-                sub_automation = models.MessageAutomation.objects.get(automation__automation_id=id)
+            if requests.user.is_superuser or len(ceo_list) > 0:
+                user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
 
-                if requests.user.is_superuser or len(ceo_list) > 0 :
-                    user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
+            else:
+                user_view = models.UserAutomation.objects.all().filter(
+                    user__username=requests.user.username).filter(automation_input_id=sub_automation.message_id)
+
+            user_viewx = user_view[0]
+
+            if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0 or automation_obj.automation_create_user.username == requests.user.username:
+
+                user_viewx.view_status = True
+                user_viewx.save()
+
+                temp = loader.get_template('WareHouseApp/automation_view.html')
+
+                context = {
+
+                    'request': requests,
+                    'automation': automation_obj,
+                    'sub_automation': sub_automation,
+                    'user_automation': models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
+
+                }
+
+                return HttpResponse(temp.render(context))
+
+        elif automation_obj.automation_type == 'F':
+
+            sub_automation = models.FileAutomation.objects.get(automation__automation_id=id)
+
+            if requests.user.is_superuser or len(ceo_list) > 0 :
+                user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.file_automation_id)
+
+            else:
+                user_view = models.UserAutomation.objects.all().filter(
+                    user__username=requests.user.username).filter(automation_input_id=sub_automation.file_automation_id)
+
+            user_viewx = user_view[0]
+
+            if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0 or automation_obj.automation_create_user.username == requests.user.username:
+
+                user_viewx.view_status = True
+                user_viewx.save()
+
+                # read data
+                print(sub_automation.file)
+                print('file\n\n\n\n')
+                data = open(sub_automation.file.path, 'rb' )
+                mime_type, _ = mimetypes.guess_type(sub_automation.file.path)
+                response = HttpResponse(data, content_type=mime_type)
+                response['Content-Disposition'] = "attachment; filename=%s" % str(sub_automation.subject)
+
+                if requests.user.is_superuser or len(ceo_list) > 0:
+                    user_view = models.UserAutomation.objects.all().filter(
+                        automation_input_id=sub_automation.file_automation_id)[0]
 
                 else:
                     user_view = models.UserAutomation.objects.all().filter(
-                        user__username=requests.user.username).filter(automation_input_id=sub_automation.message_id)
+                        user__username=requests.user.username).filter(
+                        automation_input_id=sub_automation.file_automation_id)[0]
 
-                user_viewx = user_view[0]
+                user_view.view_status = True
 
-                if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0:
-
-                    user_viewx.view_status = True
-                    user_viewx.save()
-
-                    temp = loader.get_template('WareHouseApp/automation_view.html')
-
-                    context = {
-
-                        'request': requests,
-                        'automation': automation_obj,
-                        'sub_automation': sub_automation,
-                        'user_automation': models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.message_id)
-
-                    }
-
-                    return HttpResponse(temp.render(context))
-
-            elif automation_obj.automation_type == 'F':
-
-                sub_automation = models.FileAutomation.objects.get(automation__automation_id=id)
-
-                if requests.user.is_superuser or len(ceo_list) > 0 :
-                    user_view = models.UserAutomation.objects.all().filter(automation_input_id=sub_automation.file_automation_id)
-
-                else:
-                    user_view = models.UserAutomation.objects.all().filter(
-                        user__username=requests.user.username).filter(automation_input_id=sub_automation.file_automation_id)
-
-                user_viewx = user_view[0]
-
-                if len(user_view) > 0 or requests.user.is_superuser or ceo_list > 0:
-
-                    user_viewx.view_status = True
-                    user_viewx.save()
-
-                    # read data
-                    print(sub_automation.file)
-                    print('file\n\n\n\n')
-                    data = open(sub_automation.file.path, 'rb' )
-                    mime_type, _ = mimetypes.guess_type(sub_automation.file.path)
-                    response = HttpResponse(data, content_type=mime_type)
-                    response['Content-Disposition'] = "attachment; filename=%s" % str(sub_automation.subject)
-
-                    if requests.user.is_superuser or len(ceo_list) > 0:
-                        user_view = models.UserAutomation.objects.all().filter(
-                            automation_input_id=sub_automation.file_automation_id)[0]
-
-                    else:
-                        user_view = models.UserAutomation.objects.all().filter(
-                            user__username=requests.user.username).filter(
-                            automation_input_id=sub_automation.file_automation_id)[0]
-
-                    user_view.view_status = True
-
-                    user_view.save()
-                    return response
+                user_view.save()
+                return response
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
@@ -3984,12 +4050,6 @@ def automation_send_list(requests, status):
             'request': requests,
 
         }
-        print('file: \n',file_list)
-        print()
-        print()
-        print('msg: \n',msg_list)
-        print()
-        print()
 
         return HttpResponse(temp.render(context))
 

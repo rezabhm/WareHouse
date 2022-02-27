@@ -104,11 +104,11 @@ class PreColdManagerAdmin(admin.ModelAdmin):
 
 @admin.register(models.ProductOwner)
 class ProductOwnerAdmin(admin.ModelAdmin):
-    list_display = ["name",'last_name', "product_owner_id", ]
+    list_display = ["name", 'last_name', "product_owner_id", ]
 
     fieldsets = (
 
-        ("information product_owner", {"fields": ("name", 'last_name',"product_owner_id")}),
+        ("information product_owner", {"fields": ("name", 'last_name', "product_owner_id")}),
 
     )
 
@@ -121,7 +121,8 @@ class CarAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("car information", {"fields": ("car_number", "live_product", "car_id", )}),
+        ("car information", {"fields": ("car_number", "car_number1", "car_number2", "car_number3", "car_number4",
+                                        "live_product", "car_id", )}),
         ("relation information", {"fields": ("product_owner",)}),
 
     )
@@ -152,11 +153,19 @@ class LiveWeighbridgeAdmin(admin.ModelAdmin):
 
     fieldsets = (
 
-        ("Time information", {"fields": ("slaughter_status", "slaughter_start_date", "slaughter_finish_date",
-         "weighting_date", )}),
-        ("Weight information", {"fields": ("final_weight", "car_weight", "car_empty",)}),
+        ("Time information", {"fields": ("slaughter_status", "slaughter_start_date", "slaughter_start_date_format",
+                                         "slaughter_finish_date", "slaughter_finish_date_format", "weighting_date",
+                                         "weighting_date_format"
+
+                                         )}),
+        ("Weight information", {"fields": ("final_weight", "car_weight", "car_empty", 'finish',
+                                           "avicultureـcity", "avicultureـname", "order_weight", "cage_num",
+                                           "product_num_in_cage", "losses_num", "losses_weight", "victim_num",
+                                           "victim_weight"
+
+                                           )}),
         ("other information", {"fields": ("live_weighbridge_id", "product_category", "buy_price", )}),
-        ("relation information", {"fields": ("driver", "Live_Weighbridge_Manager")}),
+        ("relation information", {"fields": ("driver", "Live_Weighbridge_Manager", "car", "product_owner")}),
 
     )
 
@@ -178,6 +187,7 @@ class FirstWeightLiftingAdmin(admin.ModelAdmin):
     list_filter = ["product_category", ]
 
 """
+
 @admin.register(models.PreCold)
 class PreColdAdmin(admin.ModelAdmin):
     list_display = ["entry_time", "exit_time", "weight", "product_category", "pre_cold_id",
