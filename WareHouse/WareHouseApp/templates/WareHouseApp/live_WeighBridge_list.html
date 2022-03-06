@@ -27,19 +27,30 @@
                       <table id="fresh-table" class="table">
                         <thead>
                           <th>زمان وزن کشی</th>
-                          <th>وزن ماشین</th>
-                          <th>وزن ماشین با محصول</th>
-                          <th>وضعیت موجودی ماشین </th>
+                          <th>وزن پر</th>
+                          <th>وزن خالی</th>
+                          <th>وزن خالص</th>
+                          <th>وزن هر محصول</th>
+                          <th>وزن سفارش پر کنده </th>
+                          <th>وزن ضایعات </th>
+                          <th>تعداد ضایعات </th>
+                          <th>وزن تلفات</th>
+                          <th>تعداد تلفات</th>
+                          <th>تعداد قفس</th>
+                          <th>تعداد محصول در قفس</th>
+                          <th>تعداد کل</th>
                           <th>قیمت خرید</th>
-                          <th>وضعیت کشتار </th>
-                          <th>زمان شروع کشتار </th>
-                          <th>زمان پایان کشتار </th>
+                          <th>قیمت کل خرید</th>
+                          <th>قیمت خرید هر محصول</th>
+                          <th>زمان شروع کشتار</th>
+                          <th>زمان پایان کشتار</th>
                           <th>نوع محصول</th>
-                          <th>نام و نام خانوادگی راننده</th>
+                          <th>راننده</th>
                           <th>شماره پلاک ماشین</th>
-                          <th>نام و نام خانوادگی صاحبت محصول</th>
+                          <th>صاحب محصول</th>
                           <th>نام مرغداری</th>
                           <th>استان مرغداری</th>
+
                         </thead>
 
                         {% for lwb in lwb_list %}
@@ -54,28 +65,131 @@
                                 <td>{{ lwb.5 }}</td>
                                 <td>{{ lwb.6 }}</td>
                                 <td>{{ lwb.7 }}</td>
-
-                                  {% if lwb.8  == 'chicken' %}
-                                    <td>مرغ</td>
-                                  {% elif lwb.8  == 'turkey' %}
-                                    <td>بوقلمون</td>
-                                  {% elif lwb.8  == 'quail' %}
-                                    <td>بلدرچین</td>
-                                  {% else %}
-                                    <td>-</td>
-                                  {% endif %}
-
+                                <td>{{ lwb.8 }}</td>
                                 <td>{{ lwb.9 }}</td>
                                 <td>{{ lwb.10 }}</td>
                                 <td>{{ lwb.11 }}</td>
                                 <td>{{ lwb.12 }}</td>
                                 <td>{{ lwb.13 }}</td>
+                                <td>{{ lwb.14 }}</td>
+                                <td>{{ lwb.15 }}</td>
+                                <td>{{ lwb.16 }}</td>
+                                <td>{{ lwb.17 }}</td>
+
+                                  {% if lwb.18  == 'chicken' %}
+                                    <td>مرغ</td>
+                                  {% elif lwb.18  == 'turkey' %}
+                                    <td>بوقلمون</td>
+                                  {% elif lwb.18  == 'quail' %}
+                                    <td>بلدرچین</td>
+                                  {% else %}
+                                    <td>-</td>
+                                  {% endif %}
+
+                                <td>{{ lwb.19 }}</td>
+                                <td>{{ lwb.20 }}</td>
+                                <td>{{ lwb.21 }}</td>
+                                <td>{{ lwb.22 }}</td>
+                                <td>{{ lwb.23 }}</td>
                               </tr>
                             </tbody>
                         </label>
                           {% endfor %}
                       </table>
              </div>
+
+
+
+             <div class="col-12 mt-5 ">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                   border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">گزارش کلی</p>
+             </div>
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow-x: scroll;">
+
+                      <table id="fresh-table2" class="table">
+                        <thead>
+                          <th>نوع محصول</th>
+                          <th>وزن خالی</th>
+                          <th>وزن پر</th>
+                          <th>وزن خالص</th>
+                          <th>وزن هر محصول</th>
+                          <th>قیمت کل خرید</th>
+                          <th>قیمت خرید هر محصول </th>
+                          <th>تعداد ضایعات </th>
+                          <th>وزن ضایعات </th>
+                          <th>تعداد تلفات</th>
+                          <th>وزن تلفات</th>
+                          <th>تعداد کل</th>
+
+                        </thead>
+
+                        <label >
+                            <tbody>
+
+
+                              <tr>
+                                    <td>مرغ</td>
+                                    <td>{{ report.0.car_weight }}</td>
+                                    <td>{{ report.0.car_final_weight }}</td>
+                                    <td>{{ report.0.weight }}</td>
+                                    <td>{{ report.0.average_weight }}</td>
+                                    <td>{{ report.0.total_buy_price }}</td>
+                                    <td>{{ report.0.average_each_buy_price }}</td>
+                                    <td>{{ report.0.losses_num }}</td>
+                                    <td>{{ report.0.losses_weight }}</td>
+                                    <td>{{ report.0.victim_num }}</td>
+                                    <td>{{ report.0.victim_weight }}</td>
+                                    <td>{{ report.0.total_num }}</td>
+
+                              </tr>
+
+                              <tr>
+                                   <td>بوقلمون</td>
+                                    <td>{{ report.1.car_weight }}</td>
+                                    <td>{{ report.1.car_final_weight }}</td>
+                                    <td>{{ report.1.weight }}</td>
+                                    <td>{{ report.1.average_weight }}</td>
+                                    <td>{{ report.1.total_buy_price }}</td>
+                                    <td>{{ report.1.average_each_buy_price }}</td>
+                                    <td>{{ report.1.losses_num }}</td>
+                                    <td>{{ report.1.losses_weight }}</td>
+                                    <td>{{ report.1.victim_num }}</td>
+                                    <td>{{ report.1.victim_weight }}</td>
+                                    <td>{{ report.1.total_num }}</td>
+
+                              </tr>
+
+
+                              <tr>
+                                   <td>بلدرچین</td>
+                                    <td>{{ report.2.car_weight }}</td>
+                                    <td>{{ report.2.car_final_weight }}</td>
+                                    <td>{{ report.2.weight }}</td>
+                                    <td>{{ report.2.average_weight }}</td>
+                                    <td>{{ report.2.total_buy_price }}</td>
+                                    <td>{{ report.2.average_each_buy_price }}</td>
+                                    <td>{{ report.2.losses_num }}</td>
+                                    <td>{{ report.2.losses_weight }}</td>
+                                    <td>{{ report.2.victim_num }}</td>
+                                    <td>{{ report.2.victim_weight }}</td>
+                                    <td>{{ report.2.total_num }}</td>
+
+                              </tr>
+
+                            </tbody>
+                        </label>
+                      </table>
+             </div>
+
+
+
          </div>
     </div>
 
@@ -116,21 +230,41 @@
             <input  type="text" id="day" name="day" value="0"/>
          </label>
          </div>
+          <div class="col-4">
+             <label for="deadline_year">
+            <span >سال</span>
+            <input type="text" id="deadline_year" name="deadline_year"  value="0"/>
+          </label>
+          </div>
+          <div class="col-4">
+             <label for="deadline_month">
+                <span >ماه</span>
+                <input type="text" id="deadline_month" name="deadline_month" value="0"/>
+             </label>
+          </div>
+         <div class="col-4">
+         <label for="deadline_day">
+            <span >روز</span>
+            <input  type="text" id="deadline_day" name="deadline_day" value="0"/>
+         </label>
+         </div>
+
          <div class="col-6">
-         <label for="car_empty">
-            <span >وضعیت موجودی ماشین</span>
-              <select id="car_empty" name="car_empty" style="padding: 8px 170px;
+         <label for="output_status">
+            <span >فیلتر/چاپ</span>
+              <select id="output_status" name="output_status" style="padding: 8px 170px;
                 display: inline-block;
                 margin: 4px 2px;
                 transition-duration: 0.4s;
                 border: 1px solid #999999;">
-                <option value="0">همه</option>
-                <option value="1">موجودی خالی</option>
-                <option value="2">موجودی پر</option>
+                <option value="0">اعمال فیلتر</option>
+                <option value="1">چاپ اطلاعات</option>
               </select>
 
          </label>
          </div>
+
+
          <div class="col-6">
          <label for="product_category">
              <span>نوع محصول</span>
@@ -148,6 +282,7 @@
          </div>
          <div class="col-6">
          <label for="slaughter_status">
+              <span>وضعیت کشتار</span>
               <select id="slaughter_status" name="slaughter_status" style="padding: 8px 153px;
                 display: inline-block;
                 margin: 4px 2px;

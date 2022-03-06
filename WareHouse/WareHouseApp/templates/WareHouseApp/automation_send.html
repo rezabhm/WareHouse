@@ -52,7 +52,7 @@
 
                                     <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
 
-                                    {% if data.0.user.view_status == True %}
+                                    {% if data.0.view_status == True %}
                                     <td style="border-bottom:0px;" >بله</td>
                                       {% else %}
                                   <td style="border-bottom:0px;" >خیر</td>
@@ -118,7 +118,7 @@
 
                                     <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
 
-                                    {% if data.0.user.view_status == True %}
+                                    {% if data.0.view_status == True %}
                                     <td style="border-bottom:0px;" >بله</td>
                                       {% else %}
                                   <td style="border-bottom:0px;" >خیر</td>
@@ -145,11 +145,11 @@
 
             </div>
 
-                    <a href="{% url 'Automation_Send_List' status='0' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">همه</button>
+                    <a href="{% url 'Automation_Send_List' status='0' %}"><button type="submit" class="submit text-center col-4 p-2 mb-5">همه</button></a>
 
 
-                    <a href="{% url 'Automation_Send_List' status='1' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده شده</button>
-                    <a href="{% url 'Automation_Send_List' status='2' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده نشده</button>
+                    <a href="{% url 'Automation_Send_List' status='1' %}"><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده شده</button></a>
+                    <a href="{% url 'Automation_Send_List' status='2' %}"><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده نشده</button></a>
 
 
 

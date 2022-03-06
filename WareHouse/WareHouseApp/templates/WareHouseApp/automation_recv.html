@@ -13,7 +13,6 @@
 <div class=" cont">
     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-        <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
            <div class="col-12 ">
              <p class="partition" style="background-color: lavender;
@@ -52,7 +51,7 @@
 
                                     <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
 
-                                    {% if data.0.user.view_status == True %}
+                                    {% if data.0.view_status == True %}
                                     <td style="border-bottom:0px;" >بله</td>
                                       {% else %}
                                   <td style="border-bottom:0px;" >خیر</td>
@@ -118,7 +117,7 @@
 
                                     <td style="border-bottom:0px;" >{{ data.0.user.username }}</td>
 
-                                    {% if data.0.user.view_status == True %}
+                                    {% if data.0.view_status == True %}
                                     <td style="border-bottom:0px;" >بله</td>
                                       {% else %}
                                   <td style="border-bottom:0px;" >خیر</td>
@@ -146,12 +145,9 @@
             </div>
 
 
-
-                    <a href="{% url 'Automation_Recv_List' status='0' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">همه</button>
-
-
-                    <a href="{% url 'Automation_Recv_List' status='1' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده شده</button>
-                    <a href="{% url 'Automation_Recv_List' status='2' %}"></a><button type="submit" class="submit text-center col-4 p-2 mb-5">مشاهده نشده</button>
+                    <a  href="{% url 'Automation_Recv_List' status='0' %}"><button   type="submit" class="submit text-center col-4 p-2 mb-1">همه</button></a>
+                    <a  href="{% url 'Automation_Recv_List' status='1' %}"><button   type="submit" class="submit text-center col-4 p-2 mb-2">مشاهده شده</button></a>
+                    <a  href="{% url 'Automation_Recv_List' status='2' %}"><button   type="submit" class="submit text-center col-4 p-2 mb-3">مشاهده نشده</button></a>
 
 
 

@@ -2493,7 +2493,7 @@ def company_user_list(requests):
     return HttpResponse(user_list_temp.render(context))
 
 
-def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_empty='0', product_category='0',
+def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadline_year='0', deadline_month='0', deadline_day='0', output_status='0', product_category='0',
                                   slaughter_status='0'):
 
     """
@@ -2508,27 +2508,25 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
         if len(ceo_list) > 0 or len(lwb_manager_list) > 0 or requests.user.is_superuser:
 
             # user have access to see data
-            if year == '0' and month == '0' and day == '0':
+            if year == '0' and month == '0' and day == '0' and deadline_year == '0' and deadline_month == '0' and deadline_day == '0':
 
                 # get all objects without time filter
                 lwb_list = models.LiveWeighbridge.objects.all()
 
             else:
 
+                # convert solar time to ad time
+                year, month, day = utils.solar2ad(int(year), int(month), int(day))
+                deadline_year, deadline_month, deadline_day = utils.solar2ad(int(deadline_year), int(deadline_month), int(deadline_day))
+
                 # add time filter
                 string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
                 time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
-                lwb_list = models.LiveWeighbridge.objects.all().filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
 
-            if car_empty == '1':
+                string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
+                deadline_time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
-                # add filter , if equal 1 it means return all of True car Empty
-                lwb_list = lwb_list.filter(car_empty=True)
-
-            elif car_empty == '2':
-
-                # add filter , if equal 2 it means return all of False car Empty
-                lwb_list = lwb_list.filter(car_empty=False)
+                lwb_list = models.LiveWeighbridge.objects.all().filter(weighting_date__gte=time_filter).filter(weighting_date__lte=deadline_time_filter)
 
             if slaughter_status == '1':
 
@@ -2555,37 +2553,173 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', car_em
                 # add filter , if equal 3 it means return all of quail
                 lwb_list = lwb_list.filter(product_category='Q')
 
-            # load template
-            lwb_temp = loader.get_template('WareHouseApp/live_WeighBridge_list.html')
+            if output_status == '0':
+
+                lwb_temp = loader.get_template('WareHouseApp/live_WeighBridge_list.html')
+
+            else:
+                lwb_temp = loader.get_template('WareHouseApp/report_live_weighbridge.html')
 
             lwb_list_final = []
+            lwb_report = [
+
+                {
+
+                    'car_weight': 0.0,
+                    'car_final_weight': 0.0,
+                    'weight': 0.0,
+                    'average_weight': 0.0,
+                    'total_buy_price': 0.0,
+                    'average_each_buy_price': 0.0,
+                    'losses_num': 0.0,
+                    'losses_weight': 0.0,
+                    'victim_num': 0.0,
+                    'victim_weight': 0.0,
+                    'total_num': 0.0,
+
+                },
+
+                {
+
+                    'car_weight': 0.0,
+                    'car_final_weight': 0.0,
+                    'weight': 0.0,
+                    'average_weight': 0.0,
+                    'total_buy_price': 0.0,
+                    'average_each_buy_price': 0.0,
+                    'losses_num': 0.0,
+                    'losses_weight': 0.0,
+                    'victim_num': 0.0,
+                    'victim_weight': 0.0,
+                    'total_num': 0.0,
+
+                },
+
+                {
+
+                    'car_weight': 0.0,
+                    'car_final_weight': 0.0,
+                    'weight': 0.0,
+                    'average_weight': 0.0,
+                    'total_buy_price': 0.0,
+                    'average_each_buy_price': 0.0,
+                    'losses_num': 0.0,
+                    'losses_weight': 0.0,
+                    'victim_num': 0.0,
+                    'victim_weight': 0.0,
+                    'total_num': 0.0,
+
+                },
+
+            ]
+
             for lwb in lwb_list:
 
                 if lwb.product_category == 'C':
                     prod = 'chicken'
 
+                    lwb_report[0]['car_weight'] += float(lwb.car_weight)
+                    lwb_report[0]['car_final_weight'] += float(lwb.final_weight)
+                    lwb_report[0]['weight'] += float(lwb.final_weight) - float(
+                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
+                    lwb_report[0]['average_weight'] += (float(lwb.final_weight) - float(
+                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (
+                                                                   int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[0]['total_buy_price'] += (float(lwb.final_weight) - float(
+                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
+                    lwb_report[0]['average_each_buy_price'] += ((float(lwb.final_weight) - float(
+                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (
+                                                                           int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[0]['losses_num'] += lwb.losses_num
+                    lwb_report[0]['losses_weight'] += lwb.losses_weight
+                    lwb_report[0]['victim_num'] += lwb.victim_num
+                    lwb_report[0]['victim_weight'] += lwb.victim_weight
+                    lwb_report[0]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
+
                 elif lwb.product_category == 'T':
                     prod = 'turkey'
+
+                    lwb_report[1]['car_weight'] += float(lwb.car_weight)
+                    lwb_report[1]['car_final_weight'] += float(lwb.final_weight)
+                    lwb_report[1]['weight'] += float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
+                    lwb_report[1]['average_weight'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[1]['total_buy_price'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
+                    lwb_report[1]['average_each_buy_price'] += ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[1]['losses_num'] += lwb.losses_num
+                    lwb_report[1]['losses_weight'] += lwb.losses_weight
+                    lwb_report[1]['victim_num'] += lwb.victim_num
+                    lwb_report[1]['victim_weight'] += lwb.victim_weight
+                    lwb_report[1]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
 
                 elif lwb.product_category == 'Q':
                     prod = 'quail'
 
+                    lwb_report[2]['car_weight'] += float(lwb.car_weight)
+                    lwb_report[2]['car_final_weight'] += float(lwb.final_weight)
+                    lwb_report[2]['weight'] += float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
+                    lwb_report[2]['average_weight'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[2]['total_buy_price'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
+                    lwb_report[2]['average_each_buy_price'] += ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[2]['losses_num'] += lwb.losses_num
+                    lwb_report[2]['losses_weight'] += lwb.losses_weight
+                    lwb_report[2]['victim_num'] += lwb.victim_num
+                    lwb_report[2]['victim_weight'] += lwb.victim_weight
+                    lwb_report[2]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
+
                 else:
                     prod = 'Nothing'
 
-                lwb_list_final.append([lwb.weighting_date_format, lwb.car_weight,
-                    lwb.final_weight, lwb.car_empty, lwb.buy_price, lwb.slaughter_status,
-                   lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
-                   lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
-                   prod,
-                   lwb.driver.name + ' ' + lwb.driver.last_name, lwb.driver.car.car_number,
-                    lwb.driver.car.product_owner.name + ' '+lwb.driver.car.product_owner.last_name,
-                                       lwb.avicultureـname, lwb.avicultureـcity])
+                lwb_list_final.append([
+
+                    lwb.weighting_date_format,
+                    lwb.final_weight,
+                    lwb.car_weight,
+                    float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight,
+                    (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),
+                    lwb.order_weight,
+                    lwb.losses_weight,
+                    lwb.losses_num,
+                    lwb.victim_weight,
+                    lwb.victim_num,
+                    lwb.cage_num,
+                    lwb.product_num_in_cage,
+                    (lwb.cage_num * lwb.product_num_in_cage ) - lwb.losses_num - lwb.victim_num,
+                    lwb.buy_price,
+                    (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price),
+                    ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),
+                    lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
+                    lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
+                    prod,
+                    lwb.driver.name + ' ' + lwb.driver.last_name,
+                    str(lwb.car.car_number1) + ' ' + str(lwb.car.car_number2) + ' ' + str(lwb.car.car_number3) + ' ' + str(lwb.car.car_number4),
+                    str(lwb.product_owner.name) + ' ' + str(lwb.product_owner.last_name),
+                    lwb.avicultureـname,
+                    lwb.avicultureـcity
+                ])
+
+            for data in lwb_report:
+                try:
+                    data['average_weight'] /= len(lwb_list)
+
+                except:
+                    pass
+
+                try:
+                    data['average_each_buy_price'] /= len(lwb_list)
+
+                except:
+                    pass
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
             context = {
 
                 "lwb_list": lwb_list_final,
-                'request': requests
+                'report': lwb_report,
+                'request': requests,
+                'date' : t,
+                'type': 'باسکول زنده (ورودی)'
 
             }
 
@@ -3567,7 +3701,10 @@ def lw_filter(requests):
         requests.POST['year'],
         requests.POST['month'],
         requests.POST['day'],
-        requests.POST['car_empty'],
+        requests.POST['deadline_year'],
+        requests.POST['deadline_month'],
+        requests.POST['deadline_day'],
+        requests.POST['output_status'],
         requests.POST['product_category'],
         requests.POST['slaughter_status'],
 
@@ -3912,8 +4049,6 @@ def automation_view(requests, id):
                 user_viewx.save()
 
                 # read data
-                print(sub_automation.file)
-                print('file\n\n\n\n')
                 data = open(sub_automation.file.path, 'rb' )
                 mime_type, _ = mimetypes.guess_type(sub_automation.file.path)
                 response = HttpResponse(data, content_type=mime_type)

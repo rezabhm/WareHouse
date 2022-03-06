@@ -11,7 +11,7 @@
 <form action="{% url 'Automation_Message_Create' %}" method="post" id="auto">
 
     {% csrf_token %}
-    <div class=" cont">
+    <div class=" cont" dir="rtl">
     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
@@ -36,8 +36,6 @@
                         <thead>
                           <th>انتخاب کنید</th>
                           <th>نام کاربری</th>
-                          <th>نام خانوادگی</th>
-                          <th>نام</th>
                         </thead>
 
                         {% for user in user_list %}
@@ -51,8 +49,6 @@
                                 </td>
 
                                 <td style="border-bottom:0px;" >{{ user.username }}</td>
-                                <td style="border-bottom:0px;" >{{ user.last_name }}</td>
-                                <td style="border-bottom:0px;" >{{ user.name }}</td>
 
                               </tr>
                             </tbody>
@@ -128,24 +124,24 @@
      </div>
 
      <div class="col-6">
+         <label for="subject">
+            <div >موضوع ارسال اتوماسیون :</div>
+            <input type="text" id="subject" name="subject" />
+         </label>
+     </div>
+
+     <div class="col-6">
          <label for="code">
-            <span >کد اتوماسیون :</span>
+            <div >کد اتوماسیون :</div>
             <span >{{ code }}</span>
             <input type="hidden" id="code" name="code" value="{{ code }}" />
          </label>
      </div>
 
-     <div class="col-6">
-         <label for="subject">
-            <span >موضوع ارسال اتوماسیون :</span>
-            <input type="text" id="subject" name="subject" />
-         </label>
-     </div>
-
      <div class="col-12">
          <label for="content">
-            <span >متن پیغام را وارد کنید : </span>
-            <textarea rows="10" cols="50" name="content" id='content' form="auto">پیغام ...</textarea>
+            <div >متن پیغام را وارد کنید : </div>
+            <textarea rows="10" cols="50" name="content" id='content' form="auto"></textarea>
          </label>
      </div>
 

@@ -510,7 +510,7 @@ class LiveWeighbridge(models.Model):
 
     # cage information
     cage_num = models.IntegerField(default=1, null=True)
-    product_num_in_cage = models.IntegerField(default=1, null=True)
+    product_num_in_cage = models.FloatField(default=1.0, null=True)
 
     # losses (تلفات ) and victim (ضایعات )
     losses_num = models.IntegerField(default=0, null=True)

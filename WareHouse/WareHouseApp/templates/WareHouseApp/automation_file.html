@@ -36,8 +36,6 @@
                         <thead>
                           <th>انتخاب کنید</th>
                           <th>نام کاربری</th>
-                          <th>نام خانوادگی</th>
-                          <th>نام</th>
                         </thead>
 
                         {% for user in user_list %}
@@ -51,8 +49,6 @@
                                 </td>
 
                                 <td style="border-bottom:0px;" >{{ user.username }}</td>
-                                <td style="border-bottom:0px;" >{{ user.last_name }}</td>
-                                <td style="border-bottom:0px;" >{{ user.name }}</td>
 
                               </tr>
                             </tbody>

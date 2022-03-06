@@ -163,7 +163,7 @@ urlpatterns = [
     # monitor data
     re_path(r'^company/list/$', views.company_list, name='Company_List'),
     re_path(r'^company/user/list/$', views.company_user_list, name='Company_User_List'),
-    re_path(r'^live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<car_empty>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
+    re_path(r'^live/weighbridge/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<deadline_year>[\d]{1,4})/(?P<deadline_month>[\d]{1,2})/(?P<deadline_day>[\d]{1,2})/(?P<output_status>[\d]{1})/(?P<product_category>[\d]{1})/(?P<slaughter_status>[\d]{1})/$',
             views.company_live_weighbridge_list, name='Company_Live_WeighBridge_List'),
 
     re_path(r'lw/filter/$', views.lw_filter, name='LW_Filter'),

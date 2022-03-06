@@ -8,7 +8,7 @@
 
 {% block content %}
 
-    <div class=" cont">
+    <div class=" cont" dir="rtl">
         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
 
@@ -24,23 +24,23 @@
                   color: black;">اطلاعات اتوماسیون</p>
              </div>
 
-             <div class="col-6">
+             <div class="col-4">
                  <label >
-                    <span >نام کاربری ارسال کننده پیغام :</span>
-                    <span >{{ automation.username }}</span>
+                    <div >نام کاربری ارسال کننده پیغام :</div>
+                    <span >{{ automation.automation_create_user.username }}</span>
                  </label>
              </div>
 
-             <div class="col-6">
+             <div class="col-4">
                  <label >
-                    <span >زمان ارسال پیغام :</span>
+                    <div >زمان ارسال پیغام :</div>
                     <span >{{ automation.automation_create_time_format }}</span>
                  </label>
              </div>
 
-             <div class="col-6">
+             <div class="col-4">
                  <label >
-                    <span >کد اتوماسیون :</span>
+                    <div >کد اتوماسیون :</div>
                     <span >{{ automation.code }}</span>
                  </label>
              </div>
@@ -61,7 +61,7 @@
 
              <div class="col-6">
                  <label >
-                    <span >موضوع ارسال پیغام:</span>
+                    <div >موضوع ارسال پیغام:</div>
                     <span >{{ sub_automation.subject }}</span>
                  </label>
              </div>
@@ -69,7 +69,7 @@
 
              <div class="col-6">
                  <label >
-                    <span > پیغام:</span>
+                    <div > پیغام:</div>
                     <span >{{ sub_automation.content }}</span>
                  </label>
              </div>
@@ -84,7 +84,7 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">اطلاعات دریافت کنندگان پیغام </p>
+                  color: black;">پیوست ها </p>
              </div>
 
                     <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
@@ -100,7 +100,7 @@
                             <tbody>
                               <tr>
 
-                                <td style="border-bottom:0px;" >{{ user.username }}</td>
+                                <td style="border-bottom:0px;" >{{ user.user.username }}</td>
 
                                   {% if user.view_status == True %}
                                     <td style="border-bottom:0px;" >بله</td>
