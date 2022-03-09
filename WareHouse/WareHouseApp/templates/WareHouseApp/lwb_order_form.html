@@ -35,7 +35,7 @@
                           <th>انتخاب کنید</th>
                          <th data-field="name" data-sortable="true">نام راننده</th>
                           <th data-field="salary" data-sortable="true">نام خانوادگی راننده</th>
-                          <th data-field="country" data-sortable="true">شماره تلفن راننده</th>
+                          <th data-field="country" data-sortable="true">کد راننده</th>
                         </thead>
 
                         {% for driver in driver_list %}
@@ -204,6 +204,21 @@
        </div>
 
        <div class="col-6">
+         <label for="product_avg_weight">
+            <span >میانگین وزن هر محصول</span>
+            <input type="text" id="product_avg_weight" name="product_avg_weight"/>
+         </label>
+       </div>
+
+       <div class="col-6">
+         <label for="Account_side">
+            <span >طرف حساب</span>
+            <input type="text" id="Account_side" name="Account_side"/>
+         </label>
+       </div>
+
+
+       <div class="col-6">
          <label for="buy_price">
             <span >قیمت خرید محصول</span>
             <input  type="number" id="buy_price" name="buy_price"/>
@@ -267,8 +282,8 @@
       </div>
          <div class="col-6 offset-6">
          <label for="driver_phone_number">
-            <span >شماره تلفن راننده</span>
-            <input  type="text" id="driver_phone_number" name="driver_phone_number"/>
+            <span >تعریف کد منحصر بفرد راننده</span>
+            <input  type="text" id="driver_phone_number" name="driver_phone_number" value="{{ code }}"/>
          </label>
       </div>
 

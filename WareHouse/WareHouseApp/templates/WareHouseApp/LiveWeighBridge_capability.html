@@ -8,7 +8,6 @@
 
 {% block content %}
 
-
 <form action="{% url 'Capability_Slaughter' %}" method="post">
 
     {% csrf_token %}
@@ -101,40 +100,34 @@
               color: black;">ماشین را انتخاب کنید</p>
           </div>
 
-            <div class="col-4">
+            <div class="col-3">
                  <label for="car_weight">
                     <span >وزن خالی </span>
                     <input type="text" id="car_weight" name="car_weight"/>
                  </label>
-              </div>
+            </div>
 
-                <div class="col-4">
+            <div class="col-3">
                  <label for="losses_num">
                     <span >تعداد تلفات </span>
                     <input type="text" id="losses_num" name="losses_num"/>
                  </label>
-              </div>
+            </div>
 
-                <div class="col-4">
-                 <label for="losses_weight">
-                    <span >وزن تلفات </span>
-                    <input type="text" id="losses_weight" name="losses_weight"/>
+            <div class="col-3">
+                 <label for="fuel">
+                    <span >سوخت</span>
+                    <input type="text" id="fuel" name="fuel" value="0.0"/>
                  </label>
-              </div>
+            </div>
 
-                <div class="col-6">
+                <div class="col-3">
                  <label for="victim_num">
                     <span >تعداد ضایعات </span>
                     <input type="text" id="victim_num" name="victim_num"/>
                  </label>
               </div>
 
-                <div class="col-6">
-                 <label for="victim_weight">
-                    <span >وزن ضایعات </span>
-                    <input type="text" id="victim_weight" name="victim_weight"/>
-                 </label>
-              </div>
 
                     <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
                </div>

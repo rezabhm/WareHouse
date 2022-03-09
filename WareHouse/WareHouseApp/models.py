@@ -396,6 +396,10 @@ class Driver(models.Model):
     # phone number
     phone_number = models.CharField(max_length=12)
 
+    # driver type
+    # this param is binary . if equal True it means this is live weighbridge driver
+    driver_type = models.BooleanField(default=True)
+
     # driver id
     driver_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
@@ -463,7 +467,7 @@ class LiveWeighbridge(models.Model):
     final_weight = models.FloatField(null=True)
 
     # car weight
-    car_weight = models.FloatField(null=True)
+    car_weight = models.FloatField(default=0.0)
 
     # this param define car is empty or not if equal True it means car is empty
     car_empty = models.BooleanField(default=False)
@@ -486,7 +490,7 @@ class LiveWeighbridge(models.Model):
 
     product_category = models.CharField(max_length=1, choices=type_of_gender)
 
-    # slaughter status that if equal True slaughting has start
+    # slaughter status that if equal True slaughte has start
     slaughter_status = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)
 
@@ -508,6 +512,19 @@ class LiveWeighbridge(models.Model):
     # order weight
     order_weight = models.FloatField(default=0.0, null=True)
 
+    # aviculture product average weight
+    aviculture_avg_weight = models.FloatField(default=2.5)
+    account_side = models.CharField(default='شرکت', max_length=20)
+
+    # aviculture weight
+    source_weight = models.FloatField(default=0.0)
+
+    # route fuel
+    fuel = models.FloatField(default=0.0)
+
+    # slaughter product counter
+    salughter_count = models.FloatField(default=0.0)
+
     # cage information
     cage_num = models.IntegerField(default=1, null=True)
     product_num_in_cage = models.FloatField(default=1.0, null=True)
@@ -518,8 +535,15 @@ class LiveWeighbridge(models.Model):
     victim_num = models.IntegerField(default=0, null=True)
     victim_weight = models.FloatField(default=0.0, null=True)
 
+    # per purchase and per sale
+    per_purchase = models.FloatField(default=0.0)
+    per_sale = models.FloatField(default=0.0)
+    sale_weight = models.FloatField(default=0.0)
+    driver_rent = models.FloatField(default=0.0)
+
     # relation
-    Live_Weighbridge_Manager = models.ForeignKey(LiveWeighbridgeManager, on_delete=models.PROTECT, null=True)
+    Live_Weighbridge_Manager = models.CharField(max_length=20, default='admin')
+    order_Manager = models.CharField(max_length=20, default='admin')
     driver = models.ForeignKey(Driver, on_delete=models.PROTECT, null=True)
     car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True)
     product_owner = models.ForeignKey(ProductOwner, on_delete=models.PROTECT, null=True)
@@ -579,12 +603,13 @@ class FirstWeightLifting(models.Model):
         ('D', 'distribute'),
         ('F', 'freezing tunnel'),
         ('G', 'gate_bandi'),
+        ('Z', 'podr_gosht'),
     )
     sales_category = models.CharField(max_length=1, choices=sale_cat)
 
     # relation
-    Live_Weigh_Bridge = models.ForeignKey(LiveWeighbridge, on_delete=models.PROTECT)
-    Weight_Lifting_Manager = models.ForeignKey(WeightLiftingManager, on_delete=models.PROTECT, null=True)
+    Weight_Lifting_Manager = models.CharField(max_length=20, default='admin')
+    product_owner = models.ForeignKey(ProductOwner, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.sales_category + ' ' + str(self.weight)
@@ -659,6 +684,14 @@ class DistributedRoot(models.Model):
     # object id
     dist_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
+    # entry time
+    create_time = models.FloatField(default=time.time())
+    create_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
+    # exit time
+    exit_time = models.FloatField(default=time.time())
+    exit_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
     # car weight with product and without product
     empty_weight = models.FloatField(null=True)
     full_weight = models.FloatField(null=True)
@@ -715,6 +748,13 @@ class Distributed(models.Model):
     # number of box
     number_of_box = models.IntegerField(null=True)
 
+    # product category
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
+
+    product_category = models.CharField(max_length=1, choices=type_of_gender, default='C')
+
     # for determine input product
     sales_input_category_list = (
 
@@ -724,8 +764,9 @@ class Distributed(models.Model):
         ('C', 'Cold-House'),
 
     )
+
     sales_input_category = models.CharField(max_length=1, choices=sales_input_category_list, default='F')
-    sales_input_id = models.CharField(max_length=200, default=str(uuid1().int))
+    sales_input_idistd = models.CharField(max_length=200, default=str(uuid1().int))
 
     # relation
     # first_weight_lifting = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)

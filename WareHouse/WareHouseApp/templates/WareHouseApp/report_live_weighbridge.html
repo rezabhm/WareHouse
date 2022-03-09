@@ -11,38 +11,45 @@
 <body style="border: groove;padding:25px" dir="rtl">
 <div style="border: groove;">
 <div class="container" style="display: inline;text-align: end;display: flex; " dir="ltr">
-    <div class="col-6" style="padding-top: 40px;text-align: start;color:#2C3E50;color: #2C3E50;font: revert; padding-top: 40px;   position: relative; left: 1%;" dir="rtl">
+    <div class="col-6" style="padding-top: 40px;text-align: start;color:#2C3E50;color: #2C3E50;font: revert; padding-top: 40px;   position: relative; right: 35%;" dir="rtl">
         <h5 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="rtl">  تاریخ : {{ date}}</h5>
         <h5 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="ltr">{{ request.user.username }} : نام كاربري </h5>
         <h5 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px; width: max-content;" dir="rtl"> نوع گزارش : {{ type }}</h5>
     </div>
-    <div class="col-6" style="padding-top: 40px;   position: relative; left: 40%;">
+    <div class="col-6" style="padding-top: 40px;   position: relative; left: 80%;">
         <img style="width: 110px;padding-right: 50px;" src="https://tiyurzanjanapp.ir/static/WareHouseApp/img/arm.jpeg">
         <h3 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;"> كشتارگاه صنعتي طيور زنجان</h3>
     </div>
 </div>
-<div style="padding: 100px;">
+<div style="padding: 10px;">
     <br>
-    <br>
-        <h4 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="rtl"> گزارش</h4>
+        <h4 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="rtl"> گزارش ورودی کشتارگاه (باسکول زنده)</h4>
 
-    <br>
     <br>
  <table class="table table-striped table-condensed">
                   <thead>
 
 
                   <tr>
-
-                          <th class="text-center" width="20%" >وزن پر</th>
+                          <th class="text-center" width="20%">ردیف</th>
+                          <th class="text-center" width="20%">زمان وزن کشی</th>
+                          <th class="text-center" width="20%" >میانگین کشتارگاه</th>
+                          <th class="text-center" width="20%">میانگین مبدا</th>
+                          <th class="text-center" width="20%">وزن پر</th>
                           <th class="text-center" width="20%">وزن خالی</th>
                           <th class="text-center" width="20%">وزن خالص</th>
-                          <th class="text-center" width="20%">وزن ضایعات </th>
-                          <th class="text-center" width="20%">تعداد ضایعات </th>
+                          <th class="text-center" width="20%">وزن مبدا</th>
+                          <th class="text-center" width="20%">افت</th>
+                          <th class="text-center" width="20%">وزن ضایعات</th>
+                          <th class="text-center" width="20%">تعداد ضایعات</th>
                           <th class="text-center" width="20%">وزن تلفات</th>
                           <th class="text-center" width="20%">تعداد تلفات</th>
+                          <th class="text-center" width="20%">تعداد قفس</th>
+                          <th class="text-center" width="20%">تعداد مرغ در قفس</th>
                           <th class="text-center" width="20%">تعداد کل</th>
-                          <th class="text-center" width="25%">قیمت خرید</th>
+                          <th class="text-center" width="20%">شمارش کشتارگاه</th>
+                          <th class="text-center" width="20%">اختلاف شمارش</th>
+                          <th class="text-center" width="20%">کرایه</th>
                           <th class="text-center" width="25%">قیمت کل خرید</th>
                           <th class="text-center" width="20%">نوع محصول</th>
                           <th class="text-center" width="20%">راننده</th>
@@ -50,6 +57,11 @@
                           <th class="text-center" width="20%">صاحب محصول</th>
                           <th class="text-center" width="20%">نام مرغداری</th>
                           <th class="text-center" width="20%">استان مرغداری</th>
+                          <th class="text-center" width="20%">طرف حساب</th>
+                          <th class="text-center" width="20%">سوخت</th>
+                          <th class="text-center" width="20%">فی خرید</th>
+                          <th class="text-center" width="20%">فی فروش</th>
+                          <th class="text-center" width="20%">وزن فروش</th>
 
                   </tr>
 
@@ -59,16 +71,25 @@
               <tbody>
               {% for lwb in lwb_list %}
                 <tr>
-
+                    <td class="text-center" width="20%">{{ lwb.34 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.0 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.28 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.4 }}</td>
                     <td class="text-center" width="20%">{{ lwb.1 }}</td>
                     <td class="text-center" width="20%">{{ lwb.2 }}</td>
                     <td class="text-center" width="20%">{{ lwb.3 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.27 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.30 }}</td>
                     <td class="text-center" width="20%">{{ lwb.6 }}</td>
                     <td class="text-center" width="20%">{{ lwb.7 }}</td>
                     <td class="text-center" width="20%">{{ lwb.8 }}</td>
                     <td class="text-center" width="20%">{{ lwb.9 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.10 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.11 }}</td>
                     <td class="text-center" width="20%">{{ lwb.12 }}</td>
-                    <td class="text-center" width="20%">{{ lwb.13 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.24 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.25 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.34 }}</td>
                     <td class="text-center" width="20%">{{ lwb.14 }}</td>
 
                       {% if lwb.18  == 'chicken' %}
@@ -82,23 +103,24 @@
                       {% endif %}
 
                     <td class="text-center" width="20%">{{ lwb.19 }}</td>
-                    <td class="text-center" width="50px">{{ lwb.20 }}</td>
+                    <td class="text-center" width="50px" dir="rtl">{{ lwb.20 }}</td>
                     <td class="text-center" width="20%">{{ lwb.21 }}</td>
                     <td class="text-center" width="20%">{{ lwb.22 }}</td>
                     <td class="text-center" width="20%">{{ lwb.23 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.29 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.26 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.31 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.32 }}</td>
+                    <td class="text-center" width="20%">{{ lwb.33 }}</td>
 
 
                 </tr>
                 {% endfor %}
               </tbody>
               </table>
-     <!--<div class="text-center">
-            <h4 id="Total"> <label style="color:#E74C3C" for="Total">Total :</label>7740</h4> </div>
-    </div>-->
-    <br>
-    <br>
-        <h4 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="rtl"> گزارش مجموع</h4>
 
+    <br>
+        <h4 style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;" dir="rtl"> گزارش کلی ورودی</h4>
     <br>
     <br>
      <table class="table table-striped table-condensed">
@@ -107,18 +129,25 @@
 
                   <tr>
 
-                          <th>نوع محصول</th>
-                          <th>وزن خالی</th>
-                          <th>وزن پر</th>
-                          <th>وزن خالص</th>
-                          <th>وزن هر محصول</th>
-                          <th>قیمت کل خرید</th>
-                          <th>قیمت خرید هر محصول </th>
-                          <th>تعداد ضایعات </th>
-                          <th>وزن ضایعات </th>
-                          <th>تعداد تلفات</th>
-                          <th>وزن تلفات</th>
-                          <th>تعداد کل</th>
+                          <th class="text-center" width="20%">نوع محصول</th>
+                          <th class="text-center" width="20%">وزن خالی</th>
+                          <th class="text-center" width="20%">وزن پر</th>
+                          <th class="text-center" width="20%">وزن خالص</th>
+                          <th class="text-center" width="20%">وزن مبدا</th>
+                          <th class="text-center" width="20%">افت</th>
+                          <th class="text-center" width="20%">سوخت</th>
+                          <th class="text-center" width="20%">وزن هر محصول</th>
+                          <th class="text-center" width="20%">وزن هر محصول در مبدا</th>
+                          <th class="text-center" width="20%">قیمت کل خرید</th>
+                          <th class="text-center" width="20%">قیمت خرید هر محصول </th>
+                          <th class="text-center" width="20%">تعداد ضایعات </th>
+                          <th class="text-center" width="20%">وزن ضایعات </th>
+                          <th class="text-center" width="20%">تعداد تلفات</th>
+                          <th class="text-center" width="20%">وزن تلفات</th>
+                          <th class="text-center" width="20%">تعداد کل</th>
+                          <th class="text-center" width="20%">تعداد کل شمارش کشتارگاه</th>
+                          <th class="text-center" width="20%">تعداد کل اختلاف شمارش</th>
+                          <th class="text-center" width="20%">مجموع کرایه</th>
 
                   </tr>
 
@@ -126,59 +155,99 @@
 
               </thead>
               <tbody>
-
                               <tr>
-                                    <td>مرغ</td>
-                                    <td>{{ report.0.car_weight }}</td>
-                                    <td>{{ report.0.car_final_weight }}</td>
-                                    <td>{{ report.0.weight }}</td>
-                                    <td>{{ report.0.average_weight }}</td>
-                                    <td>{{ report.0.total_buy_price }}</td>
-                                    <td>{{ report.0.average_each_buy_price }}</td>
-                                    <td>{{ report.0.losses_num }}</td>
-                                    <td>{{ report.0.losses_weight }}</td>
-                                    <td>{{ report.0.victim_num }}</td>
-                                    <td>{{ report.0.victim_weight }}</td>
-                                    <td>{{ report.0.total_num }}</td>
+                                    <td class="text-center" width="20%">مرغ</td>
+                                    <td class="text-center" width="20%">{{ report.0.car_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.car_final_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.source_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.drop_down }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.fuel }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.average_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.aviculture_avg_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.total_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.average_each_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.losses_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.losses_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.victim_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.victim_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.total_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.salughter_count }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.salughter_count_dif }}</td>
+                                    <td class="text-center" width="20%">{{ report.0.rent }}</td>
 
                               </tr>
 
                               <tr>
-                                   <td>بوقلمون</td>
-                                    <td>{{ report.1.car_weight }}</td>
-                                    <td>{{ report.1.car_final_weight }}</td>
-                                    <td>{{ report.1.weight }}</td>
-                                    <td>{{ report.1.average_weight }}</td>
-                                    <td>{{ report.1.total_buy_price }}</td>
-                                    <td>{{ report.1.average_each_buy_price }}</td>
-                                    <td>{{ report.1.losses_num }}</td>
-                                    <td>{{ report.1.losses_weight }}</td>
-                                    <td>{{ report.1.victim_num }}</td>
-                                    <td>{{ report.1.victim_weight }}</td>
-                                    <td>{{ report.1.total_num }}</td>
+
+                                   <td class="text-center" width="20%">بوقلمون</td>
+                                    <td class="text-center" width="20%">{{ report.1.car_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.car_final_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.source_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.drop_down }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.fuel }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.average_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.aviculture_avg_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.total_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.average_each_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.losses_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.losses_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.victim_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.victim_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.total_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.salughter_count }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.salughter_count_dif }}</td>
+                                    <td class="text-center" width="20%">{{ report.1.rent }}</td>
 
                               </tr>
 
 
                               <tr>
-                                   <td>بلدرچین</td>
-                                    <td>{{ report.2.car_weight }}</td>
-                                    <td>{{ report.2.car_final_weight }}</td>
-                                    <td>{{ report.2.weight }}</td>
-                                    <td>{{ report.2.average_weight }}</td>
-                                    <td>{{ report.2.total_buy_price }}</td>
-                                    <td>{{ report.2.average_each_buy_price }}</td>
-                                    <td>{{ report.2.losses_num }}</td>
-                                    <td>{{ report.2.losses_weight }}</td>
-                                    <td>{{ report.2.victim_num }}</td>
-                                    <td>{{ report.2.victim_weight }}</td>
-                                    <td>{{ report.2.total_num }}</td>
+                                   <td class="text-center" width="20%">بلدرچین</td>
+                                    <td class="text-center" width="20%">{{ report.2.car_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.car_final_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.source_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.drop_down }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.fuel }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.average_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.aviculture_avg_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.total_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.average_each_buy_price }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.losses_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.losses_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.victim_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.victim_weight }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.total_num }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.salughter_count }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.salughter_count_dif }}</td>
+                                    <td class="text-center" width="20%">{{ report.2.rent }}</td>
 
                               </tr>
 
               </tbody>
               </table>
 </div>
+
+<div class="container" style="display: inline;text-align: end;display: flex; " dir="ltr">
+    <div dir="rtl" class="col-6" style="padding-top: 40px;text-align: start;color:#2C3E50;color: #2C3E50;font: revert; padding-top: 40px;   position: relative; left: 1%;" dir="rtl">
+        <div style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px; width: max-content;" dir="rtl">امضا مدیر عامل</div>
+    </div>
+    <div dir="rtl" class="col-6" style="padding-top: 40px;   position: relative; left: 75%;">
+        <div style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;">امضا اپراتور</div>
+    </div>
+</div>
+
+<div class="container" style="display: inline;text-align: end;display: flex; " dir="ltr">
+    <div dir="rtl" class="col-6" style="padding-top: 40px;   position: relative; left: 60%;">
+        <div style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;">آدرس : زنجان - 22 کیلومتری جاده تهران - 6 کیلومتر بالاتر از روستای یوسف آباد جاده مروارید</div>
+        <div style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;">تلفن دفتر : 33745870 - 33745850<div/>
+        <div style="color:#2C3E50;color: #2C3E50;font: revert;font-size: 20px;width: max-content;">تلفن کشتارگاه : 1351 141 0912</div>
+    </div>
+</div>
+
+
 </div>
 <script>
 

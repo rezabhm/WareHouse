@@ -26,8 +26,8 @@ SECRET_KEY = 'crt)(*n@u)q^5k1^n_44#i@s=j&@d9%@fq6!8ji74$ft!l9)az'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tiyurzanjanapp.ir', 'www.tiyurzanjanapp.ir']
 
 # Application definition
 
@@ -121,8 +121,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 LOGOUT_REDIRECT_URL = "Main"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'

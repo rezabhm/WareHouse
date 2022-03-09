@@ -519,10 +519,11 @@ def lwb_order_form(requests):
             context = {
 
                 'request': requests,
-                'driver_list': models.Driver.objects.all(),
+                'driver_list': models.Driver.objects.all().filter(driver_type=True),
                 'car_list': models.Car.objects.all().filter(live_product=True),
                 'po_list': models.ProductOwner.objects.all(),
                 'avc_list': models.Aviculture.objects.all(),
+                'code': random.randint(10,1000),
 
             }
 
@@ -562,6 +563,8 @@ def lwb_order(requests):
             product_weight = requests.POST['product_weight']
             product_category = requests.POST['product_category']
             aviculture_id = requests.POST['avc_id']
+            product_avg_weight = float(requests.POST['product_avg_weight'])
+            account_side = requests.POST['Account_side']
 
             # create product owner
             pro_obj_list = models.ProductOwner.objects.all().filter(product_owner_id=product_owner_id)
@@ -592,9 +595,9 @@ def lwb_order(requests):
             lwb_obj.product_owner = po_obj
             lwb_obj.avicultureـcity = avc_obj.source
             lwb_obj.avicultureـname = avc_obj.name
-
-            if len(lwb_user_list) > 0:
-                lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
+            lwb_obj.account_side = account_side
+            lwb_obj.aviculture_avg_weight = product_avg_weight
+            lwb_obj.order_Manager = requests.user.username
 
             # save live weighbridge
             lwb_obj.save()
@@ -614,9 +617,11 @@ def lwb_order(requests):
 
 @csrf_exempt
 def lwb_driver(requests):
+
     """
     create driver object
     """
+
     if requests.user.is_authenticated:
 
         # get user list
@@ -636,6 +641,7 @@ def lwb_driver(requests):
             driver_obj.name = driver_name
             driver_obj.last_name = driver_lastname
             driver_obj.phone_number = driver_phone_number
+            driver_obj.driver_type = True
             driver_obj.driver_id = str(uuid1().int)
 
             # save
@@ -687,6 +693,7 @@ def lwb_car(requests):
 
 @csrf_exempt
 def lwb_product_owner(requests):
+
     """
     create car object
     """
@@ -806,6 +813,7 @@ def lwb_create(requests):
             cage_num = requests.POST['cage_num']
             product_num_in_cage = requests.POST['product_num_in_cage']
             lwb_id = requests.POST['lwb_id']
+            source_weight = float(requests.POST['source_weight'])
 
             # get data
             lwb_obj = models.LiveWeighbridge.objects.get(live_weighbridge_id=lwb_id)
@@ -820,9 +828,8 @@ def lwb_create(requests):
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
             lwb_obj.weighting_date_format = t
             lwb_obj.lwb_category = 'W'
-
-            if len(lwb_user_list) > 0:
-                lwb_obj.Live_Weighbridge_Manager = lwb_user_list[0]
+            lwb_obj.Live_Weighbridge_Manager = requests.user.username
+            lwb_obj.source_weight = source_weight
 
             # save live weighbridge
             lwb_obj.save()
@@ -902,7 +909,7 @@ def lwb_start_slaughter_form(requests):
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=False).filter(
                     finish=False
                 ).filter(
-                    weighting_date__gte=time.time()-(60*60*6)
+                    weighting_date__gte=time.time()-(60*60*12)
 
                 ),
 
@@ -1065,6 +1072,7 @@ def lwb_finish_slaughter(requests):
 
 
 def lwb_capability_form(requests):
+
     """
     show all of lwb object and user must choose from one of them
     """
@@ -1083,7 +1091,9 @@ def lwb_capability_form(requests):
 
             context = {
 
-                'lwb_list': models.LiveWeighbridge.objects.all().filter(car_empty=False),
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(car_empty=False).filter(
+                    final_weight__gte=0.0
+                ),
                 'request': requests
 
             }
@@ -1117,9 +1127,208 @@ def lwb_capability(requests):
             lwb_id = requests.POST['lwb_id']
             car_weight = requests.POST['car_weight']
             losses_num = requests.POST['losses_num']
-            losses_weight = requests.POST['losses_weight']
             victim_num = requests.POST['victim_num']
-            victim_weight = requests.POST['victim_weight']
+            fuel = float(requests.POST['fuel'])
+
+            # get liveWeighBridge list
+            lwb_obj_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
+
+            if len(lwb_obj_list) > 0:
+
+                # change object status to True and save current time
+                lwb_obj = lwb_obj_list[0]
+
+                weight = (lwb_obj.final_weight - float(car_weight)) / (lwb_obj.cage_num * lwb_obj.product_num_in_cage)
+
+                # change information
+                lwb_obj.car_empty = True
+                lwb_obj.car_weight = float(car_weight)
+                lwb_obj.losses_num = int(losses_num)
+                lwb_obj.losses_weight = int(losses_num) * weight
+                lwb_obj.victim_num = int(victim_num)
+                lwb_obj.victim_weight = int(victim_num) * weight
+                lwb_obj.fuel = fuel
+
+                # save changes
+                lwb_obj.save()
+
+                # load template
+                temp = loader.get_template('WareHouseApp/lwb_driver_report.html')
+
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                context = {
+
+                    'source_weight': lwb_obj.source_weight,
+                    'weight': lwb_obj.final_weight - lwb_obj.car_weight,
+                    'full_weight': lwb_obj.final_weight,
+                    'empty_weight': lwb_obj.car_weight,
+                    'driver': lwb_obj.driver.name + ' ' + lwb_obj.driver.last_name,
+                    'car': str(lwb_obj.car.car_number1) + ' '+ str(lwb_obj.car.car_number2) +' '+ str(lwb_obj.car.car_number3) + ' '+str(lwb_obj.car.car_number4)  ,
+                    'drop_down': lwb_obj.source_weight - (lwb_obj.final_weight - lwb_obj.car_weight) if lwb_obj.source_weight > 0.0 else 0.0,
+                    'avic_city': lwb_obj.avicultureـcity,
+                    'avic_name': lwb_obj.avicultureـname,
+                    'prod_num': lwb_obj.cage_num * lwb_obj.product_num_in_cage,
+                    'prod_type': lwb_obj.product_category,
+                    'cage_num': lwb_obj.cage_num,
+                    'prod_num_in_cage': lwb_obj.product_num_in_cage,
+                    'losses_num': lwb_obj.losses_num,
+                    'losses_weight': round(lwb_obj.losses_weight, 2),
+                    'victim_num': lwb_obj.victim_num,
+                    'victim_weight': round(lwb_obj.victim_weight, 2),
+                    'request': requests,
+                    'date': t,
+                    'type': 'حواله باسکول زنده',
+
+                }
+
+                return HttpResponse(temp.render(context))
+
+            else:
+
+                return HttpResponseRedirect(reverse('Error', args=['enter information is incorrect']))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+def lwb_driver_report(requests, lwb_id='0'):
+
+    """
+    report driver live weighbridge
+    """
+    if requests.user.is_authenticated:
+
+        # get user and check user's permission
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # get liveWeighBridge list
+            lwb_obj_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
+
+            if len(lwb_obj_list) > 0:
+
+                # change object status to True and save current time
+                lwb_obj = lwb_obj_list[0]
+
+                # load template
+                temp = loader.get_template('WareHouseApp/lwb_driver_report.html')
+
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                context = {
+
+                    'weight_time': lwb_obj.weighting_date_format,
+                    'source_weight': lwb_obj.source_weight,
+                    'weight': lwb_obj.final_weight - lwb_obj.car_weight,
+                    'full_weight': lwb_obj.final_weight,
+                    'empty_weight': lwb_obj.car_weight,
+                    'driver': lwb_obj.driver.name + ' ' + lwb_obj.driver.last_name,
+                    'car': str(lwb_obj.car.car_number1) + ' '+ str(lwb_obj.car.car_number2) +' '+ str(lwb_obj.car.car_number3) + ' '+str(lwb_obj.car.car_number4)  ,
+                    'drop_down': lwb_obj.source_weight - (lwb_obj.final_weight - lwb_obj.car_weight) if lwb_obj.source_weight > 0.0 else 0.0,
+                    'avic_city': lwb_obj.avicultureـcity,
+                    'avic_name': lwb_obj.avicultureـname,
+                    'prod_num': lwb_obj.cage_num * lwb_obj.product_num_in_cage,
+                    'prod_type': lwb_obj.product_category,
+                    'cage_num': lwb_obj.cage_num,
+                    'prod_num_in_cage': lwb_obj.product_num_in_cage,
+                    'losses_num': lwb_obj.losses_num,
+                    'losses_weight': round(lwb_obj.losses_weight, 2),
+                    'victim_num': lwb_obj.victim_num,
+                    'victim_weight': round(lwb_obj.victim_weight, 2),
+                    'request': requests,
+                    'date': t,
+                    'type': 'حواله باسکول زنده',
+
+                }
+
+                return HttpResponse(temp.render(context))
+
+            else:
+
+                return HttpResponseRedirect(reverse('Error', args=['enter information is incorrect']))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+def lwb_final_form(requests):
+    """
+    return last 24 hours live weighbridge
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user and check user's permission
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # load template
+            slaughter_temp = loader.get_template('WareHouseApp/lwb_final.html')
+
+            context = {
+
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(
+                    weighting_date__gte=time.time() - (60 * 60 * 24)
+
+                ),
+
+                'request': requests,
+
+            }
+
+            return HttpResponse(slaughter_temp.render(context))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+    else:
+        return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+
+@csrf_exempt
+def lwb_final(requests):
+    """
+    get data from form data change status to True and save start time
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user and check user's permission
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # get information
+            lwb_id = requests.POST['lwb_id']
+            per_purchase = float(requests.POST['per_purchase'])
+            per_sale = float(requests.POST['per_sale'])
+            buy_price = float(requests.POST['buy_price'])
+            sale_weight = float(requests.POST['sale_weight'])
+            driver_rent = float(requests.POST['driver_rent'])
 
             # get liveWeighBridge list
             lwb_obj_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
@@ -1130,12 +1339,99 @@ def lwb_capability(requests):
                 lwb_obj = lwb_obj_list[0]
 
                 # change information
-                lwb_obj.car_empty = True
-                lwb_obj.car_weight = float(car_weight)
-                lwb_obj.losses_num = int(losses_num)
-                lwb_obj.losses_weight = float(losses_weight)
-                lwb_obj.victim_num = int(victim_num)
-                lwb_obj.victim_weight = float(victim_weight)
+                lwb_obj.per_purchase = per_purchase
+                lwb_obj.per_sale = per_sale
+                lwb_obj.sale_weight = sale_weight
+                lwb_obj.driver_rent = driver_rent
+                if buy_price > 0.0:
+                    lwb_obj.buy_price = buy_price
+
+                # save changes
+                lwb_obj.save()
+
+                return HttpResponseRedirect(reverse('live_WeighBridge'))
+
+            else:
+
+                return HttpResponseRedirect(reverse('Error', args=['enter information is incorrect']))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you don't have access to this page"]))
+
+
+def lwb_count_form(requests):
+
+    """
+    import product count
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user and check user's permission
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # load template
+            slaughter_temp = loader.get_template('WareHouseApp/LiveWeighBridge_count.html')
+
+            context = {
+
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(
+                    car_weight__gte=0.0
+                ).filter(weighting_date__gte=(time.time() + information.time_dif) - (60 * 60 *12)).filter(
+                    salughter_count=0.0),
+                'request': requests
+
+            }
+
+            return HttpResponse(slaughter_temp.render(context))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+    else:
+        return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+
+
+@csrf_exempt
+def lwb_count(requests):
+
+    """
+    get data from form data change status to True and save start time
+    """
+
+    if requests.user.is_authenticated:
+
+        # get user and check user's permission
+        # get user list
+        lwb_user_list = models.LiveWeighbridgeManager.objects.all().filter(username=requests.user.username)
+        ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(lwb_user_list) > 0 or len(ceo_user_list) or requests.user.is_superuser:
+
+            # get information
+            lwb_id = requests.POST['lwb_id']
+            count = requests.POST['count']
+
+            # get liveWeighBridge list
+            lwb_obj_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
+
+            if len(lwb_obj_list) > 0:
+
+                # change object status to True and save current time
+                lwb_obj = lwb_obj_list[0]
+
+                # change information
+                lwb_obj.salughter_count = count
 
                 # save changes
                 lwb_obj.save()
@@ -1176,7 +1472,7 @@ def first_weightlifting_form(requests):
 
             context = {
 
-                'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True),
+                'po_list': models.ProductOwner.objects.all(),
                 'request': requests,
                 'code': random.randint(1000, 9999)
 
@@ -1212,12 +1508,13 @@ def first_weightlifting(requests):
         if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
 
             # get data
-            lwb_id = requests.POST['lwb_id']
+            po_id = requests.POST['po_id']
             weight = float(requests.POST['weight'])
             sales_category = requests.POST['sales_category']
             bike_weight = float(requests.POST['bike_weight'])
             box_num = float(requests.POST['box_num'])
             code = str(requests.POST['code'])
+            prod_category = requests.POST['prod_category']
 
             try:
                 product_class = requests.POST['product_class']
@@ -1226,11 +1523,18 @@ def first_weightlifting(requests):
             except:
                 product_class = True
 
+            try:
+                box_type = requests.POST['box_type']
+                box_weight = information.big_box
+
+            except:
+                box_weight = information.small_box
+
             # create first_weightlifting objects
             fwl = models.FirstWeightLifting()
 
             # calculate box
-            box_weight = information.box_weight * box_num
+            box_weight = box_weight * box_num
 
             weight = weight - (bike_weight + box_weight)
 
@@ -1238,21 +1542,17 @@ def first_weightlifting(requests):
             fwl.sales_category = sales_category
             fwl.weight_lifting_id = str(uuid1().int)
             fwl.weighting_time = time.time() + information.time_dif
+
             t = time.ctime(time.time() + information.time_dif).split()
             year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
             fwl.weighting_time_format = t
+
             fwl.code = str(code)
             fwl.class_product = product_class
-
-            # get lwb list
-            lwb_list = models.LiveWeighbridge.objects.all().filter(live_weighbridge_id=lwb_id)
-            fwl.Live_Weigh_Bridge = lwb_list[0]
-
-            if len(first_weightlifting_user_list) > 0:
-                fwl.Weight_Lifting_Manager = first_weightlifting_user_list[0]
-
-            fwl.product_category = lwb_list[0].product_category
+            fwl.Weight_Lifting_Manager = requests.user.username
+            fwl.product_category = prod_category
+            fwl.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
             # save objects
             fwl.save()
@@ -2576,6 +2876,14 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
                     'victim_num': 0.0,
                     'victim_weight': 0.0,
                     'total_num': 0.0,
+                    'salughter_count': 0.0,
+                    'salughter_count_dif': 0.0,
+                    'fuel': 0.0,
+                    'source_weight': 0.0,
+                    'aviculture_avg_weight': 0.0,
+                    'account_side': 0.0,
+                    'drop_down': 0.0,
+                    'rent': 0.0,
 
                 },
 
@@ -2592,6 +2900,14 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
                     'victim_num': 0.0,
                     'victim_weight': 0.0,
                     'total_num': 0.0,
+                    'salughter_count': 0.0,
+                    'salughter_count_dif': 0.0,
+                    'fuel': 0.0,
+                    'source_weight': 0.0,
+                    'aviculture_avg_weight': 0.0,
+                    'account_side': 0.0,
+                    'drop_down': 0.0,
+                    'rent': 0.0,
 
                 },
 
@@ -2608,11 +2924,21 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
                     'victim_num': 0.0,
                     'victim_weight': 0.0,
                     'total_num': 0.0,
+                    'salughter_count': 0.0,
+                    'salughter_count_dif': 0.0,
+                    'fuel': 0.0,
+                    'source_weight': 0.0,
+                    'aviculture_avg_weight': 0.0,
+                    'account_side': 0.0,
+                    'drop_down': 0.0,
+                    'rent': 0.0,
+
 
                 },
 
             ]
 
+            counter = 1
             for lwb in lwb_list:
 
                 if lwb.product_category == 'C':
@@ -2620,51 +2946,66 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
 
                     lwb_report[0]['car_weight'] += float(lwb.car_weight)
                     lwb_report[0]['car_final_weight'] += float(lwb.final_weight)
-                    lwb_report[0]['weight'] += float(lwb.final_weight) - float(
-                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
-                    lwb_report[0]['average_weight'] += (float(lwb.final_weight) - float(
-                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (
-                                                                   int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
-                    lwb_report[0]['total_buy_price'] += (float(lwb.final_weight) - float(
-                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
-                    lwb_report[0]['average_each_buy_price'] += ((float(lwb.final_weight) - float(
-                        lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (
-                                                                           int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[0]['weight'] += round(float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight, 2)
+                    lwb_report[0]['average_weight'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[0]['total_buy_price'] += round((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price), 2)
+                    lwb_report[0]['average_each_buy_price'] += round(((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num), 2)
                     lwb_report[0]['losses_num'] += lwb.losses_num
-                    lwb_report[0]['losses_weight'] += lwb.losses_weight
+                    lwb_report[0]['losses_weight'] += round(lwb.losses_weight, 2)
                     lwb_report[0]['victim_num'] += lwb.victim_num
-                    lwb_report[0]['victim_weight'] += lwb.victim_weight
+                    lwb_report[0]['victim_weight'] += round(lwb.victim_weight, 2)
                     lwb_report[0]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
+                    lwb_report[0]['salughter_count'] += lwb.salughter_count
+                    lwb_report[0]['salughter_count_dif'] += abs(lwb.salughter_count - int(lwb.cage_num * lwb.product_num_in_cage))
+                    lwb_report[0]['fuel'] += lwb.fuel
+                    lwb_report[0]['source_weight'] += lwb.source_weight
+                    lwb_report[0]['aviculture_avg_weight'] += lwb.aviculture_avg_weight
+                    lwb_report[0]['drop_down'] += ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight) * -1 if ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight)  > 0.0 else 0.0
+                    lwb_report[0]['rent'] += lwb.driver_rent
 
                 elif lwb.product_category == 'T':
                     prod = 'turkey'
 
                     lwb_report[1]['car_weight'] += float(lwb.car_weight)
                     lwb_report[1]['car_final_weight'] += float(lwb.final_weight)
-                    lwb_report[1]['weight'] += float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
+                    lwb_report[1]['weight'] += round(float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight, 2)
                     lwb_report[1]['average_weight'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
-                    lwb_report[1]['total_buy_price'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
-                    lwb_report[1]['average_each_buy_price'] += ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[1]['total_buy_price'] += round((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price), 2)
+                    lwb_report[1]['average_each_buy_price'] += round(((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num), 2)
                     lwb_report[1]['losses_num'] += lwb.losses_num
-                    lwb_report[1]['losses_weight'] += lwb.losses_weight
+                    lwb_report[1]['losses_weight'] += round(lwb.losses_weight, 2)
                     lwb_report[1]['victim_num'] += lwb.victim_num
-                    lwb_report[1]['victim_weight'] += lwb.victim_weight
+                    lwb_report[1]['victim_weight'] += round(lwb.victim_weight, 2)
                     lwb_report[1]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
+                    lwb_report[1]['salughter_count'] += lwb.salughter_count
+                    lwb_report[1]['salughter_count_dif'] += abs(lwb.salughter_count - int(lwb.cage_num * lwb.product_num_in_cage))
+                    lwb_report[1]['fuel'] += lwb.fuel
+                    lwb_report[1]['source_weight'] += lwb.source_weight
+                    lwb_report[1]['aviculture_avg_weight'] += lwb.aviculture_avg_weight
+                    lwb_report[1]['drop_down'] += ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight) * -1 if ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight)  > 0.0 else 0.0
+                    lwb_report[1]['rent'] += lwb.driver_rent
 
                 elif lwb.product_category == 'Q':
                     prod = 'quail'
 
                     lwb_report[2]['car_weight'] += float(lwb.car_weight)
                     lwb_report[2]['car_final_weight'] += float(lwb.final_weight)
-                    lwb_report[2]['weight'] += float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight
+                    lwb_report[2]['weight'] += round(float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight, 2)
                     lwb_report[2]['average_weight'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
-                    lwb_report[2]['total_buy_price'] += (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)
-                    lwb_report[2]['average_each_buy_price'] += ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num)
+                    lwb_report[2]['total_buy_price'] += round((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price), 2)
+                    lwb_report[2]['average_each_buy_price'] += round(((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num), 2)
                     lwb_report[2]['losses_num'] += lwb.losses_num
-                    lwb_report[2]['losses_weight'] += lwb.losses_weight
+                    lwb_report[2]['losses_weight'] += round(lwb.losses_weight, 2)
                     lwb_report[2]['victim_num'] += lwb.victim_num
-                    lwb_report[2]['victim_weight'] += lwb.victim_weight
+                    lwb_report[2]['victim_weight'] += round(lwb.victim_weight, 2)
                     lwb_report[2]['total_num'] += lwb.cage_num * lwb.product_num_in_cage
+                    lwb_report[2]['salughter_count'] += lwb.salughter_count
+                    lwb_report[2]['salughter_count_dif'] += abs(lwb.salughter_count - int(lwb.cage_num * lwb.product_num_in_cage))
+                    lwb_report[2]['fuel'] += lwb.fuel
+                    lwb_report[2]['source_weight'] += lwb.source_weight
+                    lwb_report[2]['aviculture_avg_weight'] += lwb.aviculture_avg_weight
+                    lwb_report[2]['drop_down'] += ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight) * -1 if ((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight)  > 0.0 else 0.0
+                    lwb_report[2]['rent'] += lwb.driver_rent
 
                 else:
                     prod = 'Nothing'
@@ -2674,38 +3015,57 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
                     lwb.weighting_date_format,
                     lwb.final_weight,
                     lwb.car_weight,
-                    float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight,
-                    (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),
+                    round(float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight, 2),
+                    round((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),2),
                     lwb.order_weight,
-                    lwb.losses_weight,
+                    round(lwb.losses_weight, 2),
                     lwb.losses_num,
-                    lwb.victim_weight,
+                    round(lwb.victim_weight, 2),
                     lwb.victim_num,
                     lwb.cage_num,
                     lwb.product_num_in_cage,
-                    (lwb.cage_num * lwb.product_num_in_cage ) - lwb.losses_num - lwb.victim_num,
+                    (lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num,
                     lwb.buy_price,
-                    (float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price),
-                    ((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),
+                    round((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price), 2),
+                    round(((float(lwb.final_weight) - float(lwb.car_weight) - lwb.losses_weight - lwb.victim_weight) * float(lwb.buy_price)) / (int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num), 2),
                     lwb.slaughter_start_date_format if lwb.slaughter_start_date else '-',
                     lwb.slaughter_finish_date_format if lwb.slaughter_finish_date else '-',
                     prod,
                     lwb.driver.name + ' ' + lwb.driver.last_name,
-                    str(lwb.car.car_number1) + ' ' + str(lwb.car.car_number2) + ' ' + str(lwb.car.car_number3) + ' ' + str(lwb.car.car_number4),
+                    str(lwb.car.car_number4) + ' ' + str(lwb.car.car_number3) + ' ' + str(lwb.car.car_number2) + ' ' + str(lwb.car.car_number1),
                     str(lwb.product_owner.name) + ' ' + str(lwb.product_owner.last_name),
                     lwb.avicultureـname,
-                    lwb.avicultureـcity
+                    lwb.avicultureـcity,
+                    lwb.salughter_count,
+                    abs(lwb.salughter_count - int(lwb.cage_num * lwb.product_num_in_cage) - lwb.losses_num - lwb.victim_num),
+                    lwb.fuel,
+                    lwb.source_weight,
+                    lwb.aviculture_avg_weight,
+                    lwb.account_side,
+                    -1*((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight) if -1*((float(lwb.final_weight) - float(lwb.car_weight) ) - lwb.source_weight) > 0.0 else 0.0,
+                    lwb.per_purchase,
+                    lwb.per_sale,
+                    lwb.sale_weight,
+                    lwb.driver_rent,
+                    counter,
+
                 ])
+                counter +=1
 
             for data in lwb_report:
                 try:
                     data['average_weight'] /= len(lwb_list)
+                    data['average_weight'] = round(data['average_weight'], 2)
+
 
                 except:
                     pass
 
+                data['total_buy_price'] = round(data['total_buy_price'], 2)
+
                 try:
                     data['average_each_buy_price'] /= len(lwb_list)
+                    data['average_each_buy_price'] = round(data['average_each_buy_price'], 2)
 
                 except:
                     pass
@@ -2728,7 +3088,7 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def driver_list(requests, phone_number='0', product_category='0', model_type='0', year='0', month='0', day='0'):
+def driver_list(requests, phone_number='0', product_category='0', model_type='0', year='0', month='0', day='0', deadline_year='0', deadline_month='0', deadline_day='0', output_type='0'):
 
     """
     show list of driver with filter
@@ -2749,35 +3109,42 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
             # else we must return nothing
             if model_type == '0':
 
-                dist_list = models.Distributed.objects.all()
+                dist_list = models.DistributedRoot.objects.all()
                 lwb_list = models.LiveWeighbridge.objects.all()
 
             elif model_type == '1':
 
-                dist_list = models.Distributed.objects.all()
+                dist_list = models.DistributedRoot.objects.all()
                 lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
 
             elif model_type == '2':
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                dist_list = models.DistributedRoot.objects.all().filter(empty_weight=-5248.0)
                 lwb_list = models.LiveWeighbridge.objects.all().filter()
 
             else:
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
+                dist_list = models.DistributedRoot.objects.all().filter(empty_weight=-5248.0)
                 lwb_list = models.LiveWeighbridge.objects.all().filter(car_weight=-5248.0)
 
             # we must add time filter . this filter help to see special time's objects
             # if all of them equal 0 we didn't add time filter
             # else we must add month and day and year filter
-            if year != '0' and month != '0' and day != '0':
+            if year != '0' and month != '0' and day != '0' and deadline_year != '0' and deadline_month != '0' and deadline_day != '0' :
+
+                # convert solar time to ad time
+                year, month, day = utils.solar2ad(int(year), int(month), int(day))
+                deadline_year, deadline_month, deadline_day = utils.solar2ad(int(deadline_year), int(deadline_month), int(deadline_day))
 
                 # add time filter
                 string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
                 time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
-                lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(weighting_date__lte=time_filter + (60*60*24))
-                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60*60*24))
+                string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
+                deadline_time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
+
+                lwb_list = lwb_list.filter(weighting_date__gte=time_filter).filter(weighting_date__lte=deadline_time_filter)
+                dist_list = dist_list.filter(create_time__gte=time_filter).filter(create_time__lte=deadline_time_filter)
 
             # we must add driver phone number filter to return special driver objects
             # if equal 0 we didn't add filter
@@ -2794,47 +3161,96 @@ def driver_list(requests, phone_number='0', product_category='0', model_type='0'
             # else we didn't add filter
             if product_category == '1':
 
-                dist_list = dist_list.filter(product_category='C')
+                # dist_list = dist_list.filter(product_category='C')
                 lwb_list = lwb_list.filter(product_category='C')
 
             elif product_category == '2':
 
-                dist_list = dist_list.filter(product_category='T')
+                # dist_list = dist_list.filter(product_category='T')
                 lwb_list = lwb_list.filter(product_category='T')
 
             elif product_category == '3':
 
-                dist_list = dist_list.filter(product_category='Q')
+                # dist_list = dist_list.filter(product_category='Q')
                 lwb_list = lwb_list.filter(product_category='Q')
 
-            # load driver_list template
-            driver_temp = loader.get_template('WareHouseApp/driver_list.html')
+            if output_type == '0':
+
+                # load driver_list template
+                driver_temp = loader.get_template('WareHouseApp/driver_list.html')
+
+            else:
+
+                driver_temp = loader.get_template('WareHouseApp/report_driver.html')
 
             # create list for store distribute data
             dist_final_list = []
+            dist_final_report = [0.0, 0.0, 0.0]
+            sub_dist_list = []
+            sub_dist_report = []
             for dist in dist_list:
 
-                # change database product_category attribute from abbreviation to complete word
-                if dist.product_category == 'C':
-                    prod_category = 'chicken'
+               dist_final_list.append([
 
-                elif dist.product_category == 'T':
-                    prod_category = 'turkey'
+                   dist.create_time_format,
+                   dist.exit_time_format,
+                   dist.empty_weight,
+                   dist.full_weight,
+                   dist.full_weight - dist.empty_weight,
+                   dist.destination,
+                   dist.driver.name + ' ' + dist.driver.lastname,
+                   dist.driver.phone_number,
+                   str(dist.car.car_number1) + ' ' + str(dist.car.car_number2) + ' ' + str(
+                       dist.car.car_number3) + ' ' + str(dist.car.car_number4),
 
-                elif dist.product_category == 'Q':
-                    prod_category = 'quail'
-                else:
-                    '-'
+               ])
 
-                dist_final_list.append([
+               dist_final_report[0] += dist.empty_weight
+               dist_final_report[1] += dist.full_weight
+               dist_final_report[2] += dist.full_weight - dist.empty_weight
 
-                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
-                    dist.driver.car.car_number,
-                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, dist.date_format, dist.sale_price, prod_category,
-                    dist.bill_of_lading, dist.number_of_box
+               if prod_category == '1':
 
-                ])
+                    sub_dist = models.Distributed.objects.all().filter(distribute_root=dist).filter(product_category='C')
+
+               elif prod_category == '2':
+
+                    sub_dist = models.Distributed.objects.all().filter(distribute_root=dist).filter(product_category='T')
+
+               elif prod_category == '3':
+
+                    sub_dist = models.Distributed.objects.all().filter(distribute_root=dist).filter(product_category='Q')
+
+               else:
+
+                    sub_dist = models.Distributed.objects.all().filter(distribute_root=dist)
+
+               for sub in sub_dist:
+
+                    # change database product_category attribute from abbreviation to complete word
+                    if sub.product_category == 'C':
+                        prod_category = 'chicken'
+
+                    elif sub.product_category == 'T':
+                        prod_category = 'turkey'
+
+                    elif sub.product_category == 'Q':
+                        prod_category = 'quail'
+                    else:
+                        '-'
+
+                    dist_final_list.append([
+
+                        sub.distribute_root.driver.name + " " + sub.distribute_root.driver.last_name,
+                        sub.distribute_root.driver.phone_number,
+                        str(sub.distribute_root.car.car_number1) + ' ' + str(sub.distribute_root.car.car_number2) + ' ' + str(
+                            sub.distribute_root.car.car_number3) + ' ' + str(sub.distribute_root.car.car_number4),
+
+                        dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
+                        dist.weight, dist.date_format, dist.sale_price, prod_category,
+                        dist.bill_of_lading, dist.number_of_box
+
+                    ])
 
             # create live weighbridge final list for change and store data
             lwb_final_list = []
@@ -3309,7 +3725,7 @@ def product_owner_list(requests, po_name='0', po_lastname='0', product_category=
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
-def weight_lifting_list(requests, product_category='0', model_type='0', year='0', month='0', day='0', exist='0'):
+def weight_lifting_list(requests, product_category='0', model_type='0', year='0', month='0', day='0', deadline_year='0', deadline_month='0', deadline_day='0', output_type='0'):
 
     """
     show list of first weightlifting with filter
@@ -3323,78 +3739,43 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
 
             """ user have access """
 
-            # check model type filter
-            # if equal 0 we must return distribute and live weighbridge and pre-cold and freeze tunnel objects
-            # if equal 1 we must return only live weighbridge objects
-            # if equal 2 we must return only distribute objects
-            # if equal 3 we must return only pre-cold objects
-            # if equal 4 we must return only freeze tunnel objects
-            # else we must return nothing
             if model_type == '0':
 
-                dist_list = models.Distributed.objects.all()
-                pd_list = models.PreCold.objects.all()
-                ft_list = models.FreezingTunnel.objects.all()
+                fwl_list = models.FirstWeightLifting.objects.all()
 
             elif model_type == '1':
 
-                dist_list = models.Distributed.objects.all()
-                pd_list = models.PreCold.objects.all().filter(weight=-5)
-                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+                fwl_list = models.FirstWeightLifting.objects.all().filter(sales_category='P')
 
             elif model_type == '2':
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
-                pd_list = models.PreCold.objects.all().filter(weight=-5)
-                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+                fwl_list = models.FirstWeightLifting.objects.all().filter(sales_category='D')
 
             elif model_type == '3':
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
-                pd_list = models.PreCold.objects.all()
-                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+                fwl_list = models.FirstWeightLifting.objects.all().filter(sales_category='F')
 
             elif model_type == '4':
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
-                pd_list = models.PreCold.objects.all().filter(weight=-5)
-                ft_list = models.FreezingTunnel.objects.all()
+                fwl_list = models.FirstWeightLifting.objects.all().filter(sales_category='G')
 
             else:
 
-                dist_list = models.Distributed.objects.all().filter(weight=-5248.0)
-                pd_list = models.PreCold.objects.all().filter(weight=-5)
-                ft_list = models.FreezingTunnel.objects.all().filter(weight=-5)
+                fwl_list = models.FirstWeightLifting.objects.all().filter(sales_category='Z')
 
             # we must add time filter . this filter help to see special time's objects
             # if all of them equal 0 we didn't add time filter
             # else we must add month and day and year filter
             if year != '0' and month != '0' and day != '0':
                 # add time filter
+                # add time filter
                 string = '{0}/{1}/{2}'.format(str(day), str(month), str(year))
                 time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
-                dist_list = dist_list.filter(date__gte=time_filter).filter(date__lte=time_filter + (60 * 60 * 24))
+                string = '{0}/{1}/{2}'.format(str(deadline_day), str(deadline_month), str(deadline_year))
+                deadline_time_filter = time.mktime(datetime.datetime.strptime(string, "%d/%m/%Y").timetuple())
 
-                pd_list = pd_list.filter(entry_time__gte=time_filter).filter(
-                    entry_time__lte=time_filter + (60 * 60 * 24))
-
-                ft_list = ft_list.filter(entry_date__gte=time_filter).filter(
-                    entry_date__lte=time_filter + (60 * 60 * 24))
-
-            # check product exist in freeze tunnel and pre-cold or not
-            # if equal 1 it will check all of exist
-            # if equal 2 it will check didn't exist
-            # else didn't apply filter
-            if exist == '1':
-
-                pd_list = pd_list.filter(product_pre_cold_status=True)
-                ft_list = ft_list.filter(status=True)
-
-            elif exist == '2':
-
-                pd_list = pd_list.filter(product_pre_cold_status=False)
-                ft_list = ft_list.filter(status=False)
+                fwl_list = fwl_list.filter(weighting_time__gte=time_filter).filter(weighting_time__lte=deadline_time_filter)
 
             # we must add product category filter to return special product
             # if equal 1 we return only chicken objects
@@ -3403,125 +3784,117 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
             # else we didn't add filter
             if product_category == '1':
 
-                dist_list = dist_list.filter(product_category='C')
-                pd_list = pd_list.filter(product_category='C')
-                ft_list = ft_list.filter(product_category='C')
-
+                fwl_list = fwl_list.filter(product_category='C')
             elif product_category == '2':
 
-                dist_list = dist_list.filter(product_category='T')
-                pd_list = pd_list.filter(product_category='T')
-                ft_list = ft_list.filter(product_category='T')
+                fwl_list = fwl_list.filter(product_category='T')
 
             elif product_category == '3':
 
-                dist_list = dist_list.filter(product_category='Q')
-                pd_list = pd_list.filter(product_category='Q')
-                ft_list = ft_list.filter(product_category='Q')
+                fwl_list = fwl_list.filter(product_category='Q')
+            if output_type == '0':
 
-            # load product_owner template
-            po_temp = loader.get_template('WareHouseApp/weight_lifting_list.html')
+                # load product_owner template
+                po_temp = loader.get_template('WareHouseApp/weight_lifting_list.html')
+            else:
+                po_temp = loader.get_template('WareHouseApp/report_fwl.html')
 
             # create list for store distribute data
-            dist_final_list = []
-            for dist in dist_list:
+            final_list = []
+            total_list = [
+
+                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0],
+
+            ]
+            counter = 0
+            total__weight = 0
+            total__weight_1 = 0
+
+            for fwl in fwl_list:
+                counter += 1
 
                 # change database product_category attribute from abbreviation to complete word
-                if dist.product_category == 'C':
-                    prod_category = 'chicken'
+                if fwl.product_category == 'C':
+                    prod_category = 'مرغ'
+                    row = 0
 
-                elif dist.product_category == 'T':
-                    prod_category = 'turkey'
+                elif fwl.product_category == 'T':
+                    prod_category = 'بوقلمون'
+                    row = 1
 
-                elif dist.product_category == 'Q':
-                    prod_category = 'quail'
+                elif fwl.product_category == 'Q':
+                    prod_category = 'بلدرچین'
+                    row = 2
 
-                dist_final_list.append([
+                if fwl.sales_category == 'P' :
+                    sale_cat = 'پیش سرد'
+                    col = 0
 
-                    dist.driver.name, dist.driver.last_name, dist.driver.phone_number,
-                    dist.driver.car.car_number,
-                    dist.driver.car.product_owner.name, dist.driver.car.product_owner.last_name,
-                    dist.weight, dist.date_format, dist.sale_price, prod_category,
-                    dist.bill_of_lading, dist.number_of_box
+                elif fwl.sales_category == 'D':
+                    sale_cat = 'فروش گرم'
+                    col = 1
 
-                ])
+                elif fwl.sales_category == 'F':
+                    sale_cat = 'تونل انجماد'
+                    col = 2
 
-            # create pre-cold final list for change and store pre-cold model's data
-            pd_final_list = []
-            for pd in pd_list:
+                elif fwl.sales_category == 'G':
+                    sale_cat = 'قطعه بندی'
+                    col = 3
 
-                # change database product_category attribute from abbreviation to complete word
-                if pd.product_category == 'C':
-                    prod_category = 'Chicken'
+                elif fwl.sales_category == 'Z':
+                    sale_cat = 'پودر گوشت'
+                    col = 4
 
-                elif pd.product_category == 'T':
-                    prod_category = 'turkey'
+                total_list[row][col] += fwl.weight
+                total_list[-1][col] += fwl.weight
 
-                elif pd.product_category == 'Q':
-                    prod_category = 'Quail'
+                final_list.append([
 
-                pd_final_list.append([
-
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.name,
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.last_name,
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.phone_number,
-                    pd.First_Weight_Lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    pd.First_Weight_Lifting.weighting_time_format,
-                    pd.First_Weight_Lifting.weight,
-                    'pre-cold',
-                    pd.pre_cold_id,
-                    pd.pallet_id,
-                    pd.product_pre_cold_status,
+                    counter,
+                    fwl.product_owner.name + ' '+ fwl.product_owner.last_name,
+                    fwl.weighting_time_format,
+                    fwl.weight,
+                    'درجه یک' if fwl.class_product else 'درجه دو',
                     prod_category,
-                    pd.weight,
-                    pd.entry_time_format,
-                    '-' if pd.product_pre_cold_status else pd.exit_time_format,
+                    fwl.code,
+                    sale_cat,
+                    fwl.Weight_Lifting_Manager,
 
                 ])
 
-            # create pre-cold final list for change and store pre-cold model's data
-            ft_final_list = []
-            for ft in ft_list:
+                total__weight += fwl.weight
+                total__weight_1 += 0.0 if fwl.class_product else fwl.weight
 
-                # change database product_category attribute from abbreviation to complete word
-                if ft.product_category == 'C':
-                    prod_category = 'Chicken'
+            final_list.append([
 
-                elif ft.product_category == 'T':
-                    prod_category = 'turkey'
+                'مجموع',
+                '-',
+                '-',
+                total__weight,
+                total__weight_1,
+                '-',
+                '-',
+                '-',
+                '-',
 
-                elif ft.product_category == 'Q':
-                    prod_category = 'Quail'
+            ])
 
-                ft_final_list.append([
-
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.name,
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.product_owner.last_name,
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.name,
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.last_name,
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.phone_number,
-                    ft.first_weight_lifting.Live_Weigh_Bridge.driver.car.car_number,
-                    ft.first_weight_lifting.weighting_time_format,
-                    ft.first_weight_lifting.weight,
-                    'freeze tunnel',
-                    ft.entry_date_format,
-                    '-' if ft.status else ft.exit_date_format,
-                    ft.weight,
-                    ft.tunnel_id,
-                    ft.pallet_id,
-                    prod_category,
-
-                ])
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
             # return data
             context = {
 
-                'dist_list': dist_final_list,
-                'ft_list': ft_final_list,
-                'pd_list': pd_final_list,
-                'request': requests
+                'request': requests,
+                'fwl_list': final_list,
+                'tl': total_list,
+                'date': t,
+                'type': 'گزارش وزن کشی مرحله اول',
 
             }
 
@@ -3778,9 +4151,12 @@ def wl_filter(requests):
         requests.POST['year'],
         requests.POST['month'],
         requests.POST['day'],
+        requests.POST['deadline_year'],
+        requests.POST['deadline_month'],
+        requests.POST['deadline_day'],
         requests.POST['product_category'],
         requests.POST['model_type'],
-        requests.POST['exist'],
+        requests.POST['output_type'],
 
     ]))
 

@@ -30,15 +30,15 @@
                           <th>وزن پر</th>
                           <th>وزن خالی</th>
                           <th>وزن خالص</th>
-                          <th>وزن هر محصول</th>
+                          <th>وزن مبدا</th>
                           <th>وزن سفارش پر کنده </th>
+                          <th>افت</th>
+                          <th>وزن مبدا برای هر محصول</th>
+                          <th>وزن هر محصول</th>
                           <th>وزن ضایعات </th>
                           <th>تعداد ضایعات </th>
                           <th>وزن تلفات</th>
                           <th>تعداد تلفات</th>
-                          <th>تعداد قفس</th>
-                          <th>تعداد محصول در قفس</th>
-                          <th>تعداد کل</th>
                           <th>قیمت خرید</th>
                           <th>قیمت کل خرید</th>
                           <th>قیمت خرید هر محصول</th>
@@ -50,6 +50,17 @@
                           <th>صاحب محصول</th>
                           <th>نام مرغداری</th>
                           <th>استان مرغداری</th>
+                          <th>تعداد قفس</th>
+                          <th>تعداد محصول در قفس</th>
+                          <th>تعداد کل</th>
+                          <th>شمارش کشتارگاه</th>
+                          <th>اختلاف شمارش</th>
+                          <th>سوخت</th>
+                          <th>طرف حساب</th>
+                          <th>فی خرید</th>
+                          <th>فی فروش</th>
+                          <th>وزن فروش</th>
+                          <th>کرایه</th>
 
                         </thead>
 
@@ -61,15 +72,15 @@
                                 <td>{{ lwb.1 }}</td>
                                 <td>{{ lwb.2 }}</td>
                                 <td>{{ lwb.3 }}</td>
-                                <td>{{ lwb.4 }}</td>
+                                <td>{{ lwb.27 }}</td>
                                 <td>{{ lwb.5 }}</td>
+                                <td>{{ lwb.30 }}</td>
+                                <td>{{ lwb.28 }}</td>
+                                <td>{{ lwb.4 }}</td>
                                 <td>{{ lwb.6 }}</td>
                                 <td>{{ lwb.7 }}</td>
                                 <td>{{ lwb.8 }}</td>
                                 <td>{{ lwb.9 }}</td>
-                                <td>{{ lwb.10 }}</td>
-                                <td>{{ lwb.11 }}</td>
-                                <td>{{ lwb.12 }}</td>
                                 <td>{{ lwb.13 }}</td>
                                 <td>{{ lwb.14 }}</td>
                                 <td>{{ lwb.15 }}</td>
@@ -87,10 +98,22 @@
                                   {% endif %}
 
                                 <td>{{ lwb.19 }}</td>
-                                <td>{{ lwb.20 }}</td>
+                                <td dir="rtl">{{ lwb.20 }}</td>
                                 <td>{{ lwb.21 }}</td>
                                 <td>{{ lwb.22 }}</td>
                                 <td>{{ lwb.23 }}</td>
+                                <td>{{ lwb.10 }}</td>
+                                <td>{{ lwb.11 }}</td>
+                                <td>{{ lwb.12 }}</td>
+                                <td>{{ lwb.24 }}</td>
+                                <td>{{ lwb.25 }}</td>
+                                <td>{{ lwb.26 }}</td>
+                                <td>{{ lwb.29 }}</td>
+                                <td>{{ lwb.31 }}</td>
+                                <td>{{ lwb.32 }}</td>
+                                <td>{{ lwb.33 }}</td>
+                                <td>{{ lwb.34 }}</td>
+
                               </tr>
                             </tbody>
                         </label>
@@ -119,7 +142,11 @@
                           <th>وزن خالی</th>
                           <th>وزن پر</th>
                           <th>وزن خالص</th>
+                          <th>وزن مبدا</th>
+                          <th>افت</th>
+                          <th>سوخت</th>
                           <th>وزن هر محصول</th>
+                          <th>وزن هر محصول در مبدا</th>
                           <th>قیمت کل خرید</th>
                           <th>قیمت خرید هر محصول </th>
                           <th>تعداد ضایعات </th>
@@ -127,6 +154,9 @@
                           <th>تعداد تلفات</th>
                           <th>وزن تلفات</th>
                           <th>تعداد کل</th>
+                          <th>تعداد کل شمارش کشتارگاه</th>
+                          <th>تعداد کل اختلاف شمارش</th>
+                          <th>مجموع کرایه</th>
 
                         </thead>
 
@@ -139,7 +169,11 @@
                                     <td>{{ report.0.car_weight }}</td>
                                     <td>{{ report.0.car_final_weight }}</td>
                                     <td>{{ report.0.weight }}</td>
+                                    <td>{{ report.0.source_weight }}</td>
+                                    <td>{{ report.0.drop_down }}</td>
+                                    <td>{{ report.0.fuel }}</td>
                                     <td>{{ report.0.average_weight }}</td>
+                                    <td>{{ report.0.aviculture_avg_weight }}</td>
                                     <td>{{ report.0.total_buy_price }}</td>
                                     <td>{{ report.0.average_each_buy_price }}</td>
                                     <td>{{ report.0.losses_num }}</td>
@@ -147,15 +181,23 @@
                                     <td>{{ report.0.victim_num }}</td>
                                     <td>{{ report.0.victim_weight }}</td>
                                     <td>{{ report.0.total_num }}</td>
+                                    <td>{{ report.0.salughter_count }}</td>
+                                    <td>{{ report.0.salughter_count_dif }}</td>
+                                    <td>{{ report.0.rent }}</td>
 
                               </tr>
 
                               <tr>
+
                                    <td>بوقلمون</td>
                                     <td>{{ report.1.car_weight }}</td>
                                     <td>{{ report.1.car_final_weight }}</td>
                                     <td>{{ report.1.weight }}</td>
+                                    <td>{{ report.1.source_weight }}</td>
+                                    <td>{{ report.1.drop_down }}</td>
+                                    <td>{{ report.1.fuel }}</td>
                                     <td>{{ report.1.average_weight }}</td>
+                                    <td>{{ report.1.aviculture_avg_weight }}</td>
                                     <td>{{ report.1.total_buy_price }}</td>
                                     <td>{{ report.1.average_each_buy_price }}</td>
                                     <td>{{ report.1.losses_num }}</td>
@@ -163,6 +205,9 @@
                                     <td>{{ report.1.victim_num }}</td>
                                     <td>{{ report.1.victim_weight }}</td>
                                     <td>{{ report.1.total_num }}</td>
+                                    <td>{{ report.1.salughter_count }}</td>
+                                    <td>{{ report.1.salughter_count_dif }}</td>
+                                    <td>{{ report.1.rent }}</td>
 
                               </tr>
 
@@ -172,7 +217,11 @@
                                     <td>{{ report.2.car_weight }}</td>
                                     <td>{{ report.2.car_final_weight }}</td>
                                     <td>{{ report.2.weight }}</td>
+                                    <td>{{ report.2.source_weight }}</td>
+                                    <td>{{ report.2.drop_down }}</td>
+                                    <td>{{ report.2.fuel }}</td>
                                     <td>{{ report.2.average_weight }}</td>
+                                    <td>{{ report.2.aviculture_avg_weight }}</td>
                                     <td>{{ report.2.total_buy_price }}</td>
                                     <td>{{ report.2.average_each_buy_price }}</td>
                                     <td>{{ report.2.losses_num }}</td>
@@ -180,6 +229,9 @@
                                     <td>{{ report.2.victim_num }}</td>
                                     <td>{{ report.2.victim_weight }}</td>
                                     <td>{{ report.2.total_num }}</td>
+                                    <td>{{ report.2.salughter_count }}</td>
+                                    <td>{{ report.2.salughter_count_dif }}</td>
+                                    <td>{{ report.2.rent }}</td>
 
                               </tr>
 

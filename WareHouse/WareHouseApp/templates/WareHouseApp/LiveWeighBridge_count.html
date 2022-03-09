@@ -1,0 +1,202 @@
+{% extends 'WareHouseApp/main.html' %}
+
+ {% load static %}
+
+ {% block title%}
+<h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">خالی کردن ظرفیت ماشین</h2>
+ {% endblock %}
+
+{% block content %}
+
+<form action="{% url 'Count' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                   padding: 5px;
+                  color: black;">انتخاب کنید</p>
+             </div>
+
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
+
+                      <table id="fresh-table" class="table">
+                        <thead>
+                          <th>انتخاب کنید</th>
+                         <th data-field="name" data-sortable="true">نام و نام خانوادگی راننده</th>
+                          <th data-field="salary" data-sortable="true">شماره پلاک ماشین</th>
+                          <th data-field="country" data-sortable="true">نام و نام خانوداگی صاحب محصول</th>
+                          <th>وزن ماشین با محصول (کیلوگرم)</th>
+                          <th>نوع محصول</th>
+                          <th>نام مرغداری</th>
+                          <th>استان مرغداری</th>
+
+                        </thead>
+
+                        {% for slaughter in lwb_list %}
+                        <label for="{{ slaughter.live_weighbridge_id}}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" name="lwb_id" value="{{ slaughter.live_weighbridge_id}}" id="{{ slaughter.live_weighbridge_id}}"/></label>
+                                    </div>
+                                </td>
+                                <td style="border-bottom:0px;" >{{ slaughter.driver.name }} {{ slaughter.driver.last_name }}</td>
+
+                                <td style="text-align: right; " dir="rtl" >
+
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number4 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number3 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number2 }}</span>
+                                    <span style="text-align: right; " dir="rtl">{{ slaughter.car.car_number1 }}</span>
+
+                                </td>
+
+                                <td style="border-bottom:0px;" >{{ slaughter.product_owner.name }} {{ slaughter.product_owner.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.final_weight }}</td>
+
+                                  {% if slaughter.product_category == 'C' %}
+                                    <td style="border-bottom:0px;">مرغ</td>
+                                  {% elif slaughter.product_category == 'T' %}
+                                    <td style="border-bottom:0px;">بوقلمون</td>
+                                  {% elif slaughter.product_category == 'Q' %}
+                                    <td style="border-bottom:0px;">بلدرچین</td>
+                                  {% else %}
+                                    <td style="border-bottom:0px;">-</td>
+                                  {% endif %}
+
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـname }}</td>
+                                <td style="border-bottom:0px;" >{{ slaughter.avicultureـcity }}</td>
+
+                              </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+                      </table>
+             </div>
+            </div>
+    <div class=" cont">
+     <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+
+           <div class="col-12 mt-5">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-right-style: solid;
+              border-right-color: #17a2b8;
+              border-right-width: 5px;
+              text-align: right;
+              padding-right: 10px;
+              padding: 5px;
+              color: black;">ماشین را انتخاب کنید</p>
+          </div>
+
+            <div class="col-6">
+                 <label for="count">
+                    <span >شمارش کشتارگاه </span>
+                    <input type="text" id="count" name="count"/>
+                 </label>
+            </div>
+
+
+        <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+               </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+<!--
+
+
+
+-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
+
+<form action="{% url 'Capability_Slaughter' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+      <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
+       <div class="col-12 ">
+             <p class="partition" style="background-color: lavender;
+              border-radius: 2px;
+              border-left-style: solid;
+              border-left-color: #17a2b8;
+              border-left-width: 5px;
+              padding-left: 10px;
+              padding: 5px;
+              color: black;">choose one of the blew object</p>
+          </div>
+
+       {% for lwb in lwb_list %}
+
+       <label for="{{ lwb.live_weighbridge_id}}">
+
+         <div class="col-8 mt-5" data-aos="fade-in">
+              <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                <div class="info col-12 p-2">
+                   <div class="col-12">
+                     <label for="{{ lwb.driver.name }} {{ lwb.driver.last_name }}">
+                        <span >Driver</span>
+                        <input type="text" value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ lwb.driver.car.car_number }}">
+                        <span >Car</span>
+                        <input type="text" value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}" />
+                    </label>
+                   </div>
+                    <div class="col-12">
+                     <label for="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}">
+                        <span >Product Owner</span>
+                        <input type="text"  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="">{{ lwb.final_weight }}
+                        <span >Car Weight</span>
+                        <input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                     <label for="{{ lwb.buying_price }}">
+                        <span >Buy Price</span>
+                        <input type="text"  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}" />
+                    </label>
+                   </div>
+                   <div class="col-12">
+                    <label for="{{ lwb.live_weighbridge_id}}">
+                    <input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"/>
+                    </label>
+                   </div>
+
+
+                </div>
+              </div>
+
+         </div>
+        </label>
+        {% endfor %}
+
+        </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">submit</button>
+        </div>
+      </div>
+    </div>
+</form>
+-->
+
+{% endblock %}

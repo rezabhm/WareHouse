@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class=" cont">
+<div class=" cont" dir="rtl">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
              <div class="col-12 mt-5 ">
@@ -20,52 +20,37 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">فروش گرم</p>
+                  color: black;">گزارش وزن کشی مرحله اول</p>
              </div>
              <div class="fresh-table full-color-blue badge filter badge-blue"  style="overflow-x: scroll;">
 
-                      <table id="fresh-table" class="table">
+                      <table id="fresh-table1" class="table">
                         <thead>
-                          <th>نام راننده</th>
-                          <th>نام خانوادگی راننده</th>
-                          <th>شماره تلفن راننده</th>
-                          <th>شماره پلاک ماشین</th>
-                          <th>نام صاحب محصول</th>
-                          <th>نام خانوداگی صاحب محصول</th>
-                          <th>وزن محصول</th>
-                          <th>زمان توزیع</th>
-                          <th>قیمت فروش</th>
+                          <th>ردیف</th>
+                          <th>صاحب محصول</th>
+                          <th>زمان وزن کشی </th>
+                          <th>وزن خالص</th>
+                          <th>کیفیت محصول</th>
                           <th>نوع محصول</th>
-                          <th>بارنامه</th>
-                          <th>تعداد جعبه</th>
+                          <th>کد وزن کشی</th>
+                          <th>نوع خروجی</th>
+                          <th>نام کاربری اپراتور</th>
                         </thead>
 
-                        {% for dist in dist_list %}
+                        {% for fwl in fwl_list %}
                         <label >
                             <tbody>
                               <tr>
-                                <td>{{ dist.0 }}</td>
-                                <td>{{ dist.1 }}</td>
-                                <td>{{ dist.2 }}</td>
-                                <td>{{ dist.3 }}</td>
-                                <td>{{ dist.4 }}</td>
-                                <td>{{ dist.5 }}</td>
-                                <td>{{ dist.6 }}</td>
-                                <td>{{ dist.7 }}</td>
-                                <td>{{ dist.8 }}</td>
+                                <td>{{ fwl.0 }}</td>
+                                <td>{{ fwl.1 }}</td>
+                                <td>{{ fwl.2 }}</td>
+                                <td>{{ fwl.3 }}</td>
+                                <td>{{ fwl.4 }}</td>
+                                <td>{{ fwl.5 }}</td>
+                                <td>{{ fwl.6 }}</td>
+                                <td>{{ fwl.7 }}</td>
+                                <td>{{ fwl.8 }}</td>
 
-                                  {% if dist.9  == 'chicken' %}
-                                    <td>مرغ</td>
-                                  {% elif dist.9  == 'turkey' %}
-                                    <td>بوقلمون</td>
-                                  {% elif dist.9  == 'quail' %}
-                                    <td>بلدرچین</td>
-                                  {% else %}
-                                    <td>-</td>
-                                  {% endif %}
-
-                                <td>{{ dist.10 }}</td>
-                                <td>{{ dist.11 }}</td>
                               </tr>
                             </tbody>
                         </label>
@@ -73,82 +58,6 @@
                       </table>
              </div>
 
-               <div class="col-12 mt-5 ">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                   border-right-style: solid;
-                  border-right-color: #17a2b8;
-                  border-right-width: 5px;
-                  text-align: right;
-                  padding-right: 10px;
-                  padding: 5px;
-                  color: black;">پیش سرد</p>
-             </div>
-             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow-x: scroll;" >
-
-                      <table id="fresh-table" class="table">
-                        <thead>
-                          <th>نام صاحب محصول</th>
-                          <th>نام خانوداگی صاحب محصول </th>
-                          <th>نام راننده</th>
-                          <th>نام خانوداگی صاحب محصول</th>
-                          <th>شماره تلفن راننده</th>
-                          <th>شماره پلاک ماشین</th>
-                          <th>زمان وزن کشی</th>
-                          <th>وزن مرحله اول </th>
-                          <th>آیدی پیش سرد</th>
-                          <th>آیدی پالت</th>
-                          <th>آیا محصول در پیش سرد است ؟</th>
-                          <th>نوع محصول</th>
-                          <th>وزن محصول در وزن کشی مرحله پیش سرد </th>
-                          <th>زمان ورود به پیش سرد </th>
-                          <th>زمان خروج از پیش سرد</th>
-                        </thead>
-                        </thead>
-
-                        {% for pd in pd_list %}
-                        <label >
-                            <tbody>
-                              <tr>
-                                <td>{{ pd.0 }}</td>
-                                <td>{{ pd.1 }}</td>
-                                <td>{{ pd.2 }}</td>
-                                <td>{{ pd.3 }}</td>
-                                <td>{{ pd.4 }}</td>
-                                <td>{{ pd.5 }}</td>
-                                <td>{{ pd.6 }}</td>
-                                <td>{{ pd.7 }}</td>
-                                <td>{{ pd.9 }}</td>
-
-                                <td>{{pd.10}}</td>
-
-                                  {% if pd.11 == True %}
-                                    <td>بله</td>
-                                  {% else %}
-
-                                    <td>  خیر</td>
-                                  {% endif %}
-
-                                  {% if pd.12  == 'Chicken' %}
-                                    <td>مرغ</td>
-                                  {% elif pd.12  == 'turkey' %}
-                                    <td>بوقلمون</td>
-                                  {% elif pd.12  == 'Quail' %}
-                                    <td>بلدرچین</td>
-                                  {% else %}
-                                    <td>-</td>
-                                  {% endif %}
-
-                                <td>{{ pd.13 }}</td>
-                                <td>{{ pd.14 }}</td>
-                                <td>{{ pd.15 }}</td>
-                                <td>{{ pd.16 }}</td>
-                              </tr>
-                            </tbody>
-                        </label>
-                          {% endfor %}
-                      </table>
-             </div>
 
               <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
@@ -159,60 +68,59 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">تونل انجماد</p>
+                  color: black;">گزارش کلی</p>
              </div>
              <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow-x: scroll;" >
 
                       <table id="fresh-table" class="table">
                         <thead>
-                          <th>نام صاحب محصول</th>
-                          <th>نام خانوادگی صاحب محصول </th>
-                          <th>نام راننده</th>
-                          <th>نام خانوادگی راننده</th>
-                          <th>شماره تلفن راننده</th>
-                          <th>شماره پلاک ماشین</th>
-                          <th>زمان وزن کشی</th>
-                          <th>وزن محصول در مرحله اول </th>
-                          <th>زمان ورود به تونل انجماد</th>
-                          <th>زمان خروج از تونل انجماد</th>
-                          <th>وزن محصول</th>
-                          <th>آیدی تونل انجماد</th>
-                          <th>آیدی پالت</th>
-                          <th>نوع محصول  </th>
+                          <th>نوع محصول</th>
+                          <th>پیش سرد</th>
+                          <th>فروش گرم</th>
+                          <th>تونل انجماد</th>
+                          <th>پودر گوشت</th>
 
                         </thead>
-                        {% for ft in ft_list %}
                         <label >
                             <tbody>
-                              <tr>
-                                <td>{{ ft.0 }}</td>
-                                <td>{{ ft.1 }}</td>
-                                <td>{{ ft.2 }}</td>
-                                <td>{{ ft.3 }}</td>
-                                <td>{{ ft.4 }}</td>
-                                <td>{{ ft.5 }}</td>
-                                <td>{{ ft.6 }}</td>
-                                <td>{{ ft.7 }}</td>
-                              <td>{{ ft.9 }}</td>
-                                <td>{{ ft.10 }}</td>
-                                <td>{{ ft.11 }}</td>
-                                <td>{{ ft.12 }}</td>
-                                <td>{{ ft.13 }}</td>
 
-                                  {% if ft.14  == 'Chicken' %}
-                                    <td>مرغ</td>
-                                  {% elif ft.14  == 'turkey' %}
-                                    <td>بوقلمون</td>
-                                  {% elif ft.14  == 'Quail' %}
-                                    <td>بلدرچین</td>
-                                  {% else %}
-                                    <td>-</td>
-                                  {% endif %}
+                              <tr>
+                                <td>مرغ</td>
+                                <td>{{ tl.0.0 }}</td>
+                                <td>{{ tl.0.1 }}</td>
+                                <td>{{ tl.0.2 }}</td>
+                                <td>{{ tl.0.3 }}</td>
 
                               </tr>
+
+                              <tr>
+                                <td>بوقلمون</td>
+                                <td>{{ tl.1.0 }}</td>
+                                <td>{{ tl.1.1 }}</td>
+                                <td>{{ tl.1.2 }}</td>
+                                <td>{{ tl.1.3 }}</td>
+
+                              </tr>
+
+                              <tr>
+                                <td>بلدرچین</td>
+                                <td>{{ tl.2.0 }}</td>
+                                <td>{{ tl.2.1 }}</td>
+                                <td>{{ tl.2.2 }}</td>
+                                <td>{{ tl.2.3 }}</td>
+
+                              </tr>
+                              <tr>
+                                <td>مجموع</td>
+                                <td>{{ tl.3.0 }}</td>
+                                <td>{{ tl.3.1 }}</td>
+                                <td>{{ tl.3.2 }}</td>
+                                <td>{{ tl.3.3 }}</td>
+
+                              </tr>
+
                             </tbody>
                         </label>
-                          {% endfor %}
                       </table>
              </div>
          </div>
@@ -256,17 +164,37 @@
             <input  type="text" id="day" name="day" value="0"/>
          </label>
          </div>
+
+                  <div class="col-4">
+             <label for="deadline_year">
+            <span >سال</span>
+            <input type="text" id="deadline_year" name="deadline_year"  value="0"/>
+          </label>
+          </div>
+          <div class="col-4">
+             <label for="deadline_month">
+                <span >ماه</span>
+                <input type="text" id="deadline_month" name="deadline_month" value="0"/>
+             </label>
+          </div>
+         <div class="col-4">
+         <label for="deadline_day">
+            <span >روز</span>
+            <input  type="text" id="deadline_day" name="deadline_day" value="0"/>
+         </label>
+         </div>
+
+
          <div class="col-6">
          <label for="exist">
-            <span >وضعیت کالا در نگهداری</span>
-              <select id="exist" name="exist"  style="padding: 8px 180px;
+            <span >نوع گزارش دهی</span>
+              <select id="exist" name="output_type"  style="padding: 8px 180px;
                 display: inline-block;
                 margin: 4px 2px;
                 transition-duration: 0.4s;
                 border: 1px solid #999999;">
-                <option value="0">همه</option>
-                <option value="1">موجود</option>
-                <option value="2">خارج شده</option>
+                <option value="0">فیلتر</option>
+                <option value="1">پرینت</option>
               </select>
          </label>
          </div>

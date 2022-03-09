@@ -133,6 +133,11 @@ urlpatterns = [
     re_path(r'^slaughter/finish/$', views.lwb_finish_slaughter, name='Finish_Slaughter'),
     re_path(r'^slaughter/capability/form/$', views.lwb_capability_form, name='Capability_Form'),
     re_path(r'^slaughter/capability/$', views.lwb_capability, name='Capability_Slaughter'),
+    re_path(r'^slaughter/counting/form/$', views.lwb_count_form, name='Count_Form'),
+    re_path(r'^slaughter/counting/$', views.lwb_count, name='Count'),
+    re_path(r'^slaughter/final/form/$', views.lwb_final_form, name='Final_Form'),
+    re_path(r'^slaughter/final/$', views.lwb_final, name='Final'),
+    re_path(r'^slaughter/driver/report/id=(?P<lwb_id>[\w]+)/$', views.lwb_driver_report, name='Driver_Report'),
 
     # first WeightLifting
     re_path(r'^first/WeightLifting/form/$', views.first_weightlifting_form, name='First_WeightLifting_Form'),
@@ -168,7 +173,7 @@ urlpatterns = [
 
     re_path(r'lw/filter/$', views.lw_filter, name='LW_Filter'),
 
-    re_path(r'^driver/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/$',
+    re_path(r'^driver/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<deadline_year>[\d]{1,4})/(?P<deadline_month>[\d]{1,2})/(?P<deadline_day>[\d]{1,2})/(?P<phone_number>[\w]+)/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<output_status>[\d]{1})/$',
             views.driver_list, name='Driver_List'),
 
     re_path(r'driver/filter/$', views.driver_filter, name='Driver_Filter'),
@@ -183,7 +188,7 @@ urlpatterns = [
 
     re_path(r'po/filter/$', views.po_filter, name='PO_Filter'),
 
-    re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<exist>[\d]{1,2})/$',
+    re_path(r'^weight/lifting/list/(?P<year>[\d]{1,4})/(?P<month>[\d]{1,2})/(?P<day>[\d]{1,2})/(?P<deadline_year>[\d]{1,4})/(?P<deadline_month>[\d]{1,2})/(?P<deadline_day>[\d]{1,2})/(?P<product_category>[\d]{1})/(?P<model_type>[\d]{1})/(?P<output_type>[\d]{1})/$',
             views.weight_lifting_list, name='Weight_Lifting_List'),
 
     re_path(r'wl/filter/$', views.wl_filter, name='WL_Filter'),
