@@ -598,6 +598,7 @@ def lwb_order(requests):
             lwb_obj.account_side = account_side
             lwb_obj.aviculture_avg_weight = product_avg_weight
             lwb_obj.order_Manager = requests.user.username
+            lwb_obj.final_weight = 0.0
 
             # save live weighbridge
             lwb_obj.save()
@@ -776,7 +777,13 @@ def lwb_create_form(requests):
             context = {
 
                 'request': requests,
-                'lwb_list': models.LiveWeighbridge.objects.all().filter(lwb_category='O')
+                'lwb_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True).filter(
+                    finish=False
+                ).filter(
+                    final_weight=0.0
+
+                ),
+
 
             }
 
@@ -827,7 +834,6 @@ def lwb_create(requests):
             year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
             lwb_obj.weighting_date_format = t
-            lwb_obj.lwb_category = 'W'
             lwb_obj.Live_Weighbridge_Manager = requests.user.username
             lwb_obj.source_weight = source_weight
 
@@ -906,12 +912,8 @@ def lwb_start_slaughter_form(requests):
 
             context = {
 
-                'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=False).filter(
-                    finish=False
-                ).filter(
-                    weighting_date__gte=time.time()-(60*60*12)
 
-                ),
+                'slaughter_list': models.LiveWeighbridge.objects.all().filter(lwb_category='O'),
 
                 'request': requests,
 
@@ -961,6 +963,7 @@ def lwb_start_slaughter(requests):
                 year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
                 t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
                 lwb_obj.slaughter_start_date_format = t
+                lwb_obj.lwb_category = 'W'
 
                 # save changes
                 lwb_obj.save()
@@ -1000,8 +1003,8 @@ def lwb_finish_slaughter_form(requests):
             context = {
 
                 'slaughter_list': models.LiveWeighbridge.objects.all().filter(slaughter_status=True).filter(
-                    weighting_date__gte=time.time() - (60 * 60 * 6)
-                ).filter(finish=False),
+                    weighting_date__gte=time.time() - (60 * 60 * 12)
+                ).filter(finish=False).filter(car_empty=True),
 
                 'request': requests
 
@@ -1092,7 +1095,7 @@ def lwb_capability_form(requests):
             context = {
 
                 'lwb_list': models.LiveWeighbridge.objects.all().filter(car_empty=False).filter(
-                    final_weight__gte=0.0
+                    final_weight__gte=1.0
                 ),
                 'request': requests
 
@@ -1110,6 +1113,7 @@ def lwb_capability_form(requests):
 
 @csrf_exempt
 def lwb_capability(requests):
+
     """
     get data from form data change status to True and save start time
     """
@@ -1511,8 +1515,9 @@ def first_weightlifting(requests):
             po_id = requests.POST['po_id']
             weight = float(requests.POST['weight'])
             sales_category = requests.POST['sales_category']
-            bike_weight = float(requests.POST['bike_weight'])
-            box_num = float(requests.POST['box_num'])
+            bike_weight = int(requests.POST['bike_weight'])
+            small_box_num = int(requests.POST['small_box_num'])
+            big_box_num = float(requests.POST['big_box_num'])
             code = str(requests.POST['code'])
             prod_category = requests.POST['prod_category']
 
@@ -1523,18 +1528,10 @@ def first_weightlifting(requests):
             except:
                 product_class = True
 
-            try:
-                box_type = requests.POST['box_type']
-                box_weight = information.big_box
-
-            except:
-                box_weight = information.small_box
+            box_weight = big_box_num * information.big_box + small_box_num * information.small_box
 
             # create first_weightlifting objects
             fwl = models.FirstWeightLifting()
-
-            # calculate box
-            box_weight = box_weight * box_num
 
             weight = weight - (bike_weight + box_weight)
 
