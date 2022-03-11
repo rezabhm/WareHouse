@@ -3050,7 +3050,7 @@ def company_live_weighbridge_list(requests, year='0', month='0', day='0', deadli
                     counter,
 
                 ])
-                counter +=1
+                counter += 1
 
             for data in lwb_report:
                 try:
@@ -3803,10 +3803,10 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
             final_list = []
             total_list = [
 
-                [0.0, 0.0, 0.0, 0.0],
-                [0.0, 0.0, 0.0, 0.0],
-                [0.0, 0.0, 0.0, 0.0],
-                [0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
 
             ]
             counter = 0
@@ -3855,7 +3855,7 @@ def weight_lifting_list(requests, product_category='0', model_type='0', year='0'
                 final_list.append([
 
                     counter,
-                    fwl.product_owner.name + ' '+ fwl.product_owner.last_name,
+                    fwl.product_owner.name + ' ' + fwl.product_owner.last_name,
                     fwl.weighting_time_format,
                     fwl.weight,
                     'درجه یک' if fwl.class_product else 'درجه دو',

@@ -26,8 +26,8 @@ SECRET_KEY = 'crt)(*n@u)q^5k1^n_44#i@s=j&@d9%@fq6!8ji74$ft!l9)az'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['tiyurzanjanapp.ir', 'www.tiyurzanjanapp.ir']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['tiyurzanjanapp.ir', 'www.tiyurzanjanapp.ir']
 
 # Application definition
 

@@ -147,9 +147,9 @@ class DriverAdmin(admin.ModelAdmin):
 @admin.register(models.LiveWeighbridge)
 class LiveWeighbridgeAdmin(admin.ModelAdmin):
 
-    list_display = ["live_weighbridge_id", "final_weight", "car_weight", "car_empty", "weighting_date",
-                    "product_category", "slaughter_start_date", "slaughter_finish_date",
-                    "buy_price", ]
+    list_display = ["live_weighbridge_id", "final_weight", "car_weight", "car_empty", "weighting_date_format",
+                    "product_category",
+                     ]
 
     fieldsets = (
 
@@ -161,11 +161,12 @@ class LiveWeighbridgeAdmin(admin.ModelAdmin):
         ("Weight information", {"fields": ("final_weight", "car_weight", "car_empty", 'finish',
                                            "avicultureـcity", "avicultureـname", "order_weight", "cage_num",
                                            "product_num_in_cage", "losses_num", "losses_weight", "victim_num",
-                                           "victim_weight"
+                                           "victim_weight", "aviculture_avg_weight", "account_side", "source_weight",
+                                           "fuel", "salughter_count", "per_purchase", "per_sale", "sale_weight", "driver_rent",
 
                                            )}),
-        ("other information", {"fields": ("live_weighbridge_id", "product_category", "buy_price", )}),
-        ("relation information", {"fields": ("driver", "Live_Weighbridge_Manager", "car", "product_owner")}),
+        ("other information", {"fields": ("live_weighbridge_id", "product_category", "buy_price", "lwb_category")}),
+        ("relation information", {"fields": ("driver", "Live_Weighbridge_Manager", "order_Manager","car", "product_owner")}),
 
     )
 
@@ -174,17 +175,24 @@ class LiveWeighbridgeAdmin(admin.ModelAdmin):
 
 @admin.register(models.FirstWeightLifting)
 class FirstWeightLiftingAdmin(admin.ModelAdmin):
-    list_display = ["weighting_time", "weight", "product_category", "weight_lifting_id", "sales_category", ]
+    list_display = ["weighting_time_format", "weight", "product_category", "weight_lifting_id", "sales_category", ]
 
     fieldsets = (
 
-        ("main information", {"fields": ("weighting_time", "weight", "weight_lifting_id", )}),
+        ("main information", {"fields": ("weighting_time", "weighting_time_format", "weight", "weight_lifting_id",
+                                         "choice_status",
+                                         "class_product",
+                                         "code",
+
+                                         "Weight_Lifting_Manager",
+
+                                         )}),
         ("category information", {"fields": ("product_category", "sales_category", )}),
-        ("relation information", {"fields": ("Live_Weigh_Bridge", "Weight_Lifting_Manager",)}),
+        ("relation information", {"fields": ("product_owner",)}),
 
     )
 
-    list_filter = ["product_category", ]
+    list_filter = ["weight_lifting_id", ]
 
 """
 
