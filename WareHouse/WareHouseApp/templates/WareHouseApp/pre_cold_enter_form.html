@@ -1,9 +1,9 @@
 {% extends 'WareHouseApp/main.html' %}
 
-{% load static %}
+ {% load static %}
 
  {% block title%}
- <h2>ورود محصول به پیش سرد</h2>
+ <h2>ورود به پیش سرد</h2>
  {% endblock %}
 
 {% block content %}
@@ -12,10 +12,10 @@
 
     {% csrf_token %}
 
-     <div class=" cont">
+    <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-             <div class="col-12 mt-5 mb-5">
+             <div class="col-12 mt-5 ">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
                   border-right-style: solid;
@@ -27,40 +27,27 @@
                   color: black;">انتخاب کنید</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue" >
+              <div class="fresh-table full-color-blue badge filter badge-blue" style="    overflow: scroll;">
 
-                      <table id="fresh-table" class="table" style="    overflow: scroll;" >
+                      <table id="fresh-table" class="table">
                         <thead>
-                          <th style="text-align: center;">انتخاب کنید</th>
-                          <th>وزن محصول</th>
-                          <th>نوع محصول</th>
-                          <th>کد محصول</th>
-
+                          <th>انتخاب کنید</th>
+                          <th>نام خانوادگی صاحب محصول</th>
+                          <th>نام صاحب محصول</th>
 
                         </thead>
 
-                        {% for fwl in fwl_list %}
-                        <label for="{{ fwl.weight_lifting_id }}">
+                        {% for po in po_list %}
+                        <label >
                             <tbody>
                               <tr>
                                 <td>
-                                    <div class="checkbox">
-                                         <label style="margin:0px;"><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"></label>
+                                    <div class="radio">
+                                         <label style="margin: 0px;"><input type="radio" name="po_id" value="{{ po.product_owner_id}}" id="{{ po.product_owner_id }}"/></label>
                                     </div>
                                 </td>
-                                <td>{{ fwl.weight }}</td>
-
-                                  {% if fwl.product_category == 'C' %}
-                                    <td style="border-bottom:0px;">مرغ</td>
-                                  {% elif fwl.product_category == 'T' %}
-                                    <td style="border-bottom:0px;">بوقلمون</td>
-                                  {% elif fwl.product_category == 'Q' %}
-                                    <td style="border-bottom:0px;">بلدرچین</td>
-                                  {% else %}
-                                    <td style="border-bottom:0px;">-</td>
-                                  {% endif %}
-
-                                <td>{{ fwl.code }}</td>
+                                <td style="border-bottom:0px;" >{{ po.last_name }}</td>
+                                <td style="border-bottom:0px;" >{{ po.name }}</td>
 
                               </tr>
                             </tbody>
@@ -69,53 +56,164 @@
                       </table>
              </div>
 
-            <!-- =================
+               <!-- {% for lwb in lwb_list %}
 
-          {% for fwl in fwl_list %}
+           <label for="{{ lwb.live_weighbridge_id}}">
 
-              <label for="{{ fwl.weight_lifting_id }}">
+             <div class="col-8" data-aos="fade-in">
+                  <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
+                    <div class="info col-12 p-5">
+                       <div class="col-12">
+                         <label for="{{ lwb.driver.name }} {{ lwb.driver.last_name }}">
+                            <span >Driver</span>
+                            <input type="text" value="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" id="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" name="{{ lwb.driver.name }} {{ lwb.driver.last_name }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ lwb.driver.car.car_number }}">
+                            <span >Car</span>
+                            <input type="text" value="{{ lwb.driver.car.car_number }}" id="{{ lwb.driver.car.car_number }}" name="{{ lwb.driver.car.car_number }}" />
+                        </label>
+                       </div>
+                        <div class="col-12">
+                         <label for="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}">
+                            <span >Product Owner</span>
+                            <input type="text"  value="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" id="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" name="{{ lwb.driver.car.product_owner.name }} {{ lwb.driver.car.product_owner.last_name }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ lwb.final_weight }}">
+                            <span >Car Weight</span>
+                            <input type="text" value="{{ lwb.final_weight }}" id="{{ lwb.final_weight }}" name="{{ lwb.final_weight }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                         <label for="{{ lwb.buying_price }}">
+                            <span >Buy Price</span>
+                            <input type="text"  value="{{ lwb.buying_price }}" id="{{ lwb.buying_price }}" name="{{ lwb.buying_price }}" />
+                        </label>
+                       </div>
+                       <div class="col-12">
+                        <label for="{{ lwb.live_weighbridge_id}}">
+                        <input type="radio" name="lwb_id" value="{{ lwb.live_weighbridge_id}}" id="{{ lwb.live_weighbridge_id}}"/>
+                        </label>
+                       </div>
 
-                <div class="col-8" data-aos="fade-in">
-                      <div class="shadow p-3 mb-4 bg-white rounded d-flex align-items-stretch">
-                        <div class="info col-12 p-5">
-                           <div class="col-12">
-                             <label for="{{ fwl.weight }}">
-                                &lt;!&ndash;<span >weight</span>&ndash;&gt;
-                                <input type="text" value="{{ fwl.weight }}" id="{{ fwl.weight }}" name="{{ fwl.weight }}" />
-                            </label>
-                           </div>
-                            <div class="col-12">
-                            <label for="{{ fwl.weight_lifting_id }}">
-                            <input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"/>
-                            </label>
-                           </div>
-                        </div>
-                      </div>
-                </div>
 
-              </label>
+                    </div>
+                  </div>
 
-           {% endfor %}-->
-
-             <div class="col-6 mt-3">
-                 <label for="pc_id">
-                    <span >آیدی پیش سرد</span>
-                    <input type="text" name="pc_id" id="pc_id"/>
-                 </label>
              </div>
-             <div class="col-6 mt-3">
-                 <label for="box_num">
-                    <span >تعداد جعبه</span>
-                    <input type="number" name="box_num" id="box_num" value="1"/>
-                 </label>
+            </label>
+            {% endfor %}-->
+
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">اطلاعات را وارد کنید</p>
              </div>
 
-             <div>
-                 <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+
+           <div class="col-4">
+             <label for="big_box_num">
+                <span >تعداد جعبه بزرگ</span>
+                <input type="number" id="big_box_num" name="big_box_num" value="0"/>
+             </label>
+           </div>
+
+           <div class="col-4">
+             <label for="small_box_num">
+                <span >تعداد جعبه کوچک</span>
+                <input type="number" id="small_box_num" name="small_box_num" value="0"/>
+             </label>
+           </div>
+
+           <div class="col-4">
+             <label for="bike_id">
+                <span >وزن چرخ</span>
+                <input type="text" id="bike_id" name="bike_weight"/>
+             </label>
+           </div>
+
+           <div class="col-4">
+             <label for="pre_cold_id">
+                <span >آیدی پیش سرد</span>
+                <input type="text" id="pre_cold_id" name="pre_cold_id"/>
+             </label>
+           </div>
+
+           <div class="col-4">
+             <label for="weight">
+                <span >وزن محصول</span>
+                <input type="text" id="weight" name="weight"/>
+             </label>
+           </div>
+
+              <div class="col-12 mt-3" style="text-align:center; border-top:50px;" dir="rtl" >
+
+                    <span style="border-bottom:50px;">نوع محصول</span>
+
+                 <select name="sub_prod" id="sub_prod">
+
+                  <option value="W">بال</option>
+                  <option value="N">گردن</option>
+                  <option value="E">پا</option>
+                  <option value="H">قلب</option>
+                  <option value="L">کبد</option>
+                  <option value="K">کلیه</option>
+                  <option value="S">سنگدان</option>
+                  <option value="B">درسته</option>
+                  <option value="O">بقیه</option>
+
+                 </select>
+
              </div>
 
-         </div>
-     </div>
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;"> انتخاب کنید</p>
+             </div>
+
+            <div class="col-4 mt-3">
+             <label for="gate2">
+                <span > مرغ</span>
+                <input type="radio" name="prod_category" id="gate2" value="C"/>
+             </label>
+            </div>
+
+             <div class="col-4 mt-3">
+             <label for="precold2">
+                <span >بوقلمون</span>
+                <input type="radio" name="prod_category" id="precold2" value="T"/>
+             </label>
+            </div>
+            <div class="col-4 mt-3">
+             <label for="dist2">
+                <span >بلدرچین</span>
+                <input type="radio" name="prod_category" id="dist2" value="Q"/>
+             </label>
+            </div>
+
+
+            </div>
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+        </div>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

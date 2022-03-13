@@ -18,7 +18,7 @@
      <div class=" cont">
          <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch">
 
-             <div class="col-12 mt-5 mb-5">
+                          <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
                   border-radius: 2px;
                   border-right-style: solid;
@@ -27,54 +27,92 @@
                   text-align: right;
                   padding-right: 10px;
                   padding: 5px;
-                  color: black;">انتخاب کنید</p>
+                  color: black;">انتخاب خریدار و فروشنده</p>
              </div>
 
-             <div class="fresh-table full-color-blue badge filter badge-blue" >
+              <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
 
-                      <table id="fresh-table" class="table" style="    overflow: scroll;" >
+                      <table id="fresh-table2" class="table">
                         <thead>
-                          <th style="text-align: center;">انتخاب کنید</th>
-                          <th>وزن محصول</th>
-                          <th>نوع محصول</th>
-                          <th>کد محصول</th>
-                          <th>اتمام </th>
-
-
+                          <th data-field="salary" data-sortable="true">فروشنده</th>
+                          <th data-field="salary" data-sortable="true">خریدار</th>
+                          <th data-field="salary" data-sortable="true">نام خانوادگی </th>
+                          <th data-field="salary" data-sortable="true">نام</th>
                         </thead>
 
-                        {% for fwl in fwl_list %}
-                        <label for="{{ fwl.weight_lifting_id }}">
+                        {% for po in po_list %}
+                        <label for="{{ po.product_owner_id }}">
                             <tbody>
                               <tr>
                                 <td>
-                                    <div class="checkbox">
-                                         <label style="margin:0px;"><input type="radio" name="fwl_id" value="{{ fwl.weight_lifting_id }}" id="{{ fwl.weight_lifting_id }}"></label>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" value="{{ po.product_owner_id }}" name="saleor_id" id="{{ po.product_owner_id }}" style="border-bottom:0px;"></label>
                                     </div>
                                 </td>
-                                <td>{{ fwl.weight }}</td>
 
-                                  {% if fwl.product_category == 'C' %}
-                                    <td style="border-bottom:0px;">مرغ</td>
-                                  {% elif fwl.product_category == 'T' %}
-                                    <td style="border-bottom:0px;">بوقلمون</td>
-                                  {% elif fwl.product_category == 'Q' %}
-                                    <td style="border-bottom:0px;">بلدرچین</td>
-                                  {% else %}
-                                    <td style="border-bottom:0px;">-</td>
-                                  {% endif %}
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" value="{{ po.product_owner_id }}" name="buyer_id" id="{{ po.product_owner_id }}2" style="border-bottom:0px;"></label>
+                                    </div>
+                                </td>
 
-                                <td>{{ fwl.code }}</td>
-                                <td><a href="{% url 'Fwl_finish' fwl_id=fwl.weight_lifting_id %}">
-                                    اتمام
-                                </a></td>
+                                <td>{{ po.name }}</td>
+                                <td>{{ po.last_name }}</td>
+
                               </tr>
+                            </tbody>
+                        </label>
+                          {% endfor %}
+
+
+                      </table>
+             </div>
+
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">مشتری/راننده را انتخاب کنید</p>
+             </div>
+
+             <div class="fresh-table full-color-blue badge filter badge-blue" style="overflow:scroll;">
+
+                      <table id="fresh-table3" class="table" style="    overflow: scroll;">
+                        <thead>
+
+                          <th>انتخاب کنید</th>
+                          <th data-field="name" data-sortable="true">نام  راننده</th>
+                          <th data-field="country" data-sortable="true">نام خانوادگی راننده</th>
+                          <th data-field="country" data-sortable="true">شماره موبایل راننده</th>
+
+                        </thead>
+
+                        {% for driver in driver_list %}
+                        <label for="{{ driver.driver_id }}">
+                            <tbody>
+                              <tr>
+                                <td>
+                                    <div class="radio">
+                                         <label style="margin:0px;"><input type="radio" value="{{ driver.driver_id }}" name="driver_id" id="{{ driver.driver_id }}"></label>
+                                    </div>
+                                </td>
+                                <td>{{ driver.name }}</td>
+                                <td>{{ driver.last_name }}</td>
+                                <td>{{ driver.phone_number }}</td>
+
+                              </tr>
+
                             </tbody>
                         </label>
                           {% endfor %}
                       </table>
              </div>
-
             <!-- =================
 
           {% for fwl in fwl_list %}
@@ -103,24 +141,6 @@
 
            {% endfor %}-->
 
-              <div class="col-12 mt-5 mb-5">
-                 <p class="partition" style="background-color: lavender;
-                  border-radius: 2px;
-                  border-right-style: solid;
-                  border-right-color: #17a2b8;
-                  border-right-width: 5px;
-                  text-align: right;
-                  padding-right: 10px;
-                  padding: 5px;
-                  color: black;">کد محصول</p>
-             </div>
-
-             <div class="col-12 mt-3">
-                 <label for="code">
-                    <span >کد محصول : {{ code }}</span>
-                    <input type="hidden" name="code" id="code" value="{{ code }}"/>
-                 </label>
-             </div>
 
               <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
@@ -134,17 +154,17 @@
                   color: black;"> گزینه ها را پر کنید</p>
              </div>
 
-             <div class="col-4 mt-3">
-                 <label for="full_weight">
-                    <span >وزن محصول  </span>
-                    <input type="text" name="weight" id="full_weight"/>
-                 </label>
-             </div>
+           <div class="col-4">
+             <label for="class">
+                <span >آیا فروش فله ای است ؟</span>
+                <input type="checkbox" id="class" name="num_weight"/>
+             </label>
+           </div>
 
-              <div class="col-4 mt-3">
-                 <label for="empty_weight">
-                    <span >وزن چرخ </span>
-                    <input type="text" name="bike_weight" id="empty_weight"/>
+             <div class="col-4 mt-3">
+                 <label for="weight">
+                    <span >وزن محصول  </span>
+                    <input type="text" name="weight" id="weight"/>
                  </label>
              </div>
 
@@ -155,25 +175,90 @@
                  </label>
              </div>
 
+           <div class="col-4 mt-3">
+                 <label for="description">
+                    <span >توضیحات</span>
+                    <input type="text" name="description" id="description" value="-"/>
+                 </label>
+             </div>
+
+
+
               <div class="col-12 mt-3" style="text-align:center; border-top:50px;" dir="rtl" >
 
                     <span style="border-bottom:50px;">نوع محصول</span>
 
                  <select name="sub_prod" id="sub_prod">
 
-                  <option value="W">بال</option>
-                  <option value="N">گردن</option>
-                  <option value="E">پا</option>
-                  <option value="H">قلب</option>
-                  <option value="L">کبد</option>
-                  <option value="K">کلیه</option>
-                  <option value="S">سنگدان</option>
-                  <option value="B">درسته</option>
-                  <option value="O">بقیه</option>
+                  <option value="sbap"> سینه با پوست</option>
+                  <option value="sbip"> سینه بی پوست</option>
+                  <option value="rbap"> ران با پوست</option>
+                  <option value="rbip"> ران بی پوست</option>
+                  <option value="mrb"> مغز ران بشقابی</option>
+                  <option value="srb"> ساق ران بشقابی</option>
+                  <option value="bb1k"> بال بشقابی ۱ کیلویی</option>
+                  <option value="bkhb1k"> بی خس بشقابی ۱ کیلویی</option>
+                  <option value="fb1k"> فیله بشقابی ۱ کیلو</option>
+                  <option value="kb1k"> کتف بشقابی ۱ کیلو</option>
+                  <option value="eb800g"> اسکلت بشقابی 800 گرم</option>
+                  <option value="ef"> اسکلت فله</option>
+                  <option value="bkhbikf"> بی خس بی کتف فله</option>
+                  <option value="bkhbakf"> بی خس با کتف فله</option>
+                  <option value="sdbapf">سینه درسته با پوست فله </option>
+                  <option value="rf">ران فله </option>
+                  <option value="jz">جوجه زعفرانی </option>
+                  <option value="js">جوجه ساده  </option>
+                  <option value="fz">فیله زعفرانی </option>
+                  <option value="fs"> فیله ساده</option>
+                  <option value="bz"> بال زعفرانی</option>
+                  <option value="bs"> بال ساده</option>
+                  <option value="bban"> بال با نوک</option>
+                  <option value="bbin"> بال بی نوک</option>
+                  <option value="kz"> کتف زعفرانی</option>
+                  <option value="kbap"> کتف با پوست</option>
+                  <option value="gb"> گردن بشقابی</option>
+                  <option value="sdbbvg"> سینه درسته با بال و گردن</option>
+                  <option value="O"> ضایعات / بقیه</option>
 
                  </select>
 
              </div>
+
+
+
+             <div class="col-12 mt-5 mb-5">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;"> انتخاب کنید</p>
+             </div>
+            <div class="col-4 mt-3">
+             <label for="gate2">
+                <span > مرغ</span>
+                <input type="radio" name="prod_cat" id="gate2" value="C"/>
+             </label>
+            </div>
+
+             <div class="col-4 mt-3">
+             <label for="precold2">
+                <span >بوقلمون</span>
+                <input type="radio" name="prod_cat" id="precold2" value="T"/>
+             </label>
+            </div>
+
+            <div class="col-4 mt-3">
+             <label for="dist2">
+                <span >بلدرچین</span>
+                <input type="radio" name="prod_cat" id="dist2" value="Q"/>
+             </label>
+            </div>
+
+
 
               <div class="col-12 mt-5 mb-5">
                  <p class="partition" style="background-color: lavender;
@@ -190,17 +275,30 @@
             <div class="col-6 mt-3">
              <label for="dist">
                 <span >فروش گرم</span>
-                <input type="radio" name="sales_category" id="dist" value="D"/>
+                <input type="radio" name="output_category" id="dist" value="D"/>
              </label>
             </div>
 
              <div class="col-6 mt-3">
              <label for="ft">
                 <span >تونل انجماد</span>
-                <input type="radio" name="sales_category" id="ft" value="F"/>
+                <input type="radio" name="output_category" id="ft" value="F"/>
              </label>
             </div>
 
+             <div class="col-6 mt-3">
+             <label for="P">
+                <span >پیش سرد</span>
+                <input type="radio" name="output_category" id="P" value="P"/>
+             </label>
+            </div>
+
+             <div class="col-6 mt-3">
+             <label for="G">
+                <span >ضایعات / پودر گوشت</span>
+                <input type="radio" name="output_category" id="G" value="G"/>
+             </label>
+            </div>
 
              <div>
                  <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
@@ -209,5 +307,61 @@
          </div>
      </div>
 </form>
+
+
+
+<form action="{% url 'Driver_Create_Distribute' %}" method="post">
+
+    {% csrf_token %}
+
+    <div class=" cont">
+         <div class="row form sign-in shadow p-5 mb-5 bg-white rounded d-flex align-items-stretch" style="overflow:scroll;">
+
+             <div class="col-12 mt-5 mb-2">
+                 <p class="partition" style="background-color: lavender;
+                  border-radius: 2px;
+                  border-right-style: solid;
+                  border-right-color: #17a2b8;
+                  border-right-width: 5px;
+                  text-align: right;
+                  padding-right: 10px;
+                  padding: 5px;
+                  color: black;">اضافه کردن اطلاعات راننده/مشتری</p>
+             </div>
+
+             <div class="col-6">
+                 <label for="driver_last_name">
+                    <span >نام خانوادگی راننده</span>
+                    <input type="text" id="driver_last_name" name="driver_last_name" value="0" />
+                 </label>
+             </div>
+             <div class="col-6">
+                 <label for="driver_name">
+                    <span >نام راننده</span>
+                    <input type="text" id="driver_name" name="driver_name" value="0"/>
+                 </label>
+             </div>
+
+             <div class="col-6">
+                 <label for="driver_phone_number">
+                    <span >شماره تلفن راننده</span>
+                    <input type="text" id="driver_phone_number" name="driver_phone_number" value="0"/>
+                 </label>
+             </div>
+
+                    <input type="hidden" id="car_number1" name="car_number1" dir="rtl" value="0"/>
+                    <input type="hidden" id="car_number2" name="car_number2" dir="rtl" value="0" />
+                    <input type="hidden" id="car_number3" name="car_number3" value="0" dir="rtl"/>
+                    <input type="hidden" id="car_number4" name="car_number4" dir="rtl" value="0"/>
+                    <input type="hidden" id="car_type" name="car_type" dir="rtl" value="0"/>
+
+            <button type="submit" class="submit text-center col-2 p-2 mb-5">ارسال اطلاعات</button>
+
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
 
 {% endblock %}

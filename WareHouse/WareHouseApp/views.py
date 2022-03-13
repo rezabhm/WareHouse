@@ -1515,7 +1515,7 @@ def first_weightlifting(requests):
             po_id = requests.POST['po_id']
             weight = float(requests.POST['weight'])
             sales_category = requests.POST['sales_category']
-            bike_weight = int(requests.POST['bike_weight'])
+            bike_weight = float(requests.POST['bike_weight'])
             small_box_num = int(requests.POST['small_box_num'])
             big_box_num = float(requests.POST['big_box_num'])
             code = str(requests.POST['code'])
@@ -1554,6 +1554,31 @@ def first_weightlifting(requests):
             # save objects
             fwl.save()
 
+            if sales_category == 'P':
+
+                # create pre cold object
+                pre_cold_obj = models.PreCold()
+
+                pre_cold_obj.PreCold_Manager= requests.user.username
+                pre_cold_obj.weight = float(weight)
+                pre_cold_obj.out_category = 'I'
+                pre_cold_obj.pre_cold_id = '1'
+                pre_cold_obj.time = time.time() + information.time_dif
+
+                t = time.ctime(time.time() + information.time_dif).split()
+                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+                pre_cold_obj.time_format = t
+
+                pre_cold_obj.box_num = big_box_num + small_box_num
+                pre_cold_obj.product_category = prod_category
+                pre_cold_obj.sub_product_category = 'B'
+                pre_cold_obj.pc_id = str( uuid1().int)
+                pre_cold_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
+
+                pre_cold_obj.save()
+
             return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
@@ -1576,21 +1601,19 @@ def pre_cold_enter_form(requests):
     if requests.user.is_authenticated:
 
         # get user's list
-        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+        first_weightlifting_user_list = models.WeightLiftingManager.objects.all().filter(
             username=requests.user.username)
         ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
 
-        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+        if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
 
             # render form
             pre_cold_temp = loader.get_template('WareHouseApp/pre_cold_enter_form.html')
 
             context = {
 
-                "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='P').filter(
-                    weighting_time__gte=time.time() - (60*60*10)
-                ).filter(choice_status=False),
-                'request': requests
+                'request': requests,
+                'po_list': models.ProductOwner.objects.all(),
 
             }
 
@@ -1613,59 +1636,62 @@ def pre_cold_enter(requests):
     """
     create pre cold object
     """
-
     if requests.user.is_authenticated:
 
         # get user's list
-        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+        first_weightlifting_user_list = models.WeightLiftingManager.objects.all().filter(
             username=requests.user.username)
         ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
 
-        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+        if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
 
             # get data
-            fwl_id = requests.POST['fwl_id']
-            pc_id = requests.POST['pc_id']
-            box_num = int(requests.POST['box_num'])
+            po_id = requests.POST['po_id']
+            weight = float(requests.POST['weight'])
+            bike_weight = float(requests.POST['bike_weight'])
+            small_box_num = int(requests.POST['small_box_num'])
+            big_box_num = float(requests.POST['big_box_num'])
+            prod_category = requests.POST['prod_category']
+            sub_category = requests.POST['sub_prod']
+            pre_cold_id = requests.POST['pre_cold_id']
 
-            # create pre-cold object
-            pc = models.PreCold()
+            box_weight = big_box_num * information.big_box + small_box_num * information.small_box
 
-            # set param
-            pc.box_num = int(box_num)
-            pc.pre_cold_id = pc_id
-            pc.pc_id = str(uuid1().int)
-            pc.entry_time = time.time() + information.time_dif
+            weight = weight - (bike_weight + box_weight)
+
+            # create pre cold object
+            pre_cold_obj = models.PreCold()
+
+            pre_cold_obj.PreCold_Manager = requests.user.username
+            pre_cold_obj.out_category = 'I'
+            pre_cold_obj.pre_cold_id = pre_cold_id
+            pre_cold_obj.time_obj = time.time() + information.time_dif
+
             t = time.ctime(time.time() + information.time_dif).split()
             year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
-            pc.entry_time_format = t
+            pre_cold_obj.time_format = t
 
-            # relation
-            fwl_list = models.FirstWeightLifting.objects.all().filter(weight_lifting_id=fwl_id)
-            pc.First_Weight_Lifting = fwl_list[0]
-            fwl_obj = fwl_list[0]
-            fwl_obj.choice_status = True
-            fwl_obj.save()
+            pre_cold_obj.box_num = big_box_num + small_box_num
+            pre_cold_obj.product_category = prod_category
+            pre_cold_obj.sub_product_category = 'B'
+            pre_cold_obj.pc_id = str(uuid1().int)
+            pre_cold_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
-            if len(first_pre_cold_user_list) > 0:
-                pc.PreCold_Manager = first_pre_cold_user_list[0]
-
-            # save
-            pc.save()
+            pre_cold_obj.save()
 
             return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
-            # raised error
-            return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+            # raised Error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
     else:
 
-        # raised error
-        return HttpResponseRedirect(reverse('Error', args=["you can't access this page"]))
+        # raised Error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
 def pre_cold_exit_form(requests):
@@ -1688,7 +1714,7 @@ def pre_cold_exit_form(requests):
 
             context = {
 
-                'pc_list': models.PreCold.objects.all().filter(product_pre_cold_status=True),
+                'po_list': models.ProductOwner.objects.all(),
                 'request': requests
 
             }
@@ -1716,59 +1742,175 @@ def pre_cold_exit(requests):
     if requests.user.is_authenticated:
 
         # get user's list
-        first_pre_cold_user_list = models.PreColdManager.objects.all().filter(
+        first_weightlifting_user_list = models.WeightLiftingManager.objects.all().filter(
             username=requests.user.username)
         ceo_user_list = models.CEO.objects.all().filter(username=requests.user.username)
 
-        if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
+        if len(ceo_user_list) > 0 or len(first_weightlifting_user_list) > 0 or requests.user.is_superuser:
 
-            # get request data
-            pc_id = requests.POST['pc_id']
-            exit_category = requests.POST['exit_category']
+            # get data
+            po_id = requests.POST['po_id']
+            weight = float(requests.POST['weight'])
+            bike_weight = float(requests.POST['bike_weight'])
+            small_box_num = int(requests.POST['small_box_num'])
+            big_box_num = float(requests.POST['big_box_num'])
+            prod_category = requests.POST['prod_category']
+            sub_category = requests.POST['sub_prod']
+            pre_cold_id = requests.POST['pre_cold_id']
 
-            # get object list
-            pc_list = models.PreCold.objects.all().filter(pc_id=pc_id)
+            box_weight = big_box_num * information.big_box + small_box_num * information.small_box
 
-            if len(pc_list) > 0:
+            weight = weight - (bike_weight + box_weight)
 
-                # get object
-                pc_obj = pc_list[0]
+            # create pre cold object
+            pre_cold_obj = models.PreCold()
 
-                # set param
-                pc_obj.product_pre_cold_status = False
-                pc_obj.exit_time = time.time() + information.time_dif
-                t = time.ctime(time.time() + information.time_dif).split()
-                year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
-                t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+            pre_cold_obj.PreCold_Manager = requests.user.username
+            pre_cold_obj.out_category = 'I'
+            pre_cold_obj.pre_cold_id = pre_cold_id
+            pre_cold_obj.time_obj = time.time() + information.time_dif
 
-                pc_obj.exit_time_format = t
-                pc_obj.out_category = exit_category
-                pc_obj.First_Weight_Lifting.sales_category = exit_category
-                pc_obj.First_Weight_Lifting.choice_status = False
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
-                if exit_category == 'G':
-                    pc_obj.out_status = True
+            pre_cold_obj.time_format = t
 
-                # save param
-                pc_obj.save()
-                pc_obj.First_Weight_Lifting.save()
+            pre_cold_obj.box_num = big_box_num + small_box_num
+            pre_cold_obj.product_category = prod_category
+            pre_cold_obj.sub_product_category = 'B'
+            pre_cold_obj.pc_id = str(uuid1().int)
+            pre_cold_obj.product_object_type = False
+            pre_cold_obj.product_owner = models.ProductOwner.objects.get(product_owner_id=po_id)
 
-                return HttpResponseRedirect(reverse('first_WeightLifting'))
+            pre_cold_obj.save()
 
-            else:
-
-                # raised error
-                return HttpResponseRedirect(reverse('Error', args=['you entry pre-cold id is incorrect']))
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
 
         else:
 
-            # raised error
-            return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))
+            # raised Error
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
     else:
 
-        # raised error
-        return HttpResponseRedirect(reverse('Error', args=["you cant access to this page"]))
+        # raised Error
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def distribute_enter_exit_form(requests):
+
+    """
+    enter exit form
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            # user can access to this page
+            # load template
+            dist_temp = loader.get_template('WareHouseApp/distribute_enter_exit_form.html')
+            context = {
+
+                "dist_root_list": models.DistributedRoot.objects.all().filter(finish_loading=True).filter(enter_time__gte=time.time() + information.time_dif - (60*60*10)).filter(out_status=False),
+                'driver_list': models.Driver.objects.all().filter(driver_type=False),
+                'car_list': models.Car.objects.all().filter(live_product=False),
+                'request': requests,
+
+            }
+
+            return HttpResponse(dist_temp.render(context))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def distribute_enter(requests):
+
+    """
+    render distribute form for create distribute object
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            driver_id = requests.POST['driver_id']
+            car_id = requests.POST['car_id']
+
+            # create distribute model
+            dist_obj = models.DistributedRoot()
+
+            # set parameter
+            dist_obj.dist_id = str(uuid1().int)
+            dist_obj.driver = models.Driver.objects.get(driver_id=driver_id)
+            dist_obj.car = models.Car.objects.get(car_id=car_id)
+            dist_obj.enter_time = time.time() + information.time_dif
+
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            dist_obj.enter_time_format = t
+            dist_obj.enter_user = requests.user.username
+
+            dist_obj.save()
+
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+@csrf_exempt
+def distribute_exit(requests):
+    """
+    render distribute form for create distribute object
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            dist_id = requests.POST['dist_id']
+
+            # create distribute model
+            dist_obj = models.DistributedRoot.objects.get(dist_id=dist_id)
+
+            # set parameter
+            dist_obj.exit_time = time.time() + information.time_dif
+
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            dist_obj.exit_time_format = t
+            dist_obj.out_status = True
+            dist_obj.exit_user = requests.user.username
+
+            dist_obj.save()
+
+            return HttpResponseRedirect(reverse('first_WeightLifting'))
+
+    return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
 def distribute_form(requests):
@@ -1792,19 +1934,7 @@ def distribute_form(requests):
             context = {
 
                 "dist_root_list": models.DistributedRoot.objects.all().filter(finish_loading=False),
-
-
-                "fwl_list": models.FirstWeightLifting.objects.all().filter(sales_category='D').filter(
-                    weighting_time__gte=time.time() - (60*60*12)
-                ).filter(choice_status=False),
-
-                'ft_list': models.FreezingTunnel.objects.all().filter(output_category='D').filter(choice_status=False),
-                'ch_list': models.ColdHouse.objects.all().filter(output_category='D').filter(choice_status=False),
-                'seg_list': models.Segmentation.objects.all().filter(choice_status=False).filter(output_category="D"),
-
-                'driver_list': models.Driver.objects.all(),
-                'car_list': models.Car.objects.all().filter(live_product=False),
-
+                'po_list': models.ProductOwner.objects.all(),
                 'request': requests,
 
             }
@@ -1837,11 +1967,17 @@ def distribute(requests):
 
             # get data
             dist_id = requests.POST['dist_id']
-            fwl_id = requests.POST['fwl_id']
+            buyer_id = requests.POST['buyer_id']
+            saleor_id = requests.POST['saleor_id']
+            input_type = requests.POST['input_type']
             weight = float(requests.POST['weight'])
             sale_price = requests.POST['sale_price']
-            box_weight = float(requests.POST['box_weight'])
-            number_of_box = requests.POST['number_of_box']
+            desc = requests.POST['desc']
+            prod_cat = requests.POST['prod_category']
+            sub_prod_cat = requests.POST['sub_prod']
+            small_box_num = int(requests.POST['small_box_num'])
+            big_box_num = int(requests.POST['big_box_num'])
+            bike_weight = float(requests.POST['bike_weight'])
 
             # create distribute object
             dist_obj = models.Distributed()
@@ -1853,42 +1989,18 @@ def distribute(requests):
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
             dist_obj.date_format = t
-            dist_obj.weight = weight - box_weight - (int(number_of_box) * information.box_weight)
+            dist_obj.weight = weight - bike_weight - (int(small_box_num) * information.small_box) - (int(big_box_num) * information.big_box)
             dist_obj.sale_price = sale_price
             dist_obj.bill_of_lading = str(uuid1().int)
-            dist_obj.number_of_box = number_of_box
-            dist_obj.sales_input_category = fwl_id[0]
-            dist_obj.sales_input_id = fwl_id[1:]
-
-            if fwl_id[0] == 'F':
-
-                x = models.FirstWeightLifting.objects.get(weight_lifting_id=fwl_id[1:])
-                x.choice_status = True
-                x.save()
-
-            elif fwl_id[0] == 'T':
-
-                x = models.FreezingTunnel.objects.get(freeze_tunnel_id=fwl_id[1:])
-                x.choice_status = True
-                x.save()
-
-            elif fwl_id[0] == 'C':
-
-                x = models.ColdHouse.objects.get(cold_house_primary_key=fwl_id[1:])
-                x.choice_status = True
-                x.save()
-
-            elif fwl_id[0] == 'G':
-
-                x = models.Segmentation.objects.get(segment_id=fwl_id[1:])
-                x.choice_status = True
-                x.save()
-
-            if len(dist_manager_list) > 0:
-                dist_obj.sales_manager = dist_manager_list[0]
-
+            dist_obj.sales_input_category = input_type
+            dist_obj.description = desc
+            dist_obj.buyer = buyer_id
+            dist_obj.saleor = saleor_id
+            dist_obj.sales_manager = requests.user.username
             dist_object_list = models.DistributedRoot.objects.get(dist_id=dist_id)
             dist_obj.distribute_root = dist_object_list
+            dist_obj.product_category = prod_cat
+            dist_obj.sub_product_category = sub_prod_cat
 
             # save model
             dist_obj.save()
@@ -1970,6 +2082,7 @@ def distribute_driver_create(requests):
                 driver_obj.last_name = requests.POST['driver_last_name']
                 driver_obj.phone_number = requests.POST['driver_phone_number']
                 driver_obj.driver_id = str(uuid1().int)
+                driver_obj.driver_type = False
 
                 # save
                 driver_obj.save()
@@ -1977,6 +2090,47 @@ def distribute_driver_create(requests):
             return HttpResponseRedirect(reverse('Distribute_Form'))
 
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+
+def distribute_empty_full_form(requests):
+
+    """
+    enter exit form
+    """
+
+    if requests.user.is_authenticated:
+
+        # create object list
+        dist_manager_list = models.SalesManager.objects.all().filter(username=requests.user.username)
+        ceo_list = models.CEO.objects.all().filter(username=requests.user.username)
+
+        if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
+
+            # user can access to this page
+            # load template
+            dist_temp = loader.get_template('WareHouseApp/distribute_empty_full_form.html')
+            context = {
+
+                "dist_root_list_full": models.DistributedRoot.objects.all().filter(empty_weight__gte=1.0).filter(
+                    finish_loading=False),
+
+                "dist_root_list_empty": models.DistributedRoot.objects.all().filter(empty_weight=0.0).filter(
+                    enter_time__gte=time.time() + information.time_dif - (60*60*10)),
+                'driver_list': models.Driver.objects.all().filter(driver_type=False),
+                'car_list': models.Car.objects.all().filter(live_product=False),
+                'request': requests,
+
+            }
+
+            return HttpResponse(dist_temp.render(context))
+
+        else:
+
+            return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
+
+    else:
+
+        return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
 
 
 @csrf_exempt
@@ -1995,30 +2149,29 @@ def distribute_root_empty(requests):
         if len(dist_manager_list) > 0 or len(ceo_list) > 0 or requests.user.is_superuser:
 
             # get request param
-            driver_id = requests.POST['driver_id']
-            car_id = requests.POST['car_id']
+            dist_id = requests.POST['dist_id']
             empty_weight = requests.POST['empty_weight']
 
-            # get driver object
-            driver_obj = models.Driver.objects.get(driver_id=driver_id)
-
-            # car object
-            car_obj = models.Car.objects.get(car_id=car_id)
-
             # create distribute root models
-            dist_root_obj = models.DistributedRoot()
+            dist_root_obj = models.DistributedRoot.objects.get(dist_id=dist_id)
 
             # set param
-            dist_root_obj.dist_id = str(uuid1().int)
-            dist_root_obj.car = car_obj
-            dist_root_obj.driver = driver_obj
             dist_root_obj.empty_weight = float(empty_weight)
-            dist_root_obj.finish_loading = False
+            dist_root_obj.empty_time = time.time() + information.time_dif
+
+            # set param
+            dist_root_obj.empty_time = time.time() + information.time_dif
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            dist_root_obj.empty_time_format = t
+            dist_root_obj.weighting_user = requests.user.username
 
             # save object
             dist_root_obj.save()
 
-            return HttpResponseRedirect(reverse('Distribute_Form'))
+            return HttpResponseRedirect(reverse('Distribute_Empty_Full_Form'))
 
     # raised error
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
@@ -2052,9 +2205,20 @@ def distribute_root_full(requests):
             dist_root_obj.dest = dest
             dist_root_obj.finish_loading = True
 
+            dist_root_obj.weighting_time = time.time() + information.time_dif
+
+            # set param
+            dist_root_obj.weighting_time = time.time() + information.time_dif
+            t = time.ctime(time.time() + information.time_dif).split()
+            year, month, day, week_day = utils.ad2solar(year=int(t[-1]), month=t[1], day=int(t[2]), week_day=t[0])
+            t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
+
+            dist_root_obj.weighting_time_format = t
+            dist_root_obj.finish_user = requests.user.username
+
             # save object
             dist_root_obj.save()
-            return HttpResponseRedirect(reverse('Distribute_Form'))
+            return HttpResponseRedirect(reverse('Distribute_Empty_Full_Form'))
 
     # raised error
     return HttpResponseRedirect(reverse('Error', args=["you can't access to this page"]))
@@ -2648,10 +2812,8 @@ def segmentation_form(requests):
             context = {
 
                 'request': requests,
-                'fwl_list': models.FirstWeightLifting.objects.all().filter(choice_status=False).filter(
-                    sales_category='G'
-                ),
-                'code': random.randint(1000, 9999),
+                'po_list': models.ProductOwner.objects.all(),
+                'driver_list' : models.Driver.objects.all().filter(driver_type=False),
 
             }
 
@@ -2676,27 +2838,33 @@ def segmentation(requests):
 
         if len(ceo_user_list) > 0 or len(first_pre_cold_user_list) > 0 or requests.user.is_superuser:
 
-            fwl_id = requests.POST['fwl_id']
-            code = requests.POST['code']
+            buyer_id = requests.POST['buyer_id']
+            saleor_id = requests.POST['saleor_id']
+            driver_id = requests.POST['driver_id']
             weight = float(requests.POST['weight'])
-            bike_weight = float(requests.POST['bike_weight'])
-            box_num = requests.POST['box_num']
+            box_num = int(requests.POST['box_num'])
             sub_prod = requests.POST['sub_prod']
-            sales_category = requests.POST['sales_category']
+            prod_cat = requests.POST['prod_cat']
+            description = requests.POST['description']
+            output_category = requests.POST['output_category']
 
-            # get first weightlifting and update it
-            fwl_obj = models.FirstWeightLifting.objects.get(weight_lifting_id=fwl_id)
+            try:
+                num_weight = requests.POST['num_weight']
+                num_weight = True
+
+            except:
+                num_weight = False
 
             # create segmentation model
             segmentation_model = models.Segmentation()
 
-            segmentation_model.code = str(code)
-            segmentation_model.weight = weight - bike_weight
-            segmentation_model.box_num = box_num
+            segmentation_model.description = description
+            segmentation_model.weight = weight
+            segmentation_model.product_number = box_num
+            segmentation_model.num_weight = num_weight
             segmentation_model.sub_product_category = sub_prod
-            segmentation_model.product_category = fwl_obj.product_category
-            segmentation_model.output_category = sales_category
-            segmentation_model.first_weight_lifting = fwl_obj
+            segmentation_model.product_category = prod_cat
+            segmentation_model.output_category = output_category
             segmentation_model.segment_id = str(uuid1().int)
             segmentation_model.segment_time = time.time() + information.time_dif
             t = time.ctime(time.time() + information.time_dif).split()
@@ -2704,9 +2872,10 @@ def segmentation(requests):
             t = '{0}/{1}/{2} {3} {4}'.format(str(year), str(month), str(day), str(week_day), str(t[3]))
 
             segmentation_model.segment_time_format = t
-
-            if len(first_pre_cold_user_list) > 0:
-                segmentation_model.pre_cold_manager = first_pre_cold_user_list[0]
+            segmentation_model.buyer = buyer_id
+            segmentation_model.saleor = saleor_id
+            segmentation_model.driver = models.Driver.objects.get(driver_id=driver_id)
+            segmentation_model.pre_cold_manager = requests.user.username
 
             segmentation_model.save()
 

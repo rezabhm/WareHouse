@@ -642,38 +642,61 @@ class PreCold(models.Model):
     pc_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # entry time
-    entry_time = models.FloatField(default=time.time())
-    entry_time_format = models.CharField(default=time.ctime(time.time()), max_length=30)
-
-    # exit time
-    exit_time = models.FloatField(null=True)
-    exit_time_format = models.CharField(null=True, max_length=30)
+    time_obj = models.FloatField(default=time.time())
+    time_format = models.CharField(default=time.ctime(time.time()), max_length=30)
 
     # pre-cold id
     pre_cold_id = models.CharField(max_length=20)
 
-    # product in pre-cold status
-    product_pre_cold_status = models.BooleanField(default=True)
+    # object type
+    # if equal True , it mean product enter pre-cold
+    # else it mean exit from pre-cold
+    product_object_type = models.BooleanField(default=True)
+
+    # product category
+    type_of_gender = (('C', "chicken"),
+                      ('T', "turkey"),
+                      ('Q', "quail"))
+
+    product_category = models.CharField(max_length=1, choices=type_of_gender, default='C')
+
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
 
     # box number
-    box_num = models.IntegerField(default=1)
+    box_num = models.IntegerField(default=0)
 
     out_category_list = (
 
         ('D', 'distribute'),
         ('F', 'freezing_tunnel'),
         ('G', 'gate_bandi'),
+        ('I', 'inside'),
 
     )
     out_category = models.CharField(max_length=1, default='G', choices=out_category_list)
 
-    # verify exit
-    # this param determine exit format
-    out_status = models.BooleanField(default=False)
+    # weight of product
+    weight = models.FloatField(default=0.0)
 
     # relation
-    First_Weight_Lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
-    PreCold_Manager = models.ForeignKey(PreColdManager, on_delete=models.PROTECT, null=True)
+    # First_Weight_Lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
+    product_owner = models.ForeignKey(ProductOwner, on_delete=models.PROTECT , null=True)
+    PreCold_Manager = models.CharField(max_length=150, default='Admin')
 
     def __str__(self):
         return str(self.pc_id) + ' ' + str(self.entry_time_format)
@@ -685,16 +708,24 @@ class DistributedRoot(models.Model):
     dist_id = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
     # entry time
-    create_time = models.FloatField(default=time.time())
-    create_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+    weighting_time = models.FloatField(default=time.time())
+    weighting_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
+    # exit time
+    empty_time = models.FloatField(default=time.time())
+    empty_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
+
+    # enter time
+    enter_time = models.FloatField(default=time.time())
+    enter_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
 
     # exit time
     exit_time = models.FloatField(default=time.time())
     exit_time_format = models.CharField(default=time.ctime(time.time()), max_length=50)
 
     # car weight with product and without product
-    empty_weight = models.FloatField(null=True)
-    full_weight = models.FloatField(null=True)
+    empty_weight = models.FloatField(default=0.0)
+    full_weight = models.FloatField(default=0.0)
 
     # destination
     destination = models.CharField(max_length=150, null=True)
@@ -702,9 +733,18 @@ class DistributedRoot(models.Model):
     # determine product loading finish or not
     finish_loading = models.BooleanField(default=False)
 
+    # this param determine car exit from slaughter or not
+    # if equal True it means car leave slaughter
+    out_status = models.BooleanField(default=False)
+
     # relation
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    weighting_user = models.CharField(max_length=50, default='Admin')
+    finish_user = models.CharField(max_length=50, default='Admin')
+    enter_user = models.CharField(max_length=50, default='Admin')
+    exit_user = models.CharField(max_length=50, default='Admin')
 
     def __str__(self):
         return str(self.dist_id)
@@ -745,15 +785,32 @@ class Distributed(models.Model):
     # bill of lading
     bill_of_lading = models.CharField(default=str(uuid1().int), max_length=250, primary_key=True)
 
-    # number of box
-    number_of_box = models.IntegerField(null=True)
-
     # product category
     type_of_gender = (('C', "chicken"),
                       ('T', "turkey"),
                       ('Q', "quail"))
 
     product_category = models.CharField(max_length=1, choices=type_of_gender, default='C')
+
+    # sub product category
+    sub_type_of_gender = (
+
+                ('W', "wing"),
+                ('N', "neck"),
+                ('E', "leg"),
+                ('H', "heart"),
+                ('L', "liver"),
+                ('K', "kidney"),
+                ('S', "sangdan"),
+                ('B', "body"),
+                ('O', "other"),
+
+    )
+
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
+
+    # description
+    description = models.CharField(max_length=150, default='-')
 
     # for determine input product
     sales_input_category_list = (
@@ -762,20 +819,16 @@ class Distributed(models.Model):
         ('F', 'First-weight-lifting'),
         ('T', 'Freeze-tunnel'),
         ('C', 'Cold-House'),
+        ('P', 'Pre-Cold'),
 
     )
 
     sales_input_category = models.CharField(max_length=1, choices=sales_input_category_list, default='F')
-    sales_input_idistd = models.CharField(max_length=200, default=str(uuid1().int))
 
-    # relation
-    # first_weight_lifting = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
-    # freeze_tunnel = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
-    # cold_house = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
-    # first_weight_lifting = models.OneToOneField(FirstWeightLifting, on_delete=models.CASCADE, null=True)
-
-    sales_manager = models.ForeignKey(SalesManager, on_delete=models.CASCADE, null=True)
+    sales_manager = models.CharField(max_length=50, default='Admin', null=True)
     distribute_root = models.ForeignKey(DistributedRoot, on_delete=models.CASCADE, null=True)
+    buyer = models.CharField(max_length=200, null=True)
+    saleor = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return str(self.weight) + " " + time.ctime(self.date) + ' ' + str(self.bill_of_lading)
@@ -1074,7 +1127,14 @@ class Segmentation(models.Model):
     segment_time_format = models.CharField(max_length=25)
 
     # weight
-    weight = models.FloatField(null=True)
+    weight = models.FloatField(default=0.0)
+
+    # number of product
+    product_number = models.IntegerField(default=1)
+
+    # this param determine this is falle or baste
+    # true means falle
+    num_weight = models.BooleanField(default=True)
 
     # product category
     type_of_gender = (('C', "chicken"),
@@ -1085,42 +1145,62 @@ class Segmentation(models.Model):
     # sub product category
     sub_type_of_gender = (
 
-                ('W', "wing"),
-                ('N', "neck"),
-                ('E', "leg"),
-                ('H', "heart"),
-                ('L', "liver"),
-                ('K', "kidney"),
-                ('S', "sangdan"),
-                ('B', "body"),
+                ('sbap', "sine-ba-post"),
+                ('sbip', "sine-bi-post"),
+                ('rbap', "ran-ba-post"),
+                ('rbip', "ran-bi-post"),
+                ('mrb', "magz-rub-boshgabi"),
+                ('srb', "sag-ran-boshgabi"),
+                ('bb1k', "bal-boshgabi-1-kilo"),
+                ('bkhb1k', "bikhas-boshgabi-1-kilo"),
+                ('fb1k', "file-bohgabi-1-kilo"),
+                ('kb1k', "ketf-boshgabi-1-kilo"),
+                ('eb800g', "eskelet-boshgabi-800-geram"),
+                ('ef', "eskelet-falle"),
+                ('bkhbikf', "bikhas-bi-ketf-falle"),
+                ('bkhbakf', "bikhas-ba-ketf-falle"),
+                ('sdbapf', "sine-doroste-ba-post-falle"),
+                ('rf', "ran-falle"),
+                ('jz', "joje-zaferani"),
+                ('js', "joje-sade"),
+                ('fz', "file-zaferani"),
+                ('fs', "file-sade"),
+                ('bz', "bal-zaferani"),
+                ('bs', "bal-sade"),
+                ('bban', "bal-ba-nok"),
+                ('bbin', "bal-bi-nok"),
+                ('kz', "ketf-zaferani"),
+                ('kbap', "ketf-ba-post"),
+                ('gb', "gardan-boshgabi"),
+                ('sdbbvg', "sine-doroste-ba-bal-v-gardan"),
                 ('O', "other"),
 
     )
 
-    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=1, default='B')
+    sub_product_category = models.CharField(choices=sub_type_of_gender, max_length=10, default='O')
 
     # out category
     output_cat = (
 
         ('D', 'distribute'),
         ('F', 'freeze-tunnel'),
+        ('P', 'pre-cold'),
+        ('G', 'podr-gosht'),
 
     )
 
     output_category = models.CharField(max_length=1, choices=output_cat, default='D')
 
-    # random code
-    code = models.CharField(max_length=5)
+    # description
+    description = models.CharField(max_length=50, default='-')
 
-    # this param determine that did product enter to freeze tunnel or did distribute unit accept it or not
-    choice_status = models.BooleanField(default=False)
-
-    # number of box
-    box_num = models.IntegerField()
+    # buyer and saleor
+    buyer = models.CharField(max_length=200, default='0')
+    saleor = models.CharField(max_length=200, default='0')
+    driver = models.ForeignKey(Driver, on_delete=models.PROTECT, null=True)
 
     # relation
-    first_weight_lifting = models.ForeignKey(FirstWeightLifting, on_delete=models.PROTECT)
-    pre_cold_manager = models.OneToOneField(PreColdManager, on_delete=models.PROTECT, null=True)
+    segment_manager = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return str(self.segment_id)

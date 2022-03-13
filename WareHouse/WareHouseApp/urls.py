@@ -146,10 +146,17 @@ urlpatterns = [
     re_path(r'^pre/cold/enter/$', views.pre_cold_enter, name='Pre_Cold_Enter'),
     re_path(r'^pre/cold/exit/form/$', views.pre_cold_exit_form, name='Pre_Cold_Exit_Form'),
     re_path(r'^pre/cold/exit/$', views.pre_cold_exit, name='Pre_Cold_Exit'),
+
+    # distribute
     re_path(r'^distribute/form/$', views.distribute_form, name='Distribute_Form'),
     re_path(r'^distribute/$', views.distribute, name='Distribute'),
+    re_path(r'^distribute/enter/exit/form/$', views.distribute_enter_exit_form, name='Distribute_enter_exit_Form'),
+    re_path(r'^distribute/enter/$', views.distribute_enter, name='Distribute_Enter'),
+    re_path(r'^distribute/exit/$', views.distribute_exit, name='Distribute_Exit'),
+    re_path(r'^distribute/empty/full/form/$', views.distribute_empty_full_form, name='Distribute_Empty_Full_Form'),
     re_path(r'^distribute/root/empty/$', views.distribute_root_empty, name='Distribute_Root_Empty'),
     re_path(r'^distribute/root/full/$', views.distribute_root_full, name='Distribute_Root_Full'),
+
     re_path(r'^distribute/driver/create/$', views.distribute_driver_create, name='Driver_Create_Distribute'),
     re_path(r'^freeze/tunnel/enter/form/$', views.freeze_tunnel_enter_form, name="Freeze_Tunnel_Enter_Form"),
     re_path(r'^freeze/tunnel/enter/$', views.freeze_tunnel_enter, name="Freeze_Tunnel_Enter"),
